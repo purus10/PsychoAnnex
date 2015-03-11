@@ -5,13 +5,13 @@ public class Finish_Button : MonoBehaviour {
 
 	public Rect Box;
 	public bool final = false;
-	Custom_Wep wep = null;
-	Custom_Acc acc = null;
+	//Custom_Wep wep = null;
+	//Custom_Acc acc = null;
 
 	void Update()
 	{
-		wep = GetComponent<Custom_Wep>();
-		acc = GetComponent<Custom_Acc>();
+	//	wep = GetComponent<Custom_Wep>();
+	//	acc = GetComponent<Custom_Acc>();
 
 	}
 

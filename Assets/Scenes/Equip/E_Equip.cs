@@ -17,7 +17,7 @@ public class E_Equip : MonoBehaviour {
 	
 	public List <item> E_items = new List<item>();
 	public List <weapon> E_weapons = new List<weapon>();
-	public List <Abilities> E_abilities = new List<Abilities>();
+	public List <Ability> E_abilities = new List<Ability>();
 	public List <accessory> E_acc = new List<accessory>();
 	
 	E_Status selected;
@@ -67,19 +67,19 @@ public class E_Equip : MonoBehaviour {
 			if (compare == b) selected.BRWFont.normal.textColor = Color.white;
 			if (compare > b) selected.BRWFont.normal.textColor = Color.green;
 			if (compare < b) selected.BRWFont.normal.textColor = Color.red;
-			equip.stats[0,2] = bonus + compare;
+			equip.stats[0,0] = bonus + compare;
 			
 			compare = (E_acc[i].Tenacity - t) + t;
 			if (compare == t) selected.TENFont.normal.textColor = Color.white;
 			if (compare > t) selected.TENFont.normal.textColor = Color.green;
 			if (compare < t) selected.TENFont.normal.textColor = Color.red;
-			equip.stats[1,2] = bonus1 + compare;
+			equip.stats[0,1] = bonus1 + compare;
 			
 			compare = (E_acc[i].Courage - c) + c;
 			if (compare == c) selected.CRGFont.normal.textColor = Color.white;
 			if (compare > c) selected.CRGFont.normal.textColor = Color.green;
 			if (compare < c) selected.CRGFont.normal.textColor = Color.red;
-			equip.stats[2,2] = bonus2 + compare;
+			equip.stats[0,2] = bonus2 + compare;
 		}
 	}
 	#endregion

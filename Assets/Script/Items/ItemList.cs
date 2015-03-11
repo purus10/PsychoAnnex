@@ -6,21 +6,7 @@ using Database;
 public class ItemList : MonoBehaviour {
 
 	static public List <item> items = new List<item>();
-
-	void Awake()
-	{
-		item none = new item();
-		none.name = "koko";
-		none.amount = 4;
-		none.type = 1;
-		items.Add(none);
-
-		item none2 = new item();
-		none2.name = "koadsako";
-		none2.amount = 4;
-		none.type = 1;
-		items.Add(none2);
-	}
+	
 
 	void Update()
 	{

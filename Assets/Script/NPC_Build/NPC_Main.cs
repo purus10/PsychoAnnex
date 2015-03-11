@@ -9,14 +9,15 @@ public class NPC_Main : MonoBehaviour {
 	public int HP, Defense, Hit, Beat, Brawns, Tenacity, Courage, move_points;
 	public int[] Tier_Limit = new int[3];
 	[HideInInspector] public int cur_hp, cur_beats, tier = 2, index;
-	[HideInInspector] public int[] stats = new int[3];
+	[HideInInspector] public int[] stats = new int[3]; // marks cur (0 = brawns, 1 = tenacity, 2 = courage)
 	public float speed;
 	public Transform target;
 	public bool myturn;
 	public item[] items = new item[4];
 	[HideInInspector] public List <Transform> targets = new List<Transform>();
 	[HideInInspector] public float tier_count;
-	[HideInInspector] public bool seen = true;
+	[HideInInspector] public bool seen = true, cover = false;
+	public NavMeshAgent agent;
 	Animator animator;
 
 	public Color target_off;
@@ -25,6 +26,7 @@ public class NPC_Main : MonoBehaviour {
 	{
 		SetStats();
 		target_off = GetComponentInChildren<Renderer>().material.color;
+		agent = GetComponent<NavMeshAgent>();
 	}
 	
 	void FixedUpdate () 

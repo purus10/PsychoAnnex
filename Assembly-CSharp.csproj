@@ -66,12 +66,12 @@
      <Compile Include="Assets\Scenes\Equip\E_Passives.cs" />
      <Compile Include="Assets\Scenes\Equip\E_Quirk.cs" />
      <Compile Include="Assets\Scenes\Equip\E_Status.cs" />
-     <Compile Include="Assets\Scenes\Prototype\Scene\test.cs" />
      <Compile Include="Assets\Scenes\System\A_Display.cs" />
      <Compile Include="Assets\Scenes\System\A_Essence.cs" />
      <Compile Include="Assets\Scenes\System\A_Node.cs" />
      <Compile Include="Assets\Scenes\System\Anima_Movement.cs" />
      <Compile Include="Assets\Scenes\System\DoorManager.cs" />
+     <Compile Include="Assets\Script\AbilityTest.cs" />
      <Compile Include="Assets\Script\Anima\Database.cs" />
      <Compile Include="Assets\Script\Anima\Elements\Day.cs" />
      <Compile Include="Assets\Script\Anima\Elements\Divine.cs" />
@@ -92,6 +92,7 @@
      <Compile Include="Assets\Script\Cover.cs" />
      <Compile Include="Assets\Script\CoverTrigger.cs" />
      <Compile Include="Assets\Script\GameInformer.cs" />
+     <Compile Include="Assets\Script\Inventory.cs" />
      <Compile Include="Assets\Script\Items\AccList.cs" />
      <Compile Include="Assets\Script\Items\BlessingList.cs" />
      <Compile Include="Assets\Script\Items\ItemList.cs" />
@@ -101,10 +102,7 @@
      <Compile Include="Assets\Script\Leonard.cs" />
      <Compile Include="Assets\Script\Menu\Menu.cs" />
      <Compile Include="Assets\Script\NPC_Build\Cop_Behaviour.cs" />
-     <Compile Include="Assets\Script\NPC_Build\Faceless.cs" />
      <Compile Include="Assets\Script\NPC_Build\NPC_Main.cs" />
-     <Compile Include="Assets\Script\NPC_Build\NPC_Movement.cs" />
-     <Compile Include="Assets\Script\NPC_Build\NPC_Target.cs" />
      <Compile Include="Assets\Script\PC_Build\AimCamera.cs" />
      <Compile Include="Assets\Script\PC_Build\Cursor.cs" />
      <Compile Include="Assets\Script\PC_Build\PC_Main.cs" />

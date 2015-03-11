@@ -119,7 +119,7 @@ public class E_Gear : MonoBehaviour {
 		if (list.blessings == false && list.gearID == false)
 		{
 			list.magicnum = i;
-			Abilities gen2 = new Abilities();
+			Ability gen2 = new Ability();
 			gen2.name = "None";
 			list.E_abilities.Add(gen2);
 			

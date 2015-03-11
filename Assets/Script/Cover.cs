@@ -4,114 +4,37 @@ using System.Collections.Generic;
 
 public class Cover : MonoBehaviour {
 
-	public bool coverselect;
-
-	public GameObject player;
-
-	public List<Transform> covchilds;
-	public Transform covchild;
-
-	void Start()
-	{
-		covchild = null;
-		player = null;
-	}
-
-	public void AddAllcov()
-	{
-		GameObject[] co = GameObject.FindGameObjectsWithTag("Trigger");
-		
-		
-		foreach (GameObject covers in co)
-		{
-
-			AddTarget(covers.transform);
-		}
-	}
+	NPC_Main NPC;
+	PC_Main PC;
+	public Color target_off;
+	public bool taken = false;
 	
-	public void AddTarget(Transform covers)
+	void OnTriggerEnter(Collider col)
 	{
-		covchilds.Add(covers);
-	}
-	
-	private void Aimcov()
-	{
-		if (covchild == null)
+		NPC = col.GetComponent<NPC_Main>();
+		PC = col.GetComponent<PC_Main>();
+		if (NPC != null) 
 		{
-			SortcovByDistance();
-			covchild = covchilds[0];
-		} else {
-			int index = covchilds.IndexOf(covchild);
-			
-			if (index < covchilds.Count -1)
+			if (NPC.target == transform) 
 			{
-				index++;
-			} else {
-				index = 0;
+				taken = true;
+				NPC.cover = true;
 			}
-			covchild = covchilds[index];
 		}
-		onthecov();
-	}
-	
-	private void onthecov()
-	{
-		player.transform.LookAt (covchild);
-
-		foreach(Transform covs in covchilds)
+		if (PC != null) 		
 		{
-			covs.GetComponent<CoverTrigger>().cov = covchild;
-		}
-	}
-	
-	private void SortcovByDistance()
-	{
-		covchilds.Sort (delegate(Transform t1, Transform t2) { 
-			return (Vector3.Distance(t1.position, player.transform.position)).CompareTo(Vector3.Distance(t2.position,player.transform.position)); 
-		});
-	}
-
-	public float TriggerDistance(Transform x)
-	{
-		return Vector3.Distance (x.position, covchild.transform.position);
-	}
-
-	void FixedUpdate ()
-	{
-
-		if (Input.GetKeyDown (KeyCode.E) && covchild != null)
-		{
-			coverselect = false;
-		//	player.GetComponent<Character>().move = true;
-		//	player.GetComponent<Character>().select = false;
-		}
-
-		if (Input.GetKeyDown (KeyCode.Space))
-		{
-			player = null;
-			covchild = null;
-			coverselect = false;
-			covchilds.Clear();
-		}
-
-		if (Input.GetKeyDown (KeyCode.Tab) && coverselect == true)
-		{
-			if (covchilds != null)
+			if (PC.target == transform) 
 			{
-				covchilds = new List<Transform>();
-				AddAllcov();
+				taken = true;
+				PC.cover = true;
 			}
-			Aimcov ();
-
 		}
 	}
-
-	void Update()
+	
+	void OnTriggerExit(Collider col)
 	{
-
-		if (covchild != null)
-		{
-	//	player.GetComponent<Character>().distance = TriggerDistance(player.GetComponent<Character>().myplace);
-		} 
+		taken = false;
+		if (NPC != null) NPC.cover = false;
+		if (PC != null) PC.cover = false;
 	}
 }

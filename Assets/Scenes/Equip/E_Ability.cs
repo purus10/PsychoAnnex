@@ -32,17 +32,17 @@ public class E_Ability : MonoBehaviour {
 		if (list.gearID == false && list.abilities == false)
 		{
 			list.magicnum = i;
-			Abilities gen = new Abilities();
+			Ability gen = new Ability();
 			gen.name = "None";
 			list.E_abilities.Add(gen);
 			
-		/*	foreach( Abilities Ab in equip.abilities)
+			foreach( Ability Ab in equip.abilities)
 			{
 				if (equip.ability[i] != null) equip.ability[i].equipped = false;
 				if (Ab.equipped == false) list.E_abilities.Add(Ab);
 			}
 			list.abilities = true;
-			list.gearID = true;*/
+			list.gearID = true;
 		}
 	}
 	
@@ -55,8 +55,7 @@ public class E_Ability : MonoBehaviour {
 	
 	string AbilityName(int i)
 	{
-		if (equip.ability[i] != null && equip.ability[i].name != "None") 
-			return equip.ability[i].name;
+		if (equip.ability[i] != null && equip.ability[i].name != "None") return equip.ability[i].name;
 		else return "";
 	}
 	
@@ -68,12 +67,12 @@ public class E_Ability : MonoBehaviour {
 		GUI.Button(WButton,"Attack");
 		
 		GUI.Label(A, GameInformer.A2 + ":", center);
-		if (GUI.Button(AButton, AbilityName(2))) MakeList(2);
+		if (GUI.Button(AButton, AbilityName(1))) MakeList(2);
 		
 		GUI.Label(S,GameInformer.A3 + ":", center);
-		if (GUI.Button(SButton, AbilityName(3))) MakeList(3);
+		if (GUI.Button(SButton, AbilityName(2))) MakeList(3);
 		
 		GUI.Label(D,GameInformer.A4 + ":", center);
-		if (GUI.Button(DButton, AbilityName(4))) MakeList(4);
+		if (GUI.Button(DButton, AbilityName(3))) MakeList(4);
 	}
 }

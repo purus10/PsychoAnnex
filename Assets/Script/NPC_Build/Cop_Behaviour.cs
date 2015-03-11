@@ -4,14 +4,12 @@ using System.Collections;
 public class Cop_Behaviour : MonoBehaviour {
 
 	NPC_Main my;
-	NavMeshAgent agent;
 	Vector3 destination;
 	bool chase;
 	PC_Main target;
 
 	void Start()
 	{
-		agent = GetComponent<NavMeshAgent>();
 		my = GetComponent<NPC_Main>();
 		my.items[0] = new item();
 		my.items[0].name = "Tar Water";
@@ -27,13 +25,12 @@ public class Cop_Behaviour : MonoBehaviour {
 	void Update()
 	{
 		if (my.target != null) 
-			if (chase == true) agent.SetDestination(my.target.position);
+			if (chase == true) my.agent.SetDestination(my.target.position);
 	}
 
 	void FixedUpdate()
 	{
-		if (my.cur_hp == 0) Destroy(gameObject);
-
+		if (my.cur_hp <= 0) Destroy(gameObject);
 		if (my.move_points > 0 && my.myturn == true)
 		{
 			if (my.cur_hp <= my.HP/2) UseItem(my.items[0]);
@@ -41,8 +38,8 @@ public class Cop_Behaviour : MonoBehaviour {
 			my.TargetType(1);
 			my.Target();
 			float distance = Vector3.Distance(my.target.position, transform.position);
-			if (distance > 1f && agent.remainingDistance == 0) Move();
-			else if (distance < 1f) Attack();
+			if (distance > 1f && my.agent.remainingDistance == 0) Move();
+			else if (distance < 1f) InitiateCloseRange();
 		}
 
 	}
@@ -53,7 +50,7 @@ public class Cop_Behaviour : MonoBehaviour {
 		my.move_points--;
 	}
 
-	public void Attack()
+	public void InitiateCloseRange()
 	{
 		if (GameInformer.stop == false) GameInformer.stop = true;
 		my.move_points--;

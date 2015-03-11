@@ -10,7 +10,7 @@ public class A_Node : MonoBehaviour {
 	public bool[] unlocked;
 
 	public GameObject main;
-	public Abilities ability;
+	public Ability ability;
 
 	public int Ccost, Ecost, Tcost, Lcost;
 	
@@ -25,7 +25,7 @@ public class A_Node : MonoBehaviour {
 		GameInformer.Tranquality = 20;
 		display = main.GetComponent<A_Display>();
 
-		ability = new Abilities();
+		ability = new Ability();
 		ability.name = abilityname;
 		ability.type = type;
 		ability.description = description;

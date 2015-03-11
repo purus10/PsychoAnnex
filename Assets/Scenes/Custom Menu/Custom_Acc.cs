@@ -18,13 +18,6 @@ public class Custom_Acc : MonoBehaviour {
 	
 	public accessory acc;
 	
-	Selected_Button display; 
-	
-	void Start()
-	{
-		display = GetComponent<Selected_Button>(); 
-	}
-	
 	#region Stat Conversion
 	// Use this for initialization
 	public void StatIncrease(item metal) 

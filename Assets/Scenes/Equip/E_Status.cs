@@ -126,11 +126,11 @@ public class E_Status : MonoBehaviour {
 
 		//HP-Brawns
 		GUI.Label(HP, "HP    " + stat.HP, smallFont);
-		GUI.Label(BRW, "BRW " + stat.stats[2,0], BRWFont);
+		GUI.Label(BRW, "BRW " + stat.stats[0,0], BRWFont);
 
 		//Tenacity-Courage
-			GUI.Label(TEN, "TEN  " + stat.stats[2,1], TENFont);
-			GUI.Label(CRG, "CRG " + stat.stats[2,2], CRGFont);
+			GUI.Label(TEN, "TEN  " + stat.stats[0,1], TENFont);
+			GUI.Label(CRG, "CRG " + stat.stats[0,2], CRGFont);
 
 		//Damage-Hit
 		GUI.Label(DMG, "DMG " + stat.damage, DMGFont);

@@ -7,13 +7,11 @@ public class StatChange : MonoBehaviour {
 	int b1, b2, b3;
 	Selected_Button selected;
 	Custom_Wep cw;
-	Metal_Button metal;
 
 	void Start () 
 	{
 		selected = GetComponent<Selected_Button>();
 		cw = GetComponent<Custom_Wep>();
-		metal = GetComponent<Metal_Button>();
 	}
 	// Update is called once per frame
 	void Update () 

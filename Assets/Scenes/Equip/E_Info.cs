@@ -10,7 +10,6 @@ public class E_Info : MonoBehaviour {
 	GUIStyle smallFont;
 	GUIStyle center;
 	public string info;
-	E_Status selected;
 	
 	void Start()
 	{
@@ -23,11 +22,6 @@ public class E_Info : MonoBehaviour {
 		
 		smallFont.fontSize = 20;
 		smallFont.normal.textColor = Color.white;
-	}
-	
-	void FixedUpdate()
-	{
-		selected = GetComponent<E_Status>();
 	}
 	
 	// Update is called once per frame

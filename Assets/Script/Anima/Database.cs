@@ -4,12 +4,261 @@ using System.Collections;
 namespace Database
 {
 	#region Abilities
-	public class Abilities
+	public class Ability
 	{ 
-		public string name;
-		public bool equipped;
-		public string description;
+		public string name, description;
+		public bool equipped, far_range;
+		public float max_range, min_range;
 		public int type;
+
+		bool FarRangeHit(float d, PC_Main my, NPC_Main t)
+		{
+			int my_hit = Random.Range (0,100 + my.hit);
+			int t_dodge = Random.Range (0,100 + t.stats[1]);
+
+			if (d >= min_range && d <= max_range) 
+			{
+				if (my.far_beats == false) return my_hit > t_dodge;
+				else { my.cur_beats--;
+				return my_hit > t_dodge;
+				}
+			}else return false;
+		}
+
+		bool CloseRangeHit(PC_Main my, NPC_Main t)
+		{
+			int my_hit = Random.Range (0,100 + my.hit);
+			int t_dodge = Random.Range (0,100 + t.stats[1]);
+			my.cur_beats--;
+			return my_hit > t_dodge;
+		}
+
+		bool CritChance(PC_Main my, NPC_Main t)
+		{
+			int my_hit = Random.Range (0,100 + my.stats[3,0]);
+			int t_dodge = Random.Range (0,100 + t.stats[1]);
+			return my_hit > t_dodge;
+		}
+
+		public void AllyCast(PC_Main my, PC_Main t)
+		{
+			float distance = Vector3.Distance(my.transform.position, t.transform.position);
+			if (distance <= max_range) Execute(my,t,null);
+		}
+
+		public void OpposeCast(PC_Main my, NPC_Main t)
+		{
+			if (far_range == true) 
+			{
+				float distance = Vector3.Distance(my.transform.position, t.transform.position);
+				if (FarRangeHit(distance,my,t) == true) Execute(my,null,t);
+				else Debug.Log("MISS :C");
+			}else if (CloseRangeHit(my,t) == true) Execute(my,null,t);
+		}
+
+		public void Execute(PC_Main my, PC_Main a, NPC_Main t)
+		{
+			if (name == "Anima") Anima(my,t);
+			if (name == "Barrage") Barrage(my);
+			if (name == "Butterfly") Butterfly();
+			if (name == "Chaos") Chaos(my,t);
+			if (name == "Eximo") Eximo(my,t);
+			if (name == "Feint") Feint(my,t);
+			if (name == "Fidelity") Fidelity();
+			if (name == "Hush") Hush(my,t);
+			if (name == "Inquisitio") Inquisitio(my,t);
+			if (name == "Jinx") Jinx(my,t);
+			if (name == "Kadabra") Kadabra(my,t);
+			if (name == "Karma") Karma(my,t);
+			if (name == "Libro") Libro(my,t);
+			if (name == "Luck") Luck(my,t);
+			if (name == "Oblivio") Oblivio(my,t);
+			if (name == "Omni") Omni(my,t);
+			if (name == "Panacea") Panacea(my,t);
+			if (name == "Provoke") Provoke(my,t);
+			if (name == "Pulse") Pulse(my,t);
+			if (name == "Rapture") Rapture(my,t);
+			if (name == "Verto") Verto(my,t);
+		}
+
+		public void Anima(PC_Main my, NPC_Main t)
+		{
+		t.cur_hp -= my.stats[1,0] + (DoorManager.MagicalDoor + DoorManager.PhysicalDoor + 1)*2;
+		Debug.Log ("ANIMA");
+		Debug.Log(t.name+" remaining hp: "+t.cur_hp);
+		}
+
+		public void Barrage(PC_Main my)
+		{
+			my.cur_beats--;
+			my.far_beats = true;
+		}
+
+		public void Butterfly()
+		{
+			NPC_Main[] search = GameObject.FindObjectsOfType(typeof(NPC_Main)) as NPC_Main[];
+			int[] power = new int[search.Length];
+			int weakest = 40;
+
+			for(int i = 0; i < power.Length;i++) 
+				power[i] = search[i].Brawns + search[i].Tenacity + search[i].Courage;
+
+			foreach (int p in power) if (p <= weakest) weakest = p;
+
+			for(int i = 0; i < search.Length;i++)
+				if (search[i].Brawns + search[i].Tenacity + search[i].Courage == weakest && search.Length == power.Length) 
+					GameObject.Destroy(search[i].gameObject);
+		}
+
+		public void Chaos(PC_Main my, NPC_Main t)
+		{
+			float distance;
+			int amount = 0;
+			Transform[] anim = null;
+			
+			foreach (Transform touched in my.targets)
+			{
+				distance = Vector3.Distance(touched.position, my.transform.position);
+				if (max_range >= distance) amount++;
+			}
+
+			anim = new Transform[amount];
+			amount  = -1;
+
+			foreach (Transform stored in my.targets)
+			{
+				distance = Vector3.Distance(stored.position, my.transform.position);
+				if(max_range >=distance)
+				{
+					amount ++;
+					anim[amount] = stored;
+				}
+			}
+			
+			foreach (Transform strike in my.targets)
+			{
+				distance = Vector3.Distance(strike.position, GameInformer.check.transform.position);
+				NPC_Main tar = strike.GetComponent<NPC_Main>();
+				int tenacity = my.Tenacity/(amount +1);
+				
+				if (max_range >= distance)
+				{
+					while (tenacity != 0)
+					{
+						int my_hit = Random.Range (0,100 + my.hit);
+						int t_dodge = Random.Range (0,100 + tar.stats[1]);
+						tenacity--;
+						if (my_hit > t_dodge)
+						{
+							int dmg = my.damage + DoorManager.PhysicalDoor;
+							if (dmg >= 1) t.cur_hp -= dmg;
+						}
+					}
+				}
+			}
+		}
+
+		public void Eximo(PC_Main my, NPC_Main t)
+		{
+			t.cur_hp -= (my.damage + DoorManager.PhysicalDoor)*(2 + my.Courage/2);
+			int destroy_chance = Random.Range(0,100 + (my.wep[0].weight*10));
+
+			if (destroy_chance <= 50) my.wep[0] = null;
+		}
+
+		public void Feint(PC_Main my, NPC_Main t)
+		{
+			float distance = Vector3.Distance(t.transform.position, my.transform.position);
+
+			if (distance <= 1.5f)
+			{
+				if (my.Beat > 0)
+				{
+					my.Beat--;
+					my.far_beats = true;
+					my.transform.position = new Vector3(my.transform.position.x,my.transform.position.y,my.transform.position.z - 2f);
+				}
+			}
+		}
+
+		public void Fidelity()
+		{
+
+		}
+
+		public void Hush(PC_Main my, NPC_Main t)
+		{
+			
+		}
+
+		public void Inquisitio(PC_Main my, NPC_Main t)
+		{
+			
+		}
+
+		public void Jinx(PC_Main my, NPC_Main t)
+		{
+			
+		}
+
+		public void Kadabra(PC_Main my, NPC_Main t)
+		{
+			
+		}
+
+		public void Karma(PC_Main my, NPC_Main t)
+		{
+			
+		}
+
+		public void Libro(PC_Main my, NPC_Main t)
+		{
+			
+		}
+
+		public void Luck(PC_Main my, NPC_Main t)
+		{
+			
+		}
+
+		public void Oblivio(PC_Main my, NPC_Main t)
+		{
+			
+		}
+
+		public void Omni(PC_Main my, NPC_Main t)
+		{
+			
+		}
+
+		public void Panacea(PC_Main my, NPC_Main t)
+		{
+			
+		}
+
+		public void Provoke(PC_Main my, NPC_Main t)
+		{
+			
+		}
+
+		public void Pulse(PC_Main my, NPC_Main t)
+		{
+			
+		}
+
+		public void Rapture(PC_Main my, NPC_Main t)
+		{
+			
+		}
+
+		public void Verto(PC_Main my, NPC_Main t)
+		{
+			
+		}
+
+
+
+
 	}
 		/*
 		#region AbilityManager

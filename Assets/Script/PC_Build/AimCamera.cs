@@ -10,7 +10,7 @@ public class AimCamera : MonoBehaviour {
 	// Use this for initialization
 	public void Aiming () 
 	{
-		GameInformer player = Main.gameObject.GetComponent<GameInformer>();
+	//	GameInformer player = Main.gameObject.GetComponent<GameInformer>();
 		GetComponent<gunscript>().enabled = true;
 
 		if (GameInformer.target != null)

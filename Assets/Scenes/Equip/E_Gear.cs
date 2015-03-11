@@ -123,13 +123,13 @@ public class E_Gear : MonoBehaviour {
 			gen2.name = "None";
 			list.E_abilities.Add(gen2);
 			
-	/*		foreach( Abilities b in equip.abilities)
+			foreach( Ability b in equip.abilities)
 				if (b.type == 1)
 			{
 				if (equip.ability[i] != null) equip.ability[i].equipped = false;
 				if (b.equipped == false) list.E_abilities.Add(b);
-			}*/
-	//		if (equip.ability[i] != null) check.DeBlessings(equip.ability[i].name);
+			}
+			//if (equip.ability[i] != null) check.DeBlessings(equip.ability[i].name);
 			list.blessings = true;
 			list.gearID = true;
 		}
@@ -149,19 +149,19 @@ public class E_Gear : MonoBehaviour {
 		GUI.Label(Acc1, "Acc:", smallFont);
 		if (GUI.Button(Acc1Button, AccName(0))) MakeAccList(0);
 
-		if (equip.second_acc == true)
+		if (equip != null && equip.second_acc == true)
 		{
 			GUI.Label(Acc2, "Acc:", smallFont);
 			if (GUI.Button(Acc2Button, AccName(1))) MakeAccList(1);
 		}
 
 		GUI.Label(Blessing, "Blessing", smallFont);
-		if (GUI.Button(BlessingButton, BlessingName(0))) MakeBlessList(0);
+		if (GUI.Button(BlessingButton, BlessingName(4))) MakeBlessList(4);
 
-		if (equip.soul_mixture == true)
+		if (equip != null && equip.soul_mixture == true)
 		{
 			BlessingButton.width = 78.95f;
-			if (GUI.Button(Blessing2Button, BlessingName(1))) MakeBlessList(1);
+			if (GUI.Button(Blessing2Button, BlessingName(5))) MakeBlessList(5);
 		}else BlessingButton.width = 157.9f;
 	}
 }

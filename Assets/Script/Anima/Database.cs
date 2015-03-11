@@ -1522,7 +1522,7 @@ namespace Database
 	}
 	#endregion*/
 	#region Items
-	public class item
+	public class Item
 	{
 		public string name;
 		public int type;
@@ -1531,7 +1531,7 @@ namespace Database
 
 		public void SetItem(string name, int type)
 		{
-			item x = new item();
+			Item x = new Item();
 			x.name = name;
 			x.type = type;
 			x.amount = 1;
@@ -1826,7 +1826,7 @@ namespace Database
 		public string description;
 		public bool equipped;
 
-		public item[] metal = new item[3];
+		public Item[] metal = new Item[3];
 
 		public int hit;
 		public int damage;
@@ -1843,7 +1843,7 @@ namespace Database
 		public string description;
 		public bool equipped;
 		
-		public item[] metal = new item[3];
+		public Item[] metal = new Item[3];
 
 		public int Damage;
 		public int Hit;

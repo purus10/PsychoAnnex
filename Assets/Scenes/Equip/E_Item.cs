@@ -12,7 +12,7 @@ public class E_Item : MonoBehaviour {
 	
 	string ItemCheck(int i)
 	{
-		if (selected.stat.items[i] != null && selected.stat.items[i].name != "None") return selected.stat.items[i].name;
+		if (selected != null && selected.stat.items[i] != null && selected.stat.items[i].name != "None") return selected.stat.items[i].name;
 		else return "";
 	}
 	
@@ -34,14 +34,14 @@ public class E_Item : MonoBehaviour {
 		if (list.gearID == false && list.items == false)
 		{
 			list.magicnum = i;
-			item gen = new item();
+			Item gen = new Item();
 			gen.name = "None";
 			list.E_items.Add(gen);
 			
-			foreach( item I in ItemList.items)
+			foreach( Item I in ItemList.items)
 			{
 				if (selected.stat.items[i] != null) selected.stat.items[i].equipped = false;
-				if (I.type == 1 && I.equipped == false) list.E_items.Add(I);
+				if (I.type != 2 && I.equipped == false)  list.E_items.Add(I);
 			}
 		}
 		list.items = true;

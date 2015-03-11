@@ -12,7 +12,7 @@ public class Metal_Button : MonoBehaviour {
 	public Rect button1, button2, button3;
 	int magicnum;
 
-	public item[] metal = new item[3];
+	public Item[] metal = new Item[3];
 	
 	void Start()
 	{

@@ -59,7 +59,10 @@ public class E_Quirk : MonoBehaviour {
 
 		//Quirks
 		GUI.Label(Title, "Quirks", smallFont);
+		if (selected != null)
+		{
 		GUI.Label (Quirk1, selected.stat.quirk[0,0], q1center);
+		}
 		if (Quirk1.Contains(new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y)))
 		{
 			q1center.normal.textColor = Color.yellow;

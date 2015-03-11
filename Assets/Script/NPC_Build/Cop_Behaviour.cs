@@ -11,7 +11,7 @@ public class Cop_Behaviour : MonoBehaviour {
 	void Start()
 	{
 		my = GetComponent<NPC_Main>();
-		my.items[0] = new item();
+		my.items[0] = new Item();
 		my.items[0].name = "Tar Water";
 		my.items[0].amount = Random.Range(0,2);
 		my.items[0].type = 1;
@@ -38,8 +38,8 @@ public class Cop_Behaviour : MonoBehaviour {
 			my.TargetType(1);
 			my.Target();
 			float distance = Vector3.Distance(my.target.position, transform.position);
-			if (distance > 1f && my.agent.remainingDistance == 0) Move();
-			else if (distance < 1f) InitiateCloseRange();
+			if (distance > 1.5f && my.agent.remainingDistance == 0) Move();
+			else if (distance < 1.5f) InitiateCloseRange();
 		}
 
 	}
@@ -69,7 +69,7 @@ public class Cop_Behaviour : MonoBehaviour {
 		else if (my.cur_beats > 0) my.myturn = true;
 	}
 
-	void UseItem(item i)
+	void UseItem(Item i)
 	{
 		if (i.amount > 0)
 		{

@@ -13,7 +13,7 @@ public class NPC_Main : MonoBehaviour {
 	public float speed;
 	public Transform target;
 	public bool myturn;
-	public item[] items = new item[4];
+	public Item[] items = new Item[4];
 	[HideInInspector] public List <Transform> targets = new List<Transform>();
 	[HideInInspector] public float tier_count;
 	[HideInInspector] public bool seen = true, cover = false;

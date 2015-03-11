@@ -20,7 +20,7 @@ public class Custom_Acc : MonoBehaviour {
 	
 	#region Stat Conversion
 	// Use this for initialization
-	public void StatIncrease(item metal) 
+	public void StatIncrease(Item metal) 
 	{
 		switch(metal.name)
 		{
@@ -67,7 +67,7 @@ public class Custom_Acc : MonoBehaviour {
 		}
 	}
 
-	public void StatDecrease(item metal) 
+	public void StatDecrease(Item metal) 
 	{
 		switch(metal.name)
 		{

@@ -18,7 +18,7 @@ public class Menu : MonoBehaviour {
 		{
 			c.GetComponentInChildren<SkinnedMeshRenderer>().enabled = true;
 			c.GetComponent<CharacterController>().enabled = true;
-			GameInformer.stop = true;
+			GameInformer.stop = false;
 		}
 	}
 	

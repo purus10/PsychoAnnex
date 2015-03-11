@@ -7,6 +7,7 @@ public class PC_Main : MonoBehaviour {
 	
 	public string Name;
 	public int ID, HP, Beat, Brawns, Tenacity, Courage, type;
+	public float tier_count = 5;
 	[HideInInspector] public int cur_hp, cur_beats, max_acc = 2, tier = 2, damage, hit, index;
 	public string[,] quirk = new string[2,4];
 	public int[,] stats = new int[3,3]; // Row (0 = brawns, 1 = tenacity, 2 = courage) Collum(0 = cur stat, 1 = anima stat, 2 = equip stat) 
@@ -17,9 +18,8 @@ public class PC_Main : MonoBehaviour {
 	public List <Ability> abilities = new List<Ability>();
 	public weapon[] wep = new weapon[2];
 	public accessory[] acc = new accessory[2];
-	public Ability[] ability = new Ability[4];
-	public item[] items = new item[4];
-	[HideInInspector] public float tier_count;
+	public Ability[] ability = new Ability[6];
+	public Item[] items = new Item[4];
 	[HideInInspector] public bool tier_4, second_acc, soul_mixture, far_beats, cover;
 	public NavMeshAgent agent;
 	public Animator animator;
@@ -29,11 +29,6 @@ public class PC_Main : MonoBehaviour {
 	
 	void Start ()
 	{
-		foreach (Ability a in abilities) if (a.name == "Attack") 
-		{
-			ability[0] = a;
-			ability[0].equipped = true;
-		}
 		DontDestroyOnLoad(gameObject);
 		SetStats();
 		FirstWeapon();
@@ -44,6 +39,15 @@ public class PC_Main : MonoBehaviour {
 	
 	void Update()
 	{
+		if (ability[0] == null)
+		{
+			foreach (Ability a in abilities) if (a.name == "Attack") 
+			{
+				a.equipped = true;
+				ability[0] = a;
+			}
+		}
+
 		if (Input.GetKeyDown(GameInformer.Fight))
 		{
 			if (GameInformer.Idler == ID && GameInformer.stop == false) 
@@ -199,13 +203,13 @@ public class PC_Main : MonoBehaviour {
 		if (tier != t)
 		{
 			tier = t;
-			if (tier == 1) for (int i = 0; i < stats.GetLength(0);i++) stats[i,0] = stats[i,0]/2 - (Courage/10);
-			if (tier == 3 || tier == 4) for (int i = 0; i < stats.GetLength(0);i++) stats[i,0] = stats[i,0]*(Courage/10 + (tier -1));
+			if (tier == 1) for (int i = 0; i < stats.GetLength(0);i++) stats[0,i] = stats[0,i]/2 - (Courage/10);
+			if (tier == 3 || tier == 4) for (int i = 0; i < stats.GetLength(0);i++) stats[0,i] = stats[0,i]*(Courage/10 + (tier -1));
 			if (tier == 2)
 			{
 				stats[0,0] = Brawns;
-				stats[1,0] = Tenacity;
-				stats[2,0] = Courage;
+				stats[0,1] = Tenacity;
+				stats[0,2] = Courage;
 			}
 		}
 	}
@@ -215,10 +219,7 @@ public class PC_Main : MonoBehaviour {
 		if (type == 0)
 		{
 			Cover[] search = GameObject.FindObjectsOfType(typeof(Cover)) as Cover[];
-			foreach (Cover n in search) 
-			{
-				if (Physics.Raycast(n.transform.position, transform.forward, 1.0f)) targets.Add(n.transform);	
-			}
+			foreach (Cover n in search) if (Physics.Raycast(n.transform.position, transform.forward, 1.0f)) targets.Add(n.transform);	
 		} else if (type == 1) 
 		{
 			NPC_Main[] search = GameObject.FindObjectsOfType(typeof(NPC_Main)) as NPC_Main[];

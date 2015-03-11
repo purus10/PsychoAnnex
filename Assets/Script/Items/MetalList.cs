@@ -5,7 +5,7 @@ using Database;
 
 public class MetalList : MonoBehaviour {
 
-	public List <item> metals = new List<item>();
+	public List <Item> metals = new List<Item>();
 	public int ID;
 	public Custom_Wep metal = null;
 

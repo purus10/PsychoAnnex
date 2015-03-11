@@ -15,7 +15,7 @@ public class E_Equip : MonoBehaviour {
 	private float vScroolbarValue;
 	public Vector2 scrollposition = Vector2.zero;
 	
-	public List <item> E_items = new List<item>();
+	public List <Item> E_items = new List<Item>();
 	public List <weapon> E_weapons = new List<weapon>();
 	public List <Ability> E_abilities = new List<Ability>();
 	public List <accessory> E_acc = new List<accessory>();
@@ -145,6 +145,7 @@ public class E_Equip : MonoBehaviour {
 	}
 	
 	void OnGUI () {	
+
 		scrollposition = GUI.BeginScrollView(Scroller,scrollposition,ScrollView);
 		GUI.Box(Box,"");
 		

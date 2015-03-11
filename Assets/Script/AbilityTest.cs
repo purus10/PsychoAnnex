@@ -11,6 +11,8 @@ public class AbilityTest : MonoBehaviour {
 
 		foreach(PC_Main p in search)
 		{
+			if (p.abilities.Count < 2)
+			{
 			Add ("Attack","Attack depending on player deals a diffrent secondary effect",false,0,10,2,p);
 			Add ("Anima","Attack the soul of your enemy",true,2,10,2,p);
 			Add ("Barrage","use remaining beats as Far range",true,0,10,3,p);
@@ -18,6 +20,7 @@ public class AbilityTest : MonoBehaviour {
 			Add ("Chaos","Attack multiple times depending on tenacity",false,0,3,2,p);
 			Add ("Eximo","Deal great amount of damage but chance of destroying your weapon",false,0,3,2,p);
 			Add ("Feint","escape Close range and use remaining beats as Far range",true,0,10,2,p);
+			}
 		}
 	}
 

@@ -5,40 +5,36 @@ public class Finish_Button : MonoBehaviour {
 
 	public Rect Box;
 	public bool final = false;
-	//Custom_Wep wep = null;
-	//Custom_Acc acc = null;
+	Custom_Wep wep;
+	Custom_Acc acc;
+	Selected_Button selected;
+	Metal_Button metals;
 
-	void Update()
+	void Start()
 	{
-	//	wep = GetComponent<Custom_Wep>();
-	//	acc = GetComponent<Custom_Acc>();
+		selected = GetComponent<Selected_Button>();
+		wep = GetComponent<Custom_Wep>();
+		acc = GetComponent<Custom_Acc>();
+		metals = GetComponent<Metal_Button>();
 
 	}
 
-/*	void WeaponFinalization()
+	void WeaponFinalization()
 	{
-		wep.oName = wep.wep.name;
-		wep.wep.damage += wep.dmgbonus;
-		wep.wep.hit += wep.hitbonus;
-		wep.wep.weight = wep.weight;
-		if (wep.wep.metal1 == "")
-		{
-		wep.wep.metal1 = wep.metal1;
-		}
+		selected.wep.damage += wep.dmgbonus;
+		selected.wep.hit += wep.hitbonus;
+		selected.wep.weight = wep.weight;
 
-		if (wep.wep.metal2 == "")
+		for(int i = 0; i < selected.wep.metal.Length;i++)
 		{
-		wep.wep.metal2 = wep.metal2;
+			if (selected.wep.metal[i] == null && metals.metal != null)
+			{
+				selected.wep.metal[i] = metals.metal[i];
+			}
 		}
-
-		if (wep.wep.metal3 == "")
-		{
-		wep.wep.metal3 = wep.metal3;
-		}
-		wep.FinalConversion(wep.weight,wep.wep);
 	}
 
-	void AccessoyFinalization()
+	/*void AccessoyFinalization()
 	{
 		acc.oName = acc.acc.name;
 		acc.oBrawns = acc.acc.Brawns;
@@ -58,7 +54,7 @@ public class Finish_Button : MonoBehaviour {
 		{
 			acc.acc.metal3 = acc.metal3;
 		}
-	}
+	}*/
 
 	void OnGUI()
 	{
@@ -66,7 +62,7 @@ public class Finish_Button : MonoBehaviour {
 		{
 		if(GUI.Button(new Rect(Screen.width/2 - Box.x + 5f,Screen.height/2 - Box.y - 30f, Box.width, Box.height - 10f), "Finish"))
 		{
-			if (wep.wep != null || acc.acc != null)
+			if (selected.wep != null)
 			{
 			final = true;
 			}
@@ -79,15 +75,15 @@ public class Finish_Button : MonoBehaviour {
 
 			if(GUI.Button(new Rect(Screen.width/2 - Box.x + 5f,Screen.height/2 - Box.y - 60f, Box.width, Box.height - 10f), "Yes"))
 			{
-				if (wep.wep != null)
+				if (selected.wep != null)
 				{
 					WeaponFinalization();
 					final = false;
-				}else if (acc.acc != null)
+				}/*else if (acc.acc != null)
 				{
 					AccessoyFinalization();
 					final = false;
-				}
+				}*/
 			}
 
 			if(GUI.Button(new Rect(Screen.width/2 - Box.x + 5f,Screen.height/2 - Box.y - 30f, Box.width, Box.height - 10f), "No"))
@@ -96,5 +92,5 @@ public class Finish_Button : MonoBehaviour {
 			}
 			
 		}
-	}*/
+	}
 }

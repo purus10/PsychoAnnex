@@ -7,13 +7,14 @@ public class GameInformer : MonoBehaviour {
 	static public int battlestate;
 	static public int turn = 0;
 	static public int player;
-	static public int Idler = 1;
+	static public int Idler = 0;
 	static public int selected;
-	static public KeyCode Up,Down,Left,Right,A1,A2,A3,A4,GoddessTog,ItemTog,Select,Fight,Special,Deselect;
-	static public bool stop;
+	static public KeyCode Up,Down,Left,Right,GoddessTog,ItemTog,Select,Fight,Special,Deselect;
+	static public KeyCode[] A = new KeyCode[4];
+	static public bool stop, battle;
 
 	public GameObject[] Character;
-	public Vector3 position;
+	public Vector3[] position;
 
 	static public string previous;
 
@@ -35,16 +36,16 @@ public class GameInformer : MonoBehaviour {
 	void Awake()
 	{
 		if (check == null) CreateCharacter();
-		check = Character[Idler-1];
+		check = Character[0];
 		previous = Application.loadedLevelName;
 		Up = KeyCode.W;
 		Down = KeyCode.S;
 		Left = KeyCode.A;
 		Right = KeyCode.D;
-		A1 = KeyCode.W;
-		A2 = KeyCode.S;
-		A3 = KeyCode.D;
-		A4 = KeyCode.A;
+		A[0] = KeyCode.W;
+		A[1] = KeyCode.S;
+		A[2] = KeyCode.D;
+		A[3] = KeyCode.A;
 		Select = KeyCode.Mouse0;
 		GoddessTog = KeyCode.LeftShift;
 		ItemTog = KeyCode.E;
@@ -54,7 +55,8 @@ public class GameInformer : MonoBehaviour {
 
 	void CreateCharacter()
 	{
-		Instantiate (Character[Idler-1], position,Quaternion.identity);
+		for(int i = 0; i < Character.Length;i++)
+		Instantiate (Character[i], position[i],Quaternion.identity);
 	}
 
 
@@ -62,16 +64,28 @@ public class GameInformer : MonoBehaviour {
 	{
 		switch(Idler)
 		{
-		case 1:
+		case 0:
 		target = GameObject.Find("Zen").transform;
 		break;
-		case 2:
+		case 1:
 		target = GameObject.Find("Serenity").transform;
 		break;
-		case 3:
+		case 2:
 			target = GameObject.Find("Sky").transform;
 			break;
+		case 3:
+			target = GameObject.Find("Hena").transform;
+			break;
+		case 4:
+			target = GameObject.Find("Rose").transform;
+			break;
 		}
+	}
+
+	void Update()
+	{
+		if (target != null) 
+			if (Character[Idler] != target.gameObject) Idlercamera();
 	}
 
 	void  LateUpdate (){

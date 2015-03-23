@@ -3,9 +3,9 @@ using System.Collections;
 using Database;
 
 public class E_Ability : MonoBehaviour {
-	
-	public Rect Box,Title,W,A,S,D;
-	public Rect WButton,AButton,SButton,DButton;
+
+	public Rect Box, Title;
+	public Rect[] ability,ability_button;
 	
 	GUIStyle smallFont;
 	GUIStyle center;
@@ -62,17 +62,12 @@ public class E_Ability : MonoBehaviour {
 	void OnGUI () {
 		GUI.Box(Box,"");
 		GUI.Label(Title,"Abilities", smallFont);
-		
-		GUI.Label(W,GameInformer.A1 + ":", center);
-		GUI.Button(WButton,"Attack");
-		
-		GUI.Label(A, GameInformer.A2 + ":", center);
-		if (GUI.Button(AButton, AbilityName(1))) MakeList(1);
-		
-		GUI.Label(S,GameInformer.A3 + ":", center);
-		if (GUI.Button(SButton, AbilityName(2))) MakeList(2);
-		
-		GUI.Label(D,GameInformer.A4 + ":", center);
-		if (GUI.Button(DButton, AbilityName(3))) MakeList(3);
+
+		for (int i = 0; i < ability.Length;i++)
+		{
+			GUI.Label(ability[i],GameInformer.A[i] + ":", center);
+			if (GUI.Button(ability_button[i], AbilityName(i))) 
+				if (AbilityName(i) != "Attack") MakeList(i);
+		}
 	}
 }

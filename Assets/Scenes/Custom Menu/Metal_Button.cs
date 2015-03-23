@@ -1,99 +1,97 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using Database;
 
 public class Metal_Button : MonoBehaviour {
-
-	MetalList list;
+	
+	public List <Item> metals = new List<Item>();
+	public Item[] metal = new Item[3];
+	Selected_Button selected;
 	Custom_Acc ca;
 	Custom_Wep cw;
-	Selected_Button selected;
-	public Rect Box, metal1, metal2, metal3,metallist;
-	public Rect button1, button2, button3;
-	int magicnum;
+	public Rect Box,metallist;
+	public Rect[] metalname;
+	public Rect[] button;
+	public int magicnum;
 
-	public Item[] metal = new Item[3];
-	
-	void Start()
-	{
-		selected = GetComponent<Selected_Button>();
-		list = GetComponent<MetalList>();
-		ca = GetComponent<Custom_Acc>();
-		cw = GetComponent<Custom_Wep>();
-	}
 	string MetalName(int i)
 	{
 		if (metal[i] != null) return metal[i].name;
 		else return "";
 	}
+	
+	void Start()
+	{
+		selected = GetComponent<Selected_Button>();
+		ca = GetComponent<Custom_Acc>();
+		cw = GetComponent<Custom_Wep>();
+	}
+
 	void MakeList(int i, bool weapon)
 	{
-		if (weapon == false && selected.acc.metal[i] == null ||  weapon == true && selected.wep.metal[i] == null) 
-		for (int x = 0; x < list.metals.Count; x++) 
+		//Gets all metals in Item List;
+		metals.Clear();
+		for(int m = 0; m < ItemList.items.Count;m++) 
 		{
-				if (list.metals[x] == metal[i])
+			if (ItemList.items[m].type == 2) metals.Add(ItemList.items[m]);
+		}
+
+		if (weapon == false && selected.acc.metal[i] == null ||  weapon == true && selected.wep.metal[i] == null) 
+			// removes any previously selected metal in the slot;
+		for (int x = 0; x < metals.Count; x++) 
+		{
+			if (metals[x] == metal[i])
 			{
-				list.metals[x].amount++;
+				metals[x].amount++;
 				metal[i] = null;
-				if (weapon) cw.weight -= cw.WeightIncrease(list.metals[x].name);
-				if (!weapon) ca.StatDecrease(list.metals[x]);
+				if (weapon) cw.weight -= cw.WeightIncrease(metals[x].name);
+				if (!weapon) ca.StatDecrease(metals[x]);
 			}
 		}
 		magicnum = i;
-		list.ID = 1;
+		selected.ID = 1;
 	}
-
+	
 	void Equip(int m, int i)
 	{
-		if (list.metals[i].amount >= 1)
+		if (metals[i].amount >= 1)
 		{
-			metal[m] = list.metals[i];
-			list.metals[i].amount--;
-			if (selected.wep != null) cw.weight += cw.WeightIncrease(list.metals[i].name);
-			if (selected.acc != null) ca.StatIncrease(list.metals[i]);
-			list.ID = 0;			
+			metal[m] = metals[i];
+			metals[i].amount--;
+			if (selected.wep != null) cw.weight += cw.WeightIncrease(metals[i].name);
+			if (selected.acc != null) ca.StatIncrease(metals[i]);
+			selected.ID = 0;	
 		}
 	}
-
+	
 	void OnGUI()
 	{
 		GUI.Box(Box, "Metals");
-
-		GUI.Box(metal1, "Metal 1");
-		if(GUI.Button(button1, MetalName(0)))
+		for(int i = 0; i < metalname.Length;i++)
 		{
-			if (list.ID != 1)
+			GUI.Box(metalname[i],"Metal" + (i+1));
+			if (GUI.Button(button[i], MetalName(i)))
 			{
-			if (selected.wep != null) MakeList(0, true);
-			if (selected.acc != null) MakeList(0,false);
+				if (selected.wep != null || selected.acc != null)
+				{
+					if (selected.ID != 1 && selected.wep.metal[i] == null || selected.ID != 1 && selected.acc.metal[i] == null)
+					{
+						if (selected.wep != null) MakeList(i, true);
+						if (selected.acc != null) MakeList(i,false);
+					}
+				}
 			}
 		}
-		GUI.Box(metal2, "Metal 2");
-		if(GUI.Button(button2, MetalName(1)))
+		
+		if(selected.ID == 1)
 		{
-			if (list.ID != 1)
+			for(int i = 0; i < metals.Count; i++)
 			{
-			if (selected.wep != null) MakeList(1, true);			
-			if (selected.acc != null) MakeList(1,false);
+				if (GUI.Button(new Rect (metallist.x, (metallist.height * i) + metallist.y + 30, metallist.width, metallist.height), metals[i].name + " " + metals[i].amount))
+					Equip(magicnum,i);
 			}
-		}
-		GUI.Box(metal3, "Metal 3");
-		if(GUI.Button(button3, MetalName(2)))
-		{
-			if (list.ID != 1)
-			{
-			if (selected.wep != null) MakeList(2, true);		
-			if (selected.acc != null) MakeList(2,false);
-			}
-		}
-		if(list.ID == 1)
-		{
-			for(int i = 0; i < list.metals.Count; i++)
-			{
-				if (GUI.Button(new Rect (metallist.x, (metallist.height * i) + metallist.y + 30, metallist.width, metallist.height), list.metals[i].name + " " + list.metals[i].amount))
-				Equip(magicnum,i);
-			}
-			if (GUI.Button(new Rect (metallist.x, (metallist.height * list.metals.Count) + metallist.y + 30, metallist.width, metallist.height), "None")) list.ID = 0;
+			if (GUI.Button(new Rect (metallist.x, (metallist.height * metals.Count) + metallist.y + 30, metallist.width, metallist.height), "None")) selected.ID = 0;
 		}
 	}
 }

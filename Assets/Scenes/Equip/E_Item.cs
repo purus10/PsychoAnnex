@@ -5,8 +5,9 @@ using Database;
 public class E_Item : MonoBehaviour {
 	
 	public Rect Box,Title,Item1,Item2,Item3,Item4;
+	public Rect[] item, item_button;
 	public Rect Item1Button,Item2Button,Item3Button,Item4Button;
-	GUIStyle smallFont;
+	public GUIStyle smallFont;
 	E_Status selected;
 	E_Equip list;
 	
@@ -14,13 +15,6 @@ public class E_Item : MonoBehaviour {
 	{
 		if (selected != null && selected.stat.items[i] != null && selected.stat.items[i].name != "None") return selected.stat.items[i].name;
 		else return "";
-	}
-	
-	void Start()
-	{
-		smallFont = new GUIStyle();
-		smallFont.fontSize = 20;
-		smallFont.normal.textColor = Color.white;
 	}
 	
 	void FixedUpdate()
@@ -52,28 +46,12 @@ public class E_Item : MonoBehaviour {
 		
 		GUI.Box(Box,"");
 		GUI.Label(Title,"Items", smallFont);
-		
-		GUI.Label(Item1,"Slot 1:", smallFont);
-		if (GUI.Button(Item1Button,ItemCheck(0))) 
-			if(selected.stat.items[0] == null || selected.stat.items[0].name != "Pills") MakeList(0);
-		
-		if (selected.stat.items.Length > 1)
+
+		for (int i =0;i < item.Length;i++)
 		{
-			GUI.Label(Item2,"Slot 2:", smallFont);
-			if (GUI.Button(Item2Button, ItemCheck(1))) MakeList(1);
+			GUI.Label(item[i],"Slot "+ (i+1)+":", smallFont);
+			if (GUI.Button(item_button[i],ItemCheck(i))) 
+				if(ItemCheck(i) != "Pills") MakeList(i);
 		}
-		
-		if (selected.stat.items.Length > 2)
-		{
-			GUI.Label(Item3,"Slot 3:", smallFont);
-			if (GUI.Button(Item3Button, ItemCheck(2))) MakeList(2);
-		}
-		
-		if (selected.stat.items.Length > 3)
-		{
-			GUI.Label(Item4,"Slot 4:", smallFont);
-			if (GUI.Button(Item4Button, ItemCheck(3))) MakeList(3);
-		}
-		
 	}
 }

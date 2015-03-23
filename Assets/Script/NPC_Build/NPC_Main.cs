@@ -6,16 +6,16 @@ using Database;
 public class NPC_Main : MonoBehaviour {
 	
 	public string Name;
-	public int HP, Defense, Hit, Beat, Brawns, Tenacity, Courage, move_points;
+	public int HP, Defense, Hit, Beat, Brawns, Tenacity, Courage, Sky_attacks, move_points, tier = 2;
 	public int[] Tier_Limit = new int[3];
-	[HideInInspector] public int cur_hp, cur_beats, tier = 2, index;
+	[HideInInspector] public int cur_hp, cur_beats, index;
 	[HideInInspector] public int[] stats = new int[3]; // marks cur (0 = brawns, 1 = tenacity, 2 = courage)
-	public float speed;
+	public float speed, tier_count;
 	public Transform target;
-	public bool myturn;
+	public bool myturn, Rose_Innate;
 	public Item[] items = new Item[4];
 	[HideInInspector] public List <Transform> targets = new List<Transform>();
-	[HideInInspector] public float tier_count;
+	//[HideInInspector] public float tier_count;
 	[HideInInspector] public bool seen = true, cover = false;
 	public NavMeshAgent agent;
 	Animator animator;

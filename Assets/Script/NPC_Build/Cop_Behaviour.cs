@@ -11,10 +11,13 @@ public class Cop_Behaviour : MonoBehaviour {
 	void Start()
 	{
 		my = GetComponent<NPC_Main>();
-		my.items[0] = new Item();
-		my.items[0].name = "Tar Water";
-		my.items[0].amount = Random.Range(0,2);
-		my.items[0].type = 1;
+		for (int i = 0; i < my.items.Length;i++)
+		{
+		my.items[i] = new Item();
+		my.items[i].name = "Tar Water";
+		my.items[i].amount = Random.Range(0,2);
+		my.items[i].type = 1;
+		}
 	}
 
 	void OnTriggerEnter()
@@ -22,7 +25,7 @@ public class Cop_Behaviour : MonoBehaviour {
 		if (my.myturn == false && GameInformer.stop == false) my.myturn = true;
 	}
 
-	void Update()
+/*	void Update()
 	{
 		if (my.target != null) 
 			if (chase == true) my.agent.SetDestination(my.target.position);
@@ -60,7 +63,7 @@ public class Cop_Behaviour : MonoBehaviour {
 		int b = my.cur_beats;
 		if (my.cur_beats == b)
 		{
-			print ("ATTACK");
+			print ("ENEMY Attacks");
 			target.cur_hp--;
 			my.cur_beats--;
 			my.myturn = false;
@@ -77,7 +80,7 @@ public class Cop_Behaviour : MonoBehaviour {
 			i.amount--;
 			my.cur_hp += 2;
 		}
-	}
+	}*/
 
 
 }

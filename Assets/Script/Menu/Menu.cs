@@ -13,6 +13,8 @@ public class Menu : MonoBehaviour {
 	void Start()
 	{
 		chara.Add(GameObject.Find("Zen"));
+		chara.Add(GameObject.Find("Serenity"));
+		chara.Add(GameObject.Find("Sky"));
 
 		foreach(GameObject c in chara)
 		{
@@ -44,7 +46,7 @@ public class Menu : MonoBehaviour {
 	
 	void OnGUI () 
 	{
-		if (open == true)
+		if (open == true && GameInformer.stop != true)
 		{
 			GUI.Box(box,"");
 			GUI.Box(collum,"");

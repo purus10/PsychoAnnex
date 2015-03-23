@@ -10,6 +10,20 @@ namespace Database
 		public bool equipped, far_range;
 		public float max_range, min_range;
 		public int type;
+		int dmg;
+
+		float deTier(PC_Main my)
+		{
+			float detier = (dmg % 1.5f);
+			if (my.ID != 6) 
+			{
+				if (detier <= 0) return 0.1f;
+				else return detier;
+			}else{
+				if (detier <= 0) return 0.2f;
+				else return (detier * 2);
+			}
+		}
 
 		bool FarRangeHit(float d, PC_Main my, NPC_Main t)
 		{
@@ -19,17 +33,17 @@ namespace Database
 			if (d >= min_range && d <= max_range) 
 			{
 				if (my.far_beats == false) return my_hit > t_dodge;
-				else { my.cur_beats--;
-				return my_hit > t_dodge;
+				else { 
+					my.cur_beats--;
+					return my_hit > t_dodge;
 				}
 			}else return false;
 		}
 
 		bool CloseRangeHit(PC_Main my, NPC_Main t)
 		{
-			int my_hit = Random.Range (0,100 + my.hit);
+			int my_hit = Random.Range (0,100);
 			int t_dodge = Random.Range (0,100 + t.stats[1]);
-			my.cur_beats--;
 			return my_hit > t_dodge;
 		}
 
@@ -44,6 +58,7 @@ namespace Database
 		{
 			float distance = Vector3.Distance(my.transform.position, t.transform.position);
 			if (distance <= max_range) Execute(my,t,null);
+			my.EndTurn();
 		}
 
 		public void OpposeCast(PC_Main my, NPC_Main t)
@@ -52,12 +67,26 @@ namespace Database
 			{
 				float distance = Vector3.Distance(my.transform.position, t.transform.position);
 				if (FarRangeHit(distance,my,t) == true) Execute(my,null,t);
-				else Debug.Log("MISS :C");
-			}else if (CloseRangeHit(my,t) == true) Execute(my,null,t);
+				if (my.far_beats == false) my.EndTurn();
+
+			}else if (my.cur_beats > 0) 
+			{
+				if (t.Rose_Innate == true && my.ID == 5 && my.cur_beats >=my.Beat) 
+				{
+					Execute(my,null,t);
+					t.Rose_Innate = false;
+				}else{
+					my.cur_beats--;
+					if (CloseRangeHit(my,t) == true) Execute(my,null,t);
+				}
+			}
+			if (my.cur_beats == 0) my.EndTurn();
+
 		}
 
 		public void Execute(PC_Main my, PC_Main a, NPC_Main t)
 		{
+			if (name == "Attack") Attack(my,t);
 			if (name == "Anima") Anima(my,t);
 			if (name == "Barrage") Barrage(my);
 			if (name == "Butterfly") Butterfly();
@@ -74,18 +103,86 @@ namespace Database
 			if (name == "Luck") Luck(my,t);
 			if (name == "Oblivio") Oblivio(my,t);
 			if (name == "Omni") Omni(my,t);
-			if (name == "Panacea") Panacea(my,t);
+			if (name == "Panacea") Panacea(a);
 			if (name == "Provoke") Provoke(my,t);
 			if (name == "Pulse") Pulse(my,t);
 			if (name == "Rapture") Rapture(my,t);
+			if (name == "Shoot") Shoot(my,t);
 			if (name == "Verto") Verto(my,t);
 		}
 
+		public void Attack(PC_Main my, NPC_Main t)
+		{
+			dmg = my.damage + DoorManager.PhysicalDoor;
+			if (dmg > 0) 
+			{
+				t.cur_hp -= (dmg * (int) Random.Range(1,1.125f));
+				t.tier_count -= deTier(my);
+			HUD.info = t.Name + " Remaining HP: "+t.cur_hp;
+			} else HUD.info = "MISS!!!";
+
+			if (my.ID == 1 && CloseRangeHit(my,t) == true) Zen_Attack(my,t);
+			if (my.ID == 3 && my.cur_beats > 0) Sky_Attack(my,t);
+			else t.Sky_attacks = 0;
+			if (my.ID == 4) Hena_Attack(my,t);
+			if (my.ID == 6) Ann_Attack(my,t);
+
+			if (t.cur_beats > 0 && t.cur_hp > 0)
+			{
+				int t_hit = Random.Range (0,100 + t.Hit * (int) Random.Range(1,1.125f));
+				int my_dodge = Random.Range (0,100 + my.stats[0,1] * (int) Random.Range(1,1.125f));
+				if (t_hit > my_dodge) my.cur_hp--;
+			}
+		}
+
+		void Zen_Attack(PC_Main my, NPC_Main t)
+		{
+			if (dmg > 0) t.cur_hp -= (dmg * (int) Random.Range(1,1.125f));
+			deTier(my);
+			HUD.info = "DOUBLE HIT! "+t.Name + " Remaining HP: "+t.cur_hp;
+		}
+
+		void Sky_Attack(PC_Main my, NPC_Main t)
+		{
+			int divide = my.Beat - t.Sky_attacks;
+			if (divide < 0) divide = 1;
+			if (t.Sky_attacks > 0 && dmg > 0) 
+				t.cur_hp -= ((dmg/divide) * (int) Random.Range(1,1.125f));
+			t.Sky_attacks ++;
+			HUD.info = "REPETITIVE STRIKE!!" + t.Name + " Remaining HP: "+t.cur_hp;
+		}
+		
+		void Hena_Attack(PC_Main my, NPC_Main t)
+		{
+			int steal = Random.Range (0,100 + my.stats[0,2]);
+			if (steal > 98) 
+				for (int i = 0; i < t.items.Length;i++)
+					if (Random.Range(1,4) == i && t.items[i] != null)
+				{
+					ItemList.items.Add(t.items[i]);
+					
+					if (t.items[i].type < 2) 
+					{
+						for (int j = 0; j < my.items.Length;j++)
+						{
+							if (my.items[j] == null) my.items[j] = t.items[i];
+							t.items[i] = null;
+						}
+					}else t.items[i] = null;
+				}
+		}
+
+		void Ann_Attack(PC_Main my, NPC_Main t)
+		{
+			int stagger = (my.Brawns + DoorManager.PhysicalDoor * 5);
+			int t_resist = Random.Range (0,100 + t.stats[2]);
+			if (stagger > t_resist) t.cur_beats = 0;
+		}
+		
 		public void Anima(PC_Main my, NPC_Main t)
 		{
 		t.cur_hp -= my.stats[1,0] + (DoorManager.MagicalDoor + DoorManager.PhysicalDoor + 1)*2;
-		Debug.Log ("ANIMA");
-		Debug.Log(t.name+" remaining hp: "+t.cur_hp);
+			HUD.info = "ANIMA casted! "+t.name+" remaining hp: "+t.cur_hp;
 		}
 
 		public void Barrage(PC_Main my)
@@ -231,9 +328,10 @@ namespace Database
 			
 		}
 
-		public void Panacea(PC_Main my, NPC_Main t)
+		public void Panacea(PC_Main t)
 		{
-			
+			if (t.cur_beats <= t.Beat) t.cur_beats++;
+			HUD.info = t.name+" Beats equals "+t.cur_beats+" now!";
 		}
 
 		public void Provoke(PC_Main my, NPC_Main t)
@@ -249,6 +347,11 @@ namespace Database
 		public void Rapture(PC_Main my, NPC_Main t)
 		{
 			
+		}
+
+		public void Shoot(PC_Main my, NPC_Main t)
+		{
+
 		}
 
 		public void Verto(PC_Main my, NPC_Main t)
@@ -1524,10 +1627,34 @@ namespace Database
 	#region Items
 	public class Item
 	{
-		public string name;
+		public string name,a_name;
 		public int type;
+		public int heal;
 		public int amount;
 		public bool equipped;
+
+
+	public void CastItem(int ty, Item i, PC_Main my, PC_Main t)
+	{
+		if ( ty == 0)
+		{
+			if (i.heal + t.cur_hp <= t.HP) t.cur_hp += i.heal;
+			else t.cur_hp = t.HP;
+
+		}else if (ty == 2)
+		{
+			for (int j = 0; j < t.items.Length;j++)
+			{
+				if (t.items[j] == null)
+				{
+					t.items[j] = i;
+					break;
+				}
+			}
+		}
+		for(int k = 0; k < t.items.Length;k++)
+			if (t.items[k] != null) Debug.Log( t.items[k].name);
+	}
 
 		public void SetItem(string name, int type)
 		{

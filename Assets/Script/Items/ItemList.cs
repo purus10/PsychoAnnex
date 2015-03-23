@@ -9,6 +9,8 @@ public class ItemList : MonoBehaviour {
 
 	void Start()
 	{
+		if (items.Count < 2)
+		{
 		Add("Pistol",1,1);
 		Add("Tar Water",0,2);
 		Add("Pistol",1,1);
@@ -36,6 +38,7 @@ public class ItemList : MonoBehaviour {
 		Add("Zinc",2,15);
 		Add("Magnesium",2,15);
 		Add("Gleipmir",2,15);
+		}
 	}
 
 	void Add(string n, int t, int a)
@@ -44,6 +47,7 @@ public class ItemList : MonoBehaviour {
 		i.name = n;
 		i.type = t;
 		i.amount = a;
+
 		items.Add(i);
 
 	}

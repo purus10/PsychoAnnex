@@ -8,6 +8,11 @@ public class Cover : MonoBehaviour {
 	PC_Main PC;
 	public Color target_off;
 	public bool taken = false;
+
+	void Start()
+	{
+		target_off = GetComponentInParent<Renderer>().material.color;
+	}
 	
 	void OnTriggerEnter(Collider col)
 	{

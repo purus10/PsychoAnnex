@@ -5,35 +5,27 @@ using Database;
 
 public class Selected_Button : MonoBehaviour {
 	//1 = name, 2 = brawns/damage, 3 = tenacity/hit, 4 = courage/max
-	public TextMesh[] change = new TextMesh[4];
-	public TextMesh[] display = new TextMesh[21];
-	
-	public MetalList list;
-	static public int type = 2;
-	static public string selected = "Accessory";
-	
+	public TextMesh[] change = new TextMesh[4], display = new TextMesh[21];
+	static public int type;
+	public int ID;
+	static public string selected;
 	public Rect box, button, selectedlist, listbox, Scroller, ScrollView;
-	
 	private float vScroolbarValue;
 	public Vector2 scrollposition = Vector2.zero;
-	
 	public List <weapon> S_wep = new List<weapon>();
 	public List <accessory> S_acc = new List<accessory>();
-	
+	Metal_Button metals;
 	public accessory acc;
 	public weapon wep;
 	
 	void Start () 
 	{
-		list = GetComponent<MetalList>();
+		metals = GetComponent<Metal_Button>();
 		if (selected == "Weapon") 
-		{
-			for (int i = 0; i < (display.Length - 3); i++) display[i].GetComponent<Renderer>().enabled = true;
-		}
+		for (int i = 0; i < (display.Length - 3); i++) display[i].GetComponent<Renderer>().enabled = true;
+
 		if (selected == "Accessory") 
-		{
 			for (int i = 18; i < (display.Length); i++) display[i].GetComponent<Renderer>().enabled = true;
-		}
 		display[0].GetComponent<Renderer>().enabled = true;
 	}
 	
@@ -44,7 +36,7 @@ public class Selected_Button : MonoBehaviour {
 		else return "";
 	}
 	
-	void PlaceText()
+	void Update()
 	{
 		for (int i = 0; i < change.Length; i++)
 		{
@@ -72,28 +64,26 @@ public class Selected_Button : MonoBehaviour {
 		if (type == 1) 
 		{
 			foreach (weapon w in WeaponsList.weapons) 
-			{
-				if (w.equipped == false && w.type != 5) S_wep.Add(w);
-			}
-		}else{ foreach (accessory a in AccList.Accessories) 
-			{
+			if (w.equipped == false && w.type != 5) S_wep.Add(w);
+
+		}else{ 
+			foreach (accessory a in AccList.Accessories) 
 			if (a.equipped == false) S_acc.Add(a);
-			}
 		}
 	}
 	
 	void MakeSelection(int i, int t)
 	{
+		ClearMetals();
 		if (t == 1) 
 		{
-			Metal_Button b = GetComponent<Metal_Button>();
 			Custom_Wep cw = GetComponent<Custom_Wep>();
 			wep = S_wep[i];
 			cw.weight = wep.weight;
 			cw.DisplayWeight();
-			if (b.metal[0] != null) cw.weight += cw.WeightIncrease(b.metal[0].name);
-			if (b.metal[1] != null) cw.weight += cw.WeightIncrease(b.metal[1].name);
-			if (b.metal[2] != null) cw.weight += cw.WeightIncrease(b.metal[2].name);
+			for (int m = 0; m < metals.metal.Length;m++) 
+				if (metals.metal[m] != null && wep.metal[m] == null) cw.weight += cw.WeightIncrease(metals.metal[m].name);
+			else if (wep.metal[m] != null) metals.metal[m] = wep.metal[m];
 		} else wep = null;
 		
 		if (t == 2) acc = S_acc[i];
@@ -101,8 +91,7 @@ public class Selected_Button : MonoBehaviour {
 		
 		S_wep.Clear();
 		S_acc.Clear();
-		PlaceText();
-		list.ID = 0;
+		ID = 0;
 	}
 	
 	
@@ -111,6 +100,14 @@ public class Selected_Button : MonoBehaviour {
 		selectedlist = new Rect(0,(selectedlist.height * i) + 2,120,30f);
 		if (selectedlist.y <= 567f) listbox.height = selectedlist.y;
 		ScrollView.height = selectedlist.y;
+	}
+
+	void ClearMetals()
+	{
+		for(int i = 0; i < metals.metal.Length;i++)
+		{
+			metals.metal[i] = null;
+		}
 	}
 	
 	void OnGUI()
@@ -121,16 +118,17 @@ public class Selected_Button : MonoBehaviour {
 			
 			if(GUI.Button(button, SelectedName()))
 			{
-				if (list.ID != 4)
+				if (ID != 4)
 				{
-					list.ID = 4;
+					ID = 4;
 					MakeList();
 				}
 			}
 			
 			scrollposition = GUI.BeginScrollView(Scroller,scrollposition,ScrollView);
-			if(list.ID == 4 && type == 1)
+			if(ID == 4 && type == 1)
 			{
+
 				/* Creates Button for every wep on list*/
 				for(int i = 0; i < S_wep.Count; i++) 
 				{
@@ -145,7 +143,7 @@ public class Selected_Button : MonoBehaviour {
 				}
 			}
 			
-			if(list.ID == 4 && type == 2)
+			if(ID == 4 && type == 2)
 			{
 				/* Creates Button for every acc on list*/
 				for(int i = 0; i < S_acc.Count; i++) 

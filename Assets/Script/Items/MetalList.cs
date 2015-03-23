@@ -17,10 +17,7 @@ public class MetalList : MonoBehaviour {
 		metal  = GetComponent<Custom_Wep>();
 		for(int x = 0; x < ItemList.items.Count; x++)
 		{
-			if(ItemList.items[x].type == 2)
-			{
-				metals.Add(ItemList.items[x]);
-			}
+
 		}
 		}
 	}

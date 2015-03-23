@@ -110,12 +110,25 @@ public class E_Equip : MonoBehaviour {
 	void ItemEquip(int s,int i)
 	{
 		equip.items[s] = E_items[i];
+		GainAbility(equip.items[s]);
 		E_items.Clear();
 		equip.items[s].equipped = true;
 		items = false;
 		gearID = false;
 	}
-	
+
+	void GainAbility(Item i)
+	{
+		if (i.type == 1)
+		{
+			Ability a = new Ability();
+			a.name = i.name;
+			a.description = "Use Gun";
+			selected.stat.abilities.Add(a);
+		}
+		
+	}
+
 	void BlessEquip(int s,int i)
 	{
 		equip.ability[s] = E_abilities[i];

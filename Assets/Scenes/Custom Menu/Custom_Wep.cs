@@ -65,7 +65,8 @@ public class Custom_Wep : MonoBehaviour {
 	}
 	public void DisplayWeight()
 	{
-		if (selected.wep != null) for (int i = 1; i < number.Length;i++)
+		if (selected.wep != null) 
+			for (int i = 1; i < number.Length;i++)
 		{
 			if (selected.wep != null)
 			{

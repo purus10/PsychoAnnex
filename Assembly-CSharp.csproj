@@ -54,6 +54,7 @@
      <Compile Include="Assets\Scenes\Custom Menu\Custom_Acc.cs" />
      <Compile Include="Assets\Scenes\Custom Menu\Custom_Wep.cs" />
      <Compile Include="Assets\Scenes\Custom Menu\Finish_Button.cs" />
+     <Compile Include="Assets\Scenes\Custom Menu\HUD.cs" />
      <Compile Include="Assets\Scenes\Custom Menu\Metal_Button.cs" />
      <Compile Include="Assets\Scenes\Custom Menu\Selected_Button.cs" />
      <Compile Include="Assets\Scenes\Custom Menu\StatChange.cs" />
@@ -105,6 +106,7 @@
      <Compile Include="Assets\Script\NPC_Build\NPC_Main.cs" />
      <Compile Include="Assets\Script\PC_Build\AimCamera.cs" />
      <Compile Include="Assets\Script\PC_Build\Cursor.cs" />
+     <Compile Include="Assets\Script\PC_Build\PC_Animator.cs" />
      <Compile Include="Assets\Script\PC_Build\PC_Main.cs" />
      <Compile Include="Assets\Script\PC_Build\PC_Movement.cs" />
      <Compile Include="Assets\Script\PC_Build\controlscrap.cs" />

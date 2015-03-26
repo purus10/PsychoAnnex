@@ -40,7 +40,6 @@ public class E_Equip : MonoBehaviour {
 	#region Stat bonus Checkers
 	void WepCompare(int d, int h, int i)
 	{
-		
 		if (E_weapons.Count > 0)
 		{
 			info.info = "Damage: " + E_weapons[i].damage+"  Hit: " + E_weapons[i].hit;
@@ -110,23 +109,10 @@ public class E_Equip : MonoBehaviour {
 	void ItemEquip(int s,int i)
 	{
 		equip.items[s] = E_items[i];
-		GainAbility(equip.items[s]);
 		E_items.Clear();
 		equip.items[s].equipped = true;
 		items = false;
 		gearID = false;
-	}
-
-	void GainAbility(Item i)
-	{
-		if (i.type == 1)
-		{
-			Ability a = new Ability();
-			a.name = i.name;
-			a.description = "Use Gun";
-			selected.stat.abilities.Add(a);
-		}
-		
 	}
 
 	void BlessEquip(int s,int i)
@@ -157,8 +143,8 @@ public class E_Equip : MonoBehaviour {
 		Button.y = 40.3f * i;
 	}
 	
-	void OnGUI () {	
-
+	void OnGUI () 
+	{	
 		scrollposition = GUI.BeginScrollView(Scroller,scrollposition,ScrollView);
 		GUI.Box(Box,"");
 		
@@ -166,7 +152,7 @@ public class E_Equip : MonoBehaviour {
 		{
 			GuiSetup(i);
 			if (GUI.Button(Button, E_weapons[i].name + maxdisplay(i))) WepEquip(magicnum,i);
-
+			
 			if (Button.Contains(Event.current.mousePosition)) 
 				WepCompare(equip.wep[magicnum].damage,equip.wep[magicnum].hit,i);
 		}
@@ -175,9 +161,9 @@ public class E_Equip : MonoBehaviour {
 		{
 			GuiSetup(i);
 			if (GUI.Button(Button, E_acc[i].name)) AccEquip(magicnum,i);
-
+			
 			if (Button.Contains(Event.current.mousePosition)) 
-					AccCompare(equip.acc[magicnum].Brawns,equip.acc[magicnum].Tenacity,equip.acc[magicnum].Courage,i);
+				AccCompare(equip.acc[magicnum].Brawns,equip.acc[magicnum].Tenacity,equip.acc[magicnum].Courage,i);
 		}
 		
 		if (blessings) for (int i = 0; i < E_abilities.Count; i++)
@@ -197,7 +183,6 @@ public class E_Equip : MonoBehaviour {
 			GuiSetup(i);
 			if (GUI.Button(Button, E_items[i].name)) ItemEquip(magicnum,i);
 		}
-		
 		GUI.EndScrollView();
 	}
 }

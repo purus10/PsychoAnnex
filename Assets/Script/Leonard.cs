@@ -15,10 +15,11 @@ public class Leonard : MonoBehaviour {
 		Selected_Button.selected = i;
 		Selected_Button.type = t;
 		Menu m = menu.GetComponent<Menu>();
-		foreach(GameObject c in m.chara)
+
+		foreach(PC_Main c in m.chara)
 		{
-			c.GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
-			c.GetComponent<CharacterController>().enabled = false;
+			c.gameObject.GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
+			c.gameObject.GetComponent<CharacterController>().enabled = false;
 			GameInformer.stop = true;
 		}
 		choice = 3;
@@ -67,6 +68,7 @@ public class Leonard : MonoBehaviour {
 		
 		if (choice == 2)
 		{
+			UnityEngine.Cursor.visible = true;
 			GUI.Box(selection_box,"What will it be?");
 			
 			if (GUI.Button(acc_button,"an Accessory")) LoadLevel("Accessory",2);
@@ -77,6 +79,7 @@ public class Leonard : MonoBehaviour {
 			{
 				PlaySound(bye,1);
 				choice = 0;
+				UnityEngine.Cursor.visible = false;
 			}
 		}
 		

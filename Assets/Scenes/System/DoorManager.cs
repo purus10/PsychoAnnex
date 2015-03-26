@@ -10,6 +10,7 @@ public class DoorManager : MonoBehaviour {
 	static public int FireDoor;
 	static public int NatureDoor;
 	static public int ThunderDoor;
+	static public int WindDoor;
 	static public int WaterDoor;
 	static public int WickedDoor;
 	

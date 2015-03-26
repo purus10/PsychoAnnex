@@ -68,14 +68,15 @@ public class HUD : MonoBehaviour {
 		{
 			for (int i=0;i<high_ability.Length;i++)
 			{
-				if (Input.GetKeyDown(GameInformer.A[i])) 
+				if (!Input.GetKeyDown(KeyCode.Q) && !Input.GetKey(GameInformer.ItemTog) && Input.GetKeyDown(GameInformer.A[i])) 
 				{
 					high_ability[i].normal.textColor = Color.yellow;
 					for (int j=0;j<high_ability.Length;j++) if (j != i) high_ability[j].normal.textColor = Color.white;
 					for (int j=0;j<high_item.Length;j++) if (j != i) high_item[j].normal.textColor = Color.white;
 				}
 				
-				if (Input.GetKeyDown(GameInformer.A[i]) && Input.GetKey(GameInformer.ItemTog)) 
+				if (Input.GetKeyDown(GameInformer.A[i]) && Input.GetKey(GameInformer.ItemTog) || 
+				    Input.GetKeyDown(KeyCode.Q) && Input.GetKey(GameInformer.A[i])) 
 				{
 					high_item[i].normal.textColor = Color.yellow;
 					for (int j=0;j<high_item.Length;j++) if (j != i) high_item[j].normal.textColor = Color.white;

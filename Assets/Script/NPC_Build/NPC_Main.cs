@@ -10,9 +10,9 @@ public class NPC_Main : MonoBehaviour {
 	public int[] Tier_Limit = new int[3];
 	[HideInInspector] public int cur_hp, cur_beats, index;
 	[HideInInspector] public int[] stats = new int[3]; // marks cur (0 = brawns, 1 = tenacity, 2 = courage)
-	public float speed, tier_count;
+	public float kadabra_timer, speed, tier_count;
 	public Transform target;
-	public bool myturn, Rose_Innate;
+	public bool myturn, Rose_Innate, kadabra;
 	public Item[] items = new Item[4];
 	[HideInInspector] public List <Transform> targets = new List<Transform>();
 	//[HideInInspector] public float tier_count;
@@ -27,6 +27,16 @@ public class NPC_Main : MonoBehaviour {
 		SetStats();
 		target_off = GetComponentInChildren<Renderer>().material.color;
 		agent = GetComponent<NavMeshAgent>();
+	}
+
+	void Update()
+	{
+		if (kadabra == true)
+		{
+			float time = 0;
+			time++;
+			if (time == kadabra_timer) kadabra = false;
+		}
 	}
 	
 	void FixedUpdate () 

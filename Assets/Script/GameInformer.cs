@@ -35,6 +35,7 @@ public class GameInformer : MonoBehaviour {
 
 	void Awake()
 	{
+		UnityEngine.Cursor.visible = false;
 		if (check == null) CreateCharacter();
 		check = Character[0];
 		previous = Application.loadedLevelName;
@@ -43,9 +44,9 @@ public class GameInformer : MonoBehaviour {
 		Left = KeyCode.A;
 		Right = KeyCode.D;
 		A[0] = KeyCode.W;
-		A[1] = KeyCode.S;
-		A[2] = KeyCode.D;
-		A[3] = KeyCode.A;
+		A[1] = KeyCode.A;
+		A[2] = KeyCode.S;
+		A[3] = KeyCode.D;
 		Select = KeyCode.Mouse0;
 		GoddessTog = KeyCode.LeftShift;
 		ItemTog = KeyCode.E;

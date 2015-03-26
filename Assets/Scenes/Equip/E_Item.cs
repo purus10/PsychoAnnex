@@ -37,9 +37,10 @@ public class E_Item : MonoBehaviour {
 				if (selected.stat.items[i] != null) selected.stat.items[i].equipped = false;
 				if (I.type != 2 && I.equipped == false)  list.E_items.Add(I);
 			}
+			list.items = true;
+			list.gearID = true;
 		}
-		list.items = true;
-		list.gearID = true;
+
 	}
 
 	void OnGUI () {

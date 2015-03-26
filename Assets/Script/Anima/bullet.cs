@@ -1,15 +1,30 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class bullet : MonoBehaviour {
+public class Bullet : MonoBehaviour {
 
-	public void FaceTarget(Vector3 target)
+	public float speed;
+	public float timer;
+	public int damage;
+	
+	void Update()
 	{
-		transform.LookAt(target);
+		timer++;
+		transform.Translate(Vector3.forward * speed * Time.deltaTime);
+
+		if (timer == 60) Destroy(gameObject);
 	}
-	public void Shoot()
+
+	void OnCollisionEnter(Collision col)
 	{
-		GetComponent<Rigidbody>().AddRelativeForce(new Vector3(0,0,5000));
+		NPC_Main t = col.gameObject.GetComponentInParent<NPC_Main>();
+
+		if (t != null) 
+		{
+			t.cur_hp -= damage;
+			HUD.info = t.name+" Shot! "+t.Name + " Remaining HP: "+t.cur_hp;
+		}
+		Destroy(gameObject);
 	}
 
 

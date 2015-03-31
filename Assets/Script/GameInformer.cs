@@ -11,7 +11,7 @@ public class GameInformer : MonoBehaviour {
 	static public int selected;
 	static public KeyCode Up,Down,Left,Right,GoddessTog,ItemTog,Select,Fight,Special,Deselect;
 	static public KeyCode[] A = new KeyCode[4];
-	static public bool stop, battle;
+	static public bool stop, battle, ambushed;
 
 	public GameObject[] Character;
 	public Vector3[] position;
@@ -79,6 +79,12 @@ public class GameInformer : MonoBehaviour {
 			break;
 		case 4:
 			target = GameObject.Find("Rose").transform;
+			break;
+		case 5:
+			target = GameObject.Find("Annihilator").transform;
+			break;
+		case 6:
+			target = GameObject.Find("Xeres").transform;
 			break;
 		}
 	}

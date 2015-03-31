@@ -22,6 +22,22 @@ public class NPC_Main : MonoBehaviour {
 
 	public Color target_off;
 
+	void OnTriggerEnter(Collider col)
+	{
+		PC_Main p = col.GetComponent<PC_Main>();
+		if (myturn == false && GameInformer.stop == false) 
+		{
+			myturn = true;
+			p.NPC = this;
+			p.type = 1;
+			p.target = transform;
+			p.transform.LookAt(target);
+
+			PC_Main[] search = GameObject.FindObjectsOfType(typeof(PC_Main)) as PC_Main[];
+			foreach(PC_Main m in search) m.BattleSetup();
+		}
+	}
+
 	void Awake ()
 	{
 		SetStats();
@@ -31,6 +47,7 @@ public class NPC_Main : MonoBehaviour {
 
 	void Update()
 	{
+		if (cur_hp <= 0) Destroy(gameObject);
 		if (kadabra == true)
 		{
 			float time = 0;

@@ -135,12 +135,13 @@ public class E_Equip : MonoBehaviour {
 		gearID = false;
 	}
 	#endregion
+
+
 	void GuiSetup(int i)
 	{
-		scrollposition.x = 0f;
-		scrollposition.y = 0f;
 		Button = new Rect(2.6f,(Button.height * i) + 2,425.3f,40f);
 		Button.y = 40.3f * i;
+		ScrollView.height = Button.y;
 	}
 	
 	void OnGUI () 

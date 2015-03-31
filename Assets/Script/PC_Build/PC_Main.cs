@@ -21,7 +21,7 @@ public class PC_Main : MonoBehaviour {
 	public accessory[] acc = new accessory[2];
 	public Ability[] ability = new Ability[6];
 	public Item[] items = new Item[4];
-	[HideInInspector] public bool tier_4, second_acc, soul_mixture, cover;
+	[HideInInspector] public bool tier_4, second_acc, soul_mixture, reflect, cover ,omni, battle;
 	public NavMeshAgent agent;
 	public NPC_Main NPC;
 	public PC_Main PC;
@@ -34,37 +34,48 @@ public class PC_Main : MonoBehaviour {
 		FirstWeapon();
 		target_off = GetComponentInChildren<Renderer>().material.color;
 	}
-	
 	void Update()
 	{
-		if (ability[0] == null)
+		SetAttack();
+		NPCMotions();
+		if (Input.GetKeyDown(GameInformer.Fight) && battle == false) BattleSetup();
+		TargetSetup();
+		CharacterMotion();
+		if (Input.GetKeyDown(KeyCode.Space)) EndTurn();
+	}
+	void CharacterMotion()
+	{
+		if (GameInformer.stop == false)
 		{
-			foreach (Ability a in abilities) if (a.name == "Attack") 
+			if (GameInformer.target == transform)
 			{
-				a.equipped = true;
-				ability[0] = a;
+				agent.Stop();
+				if (Input.GetKey(GameInformer.Up)) transform.Translate(Vector3.forward * speed * Time.deltaTime);
+				if (Input.GetKey(GameInformer.Left)) transform.Rotate(Vector3.down * speed * 34 * Time.deltaTime);
+				if (Input.GetKey(GameInformer.Right)) transform.Rotate(Vector3.up * speed * 34 * Time.deltaTime);
+				if (Input.GetKey(GameInformer.Down)) transform.Translate(-Vector3.forward * speed * Time.deltaTime);
+				if (Input.GetKey(KeyCode.LeftShift)) speed = 7;
+				else speed = 3;
+			}
+		}else if(myturn == true)
+		{
+			for(int i = 0; i < GameInformer.A.Length;i++)
+			{
+				if (Input.GetKey(GameInformer.ItemTog) && Input.GetKeyDown(GameInformer.A[i])) 
+					if (items[i] != null) CastItem(i,items[i]);		
+				if (!Input.GetKey(KeyCode.Q) && !Input.GetKey(GameInformer.ItemTog) && Input.GetKeyDown(GameInformer.A[i])) 
+					if (ability[i] != null) 
+						if (AimCamera.enabled == false || ability[i].name == "Pistol") CastAbility(ability[i]);
+				if (Input.GetKey(KeyCode.Q) && Input.GetKeyDown(GameInformer.A[i]))
+					if (items[i] != null)
+						if (items[i].type == 1) items[i].Aim(this);
 			}
 		}
+	}
 
-		if (far_beats == true) transform.LookAt(target);
-		if (GameInformer.target != null && GameInformer.stop == false && GameInformer.target != transform) 
-		{
-			agent.stoppingDistance = 1.5f;
-			agent.SetDestination(GameInformer.target.position);
-		}
-		if (GameInformer.target == transform && GameInformer.battle == true) myturn = true;
-
-		if (Input.GetKeyDown(GameInformer.Fight))
-		{
-			if (GameInformer.target == transform && GameInformer.stop == false) 
-			{
-				myturn = true;
-				GameInformer.stop = true;
-				GameInformer.battle = true;
-			}
-		}
-		
-		if (Input.GetKeyDown(KeyCode.Tab) && type != 3)
+	void TargetSetup()
+	{
+		if (Input.GetKeyDown(KeyCode.Tab) && type != 3) 
 		{
 			if (myturn == true && AimCamera.enabled == false)
 			{
@@ -72,75 +83,130 @@ public class PC_Main : MonoBehaviour {
 				Target();
 			}
 		}
-		
-		if (GameInformer.stop == false)
-		{
-			if (GameInformer.target == transform)
-			{
-			if (Input.GetKey(GameInformer.Up)) transform.Translate(Vector3.forward * speed * Time.deltaTime);
-			if (Input.GetKey(GameInformer.Left)) transform.Rotate(Vector3.down * speed * 34 * Time.deltaTime);
-			if (Input.GetKey(GameInformer.Right)) transform.Rotate(Vector3.up * speed * 34 * Time.deltaTime);
-			if (Input.GetKey(GameInformer.Down)) transform.Translate(-Vector3.forward * speed * Time.deltaTime);
-			if (Input.GetKey(KeyCode.LeftShift)) speed = 7;
-			else speed = 3;
-			}
-			
-		}else if(myturn == true)
-		{
-			for(int i = 0; i < GameInformer.A.Length;i++)
-			{
-				if (Input.GetKey(GameInformer.ItemTog) && Input.GetKeyDown(GameInformer.A[i])) 
-					if (items[i] != null) CastItem(i,items[i]);
+	}
 
-				if (!Input.GetKey(KeyCode.Q) && !Input.GetKey(GameInformer.ItemTog) && Input.GetKeyDown(GameInformer.A[i])) 
-					if (ability[i] != null) 
-						if (AimCamera.enabled == false || ability[i].name == "Pistol") CastAbility(ability[i]);
-				if (Input.GetKey(KeyCode.Q) && Input.GetKeyDown(GameInformer.A[i]))
-					if (items[i] != null)
-						if (items[i].type == 1) items[i].Aim(this);
+	public void BattleSetup()
+	{
+		agent.Resume();
+		if (target == null) RunForCover();
+		if (GameInformer.target == transform && GameInformer.stop == false) 
+		{
+			myturn = true;
+			GameInformer.stop = true;
+			GameInformer.battle = true;
+		}
+	}
 
+	void SetAttack()
+	{
+		foreach (Ability a in abilities) if (a.name == "Attack") 
+		{
+			a.equipped = true;
+			ability[0] = a;
+		}
+	}
+
+	void NPCMotions()
+	{
+		if (far_beats == true) transform.LookAt(target);
+		if (GameInformer.target != null && GameInformer.stop == false && GameInformer.target != transform) 
+		{
+			agent.Resume();
+			agent.stoppingDistance = 1.5f;
+			agent.SetDestination(GameInformer.target.position);
+		}
+		if (GameInformer.target == transform && GameInformer.battle == true) myturn = true;
+	}
+
+	void RunForCover()
+	{
+		if (ID != 4 && ID != 6)
+		{
+			Target();
+			Cover c = target.GetComponent<Cover>();
+			if (c.selected == false) 
+			{
+				c.selected = true;
+				c.taken = true;
 			}
-			if (Input.GetKeyDown(KeyCode.Space)) EndTurn();
+			if (c.selected == true) {
+				agent.stoppingDistance = 0.2f;
+				agent.SetDestination(target.position);
+			}
+			targets.Clear();
+			target = null;
+		}else {
+			targets.Clear();
+			type = 1;
+			Target();
+			if (target != null) target.GetComponentInChildren<Renderer>().material.color = target.GetComponent<NPC_Main>().target_off;
+		}
+		battle = true;
+	}
+	void CastAbility(Ability a)
+	{
+		agent.stoppingDistance = 1.5f;
+		foreach (Transform n in targets)
+		{
+			if (n.GetComponent<Cover>() != null) n.GetComponentInParent<Renderer>().material.color = n.GetComponent<Cover>().target_off;
+			if (n.GetComponent<PC_Main>() != null) n.GetComponentInChildren<Renderer>().material.color = n.GetComponent<PC_Main>().target_off;
+			if (n.GetComponent<NPC_Main>() != null) n.GetComponentInChildren<Renderer>().material.color = n.GetComponent<NPC_Main>().target_off;
+		}
+		if (far_beats == false && type != a.type) 
+		{
+			targets.Clear();
+			target = null;
+			type = a.type;
+			if (type != 3) Target();
+			else {
+				if (target != null) NPC = target.GetComponent<NPC_Main>();
+				a.Execute(this,null,NPC);
+			}
+		} else {
+			if (type == 1) 
+			{
+				float distance = Vector3.Distance(transform.position, target.position);
+				if (a.far_range == false && distance > 2f) 
+				{
+					agent.SetDestination(target.position);
+					NPC = target.GetComponent<NPC_Main>();
+					StartCoroutine(CloseGap(a));
+				} else if (distance <= 2f) a.OpposeCast(this,NPC);
+			}
+			if (type == 2) 
+			{
+				PC = target.GetComponent<PC_Main>();
+				a.AllyCast(this,PC);
+			}
+			if (type == 3) 
+			{
+				if (target != null) NPC = target.GetComponent<NPC_Main>();
+				a.OpposeCast(this,NPC);
+			}
+		}
+	}
+
+	IEnumerator CloseGap(Ability a)
+	{
+		while (Vector3.Distance(transform.position, target.position) > agent.stoppingDistance - 0.5f)
+		{
+			if (Vector3.Distance(transform.position, target.position) <= agent.stoppingDistance + 0.5f)
+			{
+			a.OpposeCast(this,NPC);
+			break;
+			}
+			yield return null;
 		}
 	}
 	
-	void CastAbility(Ability a)
-	{
-			if (far_beats == false && type != a.type) 
-			{
-				type = a.type;
-				if (type != 3) Target();
-				else {
-					if (target != null) NPC = target.GetComponent<NPC_Main>();
-					a.Execute(this,null,NPC);
-				}
-			} else {
-				if (type == 1) 
-				{
-					float distance = Vector3.Distance(transform.position, target.position);
-					if (a.far_range == false && distance > 2f) agent.SetDestination(target.position);
-					else {
-						NPC = target.GetComponent<NPC_Main>();
-						a.OpposeCast(this,NPC);
-					}
-				}
-				if (type == 2) 
-				{
-					PC = target.GetComponent<PC_Main>();
-					a.AllyCast(this,PC);
-				}
-				if (type == 3) 
-				{
-					if (target != null) NPC = target.GetComponent<NPC_Main>();
-					a.OpposeCast(this,NPC);
-				}
-			}
-	}
-
 	void CastItem(int j, Item i)
 	{
-		if (type != 2) type = 2;
-		else {
+		if (type != 2) 
+		{
+			type = 2;
+			targets.Clear();
+			Target();
+		} else {
 			PC = target.GetComponent<PC_Main>();
 			i.CastItem(j,i,this,PC);
 		}	
@@ -159,7 +225,14 @@ public class PC_Main : MonoBehaviour {
 		myturn = false;
 		far_beats = false;
 		if (cur_beats < Beat) cur_beats = Beat;
-		GameInformer.Idler = (GameInformer.Idler +1) % 5;
+		GameInformer.Idler = (GameInformer.Idler +1) % 8;
+		if (omni == true) ability[0].Omni(this,null,false);
+		foreach (Transform n in targets)
+		{
+			if (n.GetComponent<Cover>() != null) n.GetComponentInParent<Renderer>().material.color = n.GetComponent<Cover>().target_off;
+			if (n.GetComponent<PC_Main>() != null) n.GetComponentInChildren<Renderer>().material.color = n.GetComponent<PC_Main>().target_off;
+			if (n.GetComponent<NPC_Main>() != null) n.GetComponentInChildren<Renderer>().material.color = n.GetComponent<NPC_Main>().target_off;
+		}
 	}
 	
 	void SetStats()
@@ -191,7 +264,6 @@ public class PC_Main : MonoBehaviour {
 	public void Equip()
 	{
 		int d = Brawns, h = Tenacity,b = Brawns, t = Tenacity, c = Courage;
-
 		for (int i = 0; i < wep.Length;i++)
 		{
 			if (wep[i] != null)
@@ -211,14 +283,14 @@ public class PC_Main : MonoBehaviour {
 				c += acc[i].Courage;
 			}
 		}
-
+		
 		damage = d;
 		hit = h;
 		for(int i = 0; i < stats.GetLength(0);i++)
 		{
-		stats[i,0] = b;
-		stats[i,1] = t;
-		stats[i,2] = c;
+			stats[i,0] = b;
+			stats[i,1] = t;
+			stats[i,2] = c;
 		}
 	}
 	
@@ -238,13 +310,13 @@ public class PC_Main : MonoBehaviour {
 			}
 		}
 	}
-	
+
 	void Target()
 	{
 		if (type == 0)
 		{
 			Cover[] search = GameObject.FindObjectsOfType(typeof(Cover)) as Cover[];
-			foreach (Cover n in search) if (Physics.Raycast(n.transform.position, transform.forward, 180.0f)) targets.Add(n.transform);	
+			foreach (Cover n in search) if (Physics.Raycast(n.transform.position, transform.forward, 180.0f) && n.taken == false) targets.Add(n.transform);	
 		} else if (type == 1) 
 		{
 			NPC_Main[] search = GameObject.FindObjectsOfType(typeof(NPC_Main)) as NPC_Main[];
@@ -260,22 +332,24 @@ public class PC_Main : MonoBehaviour {
 			targets.Sort(delegate(Transform t1, Transform t2) { 
 				return (Vector3.Distance(t1.position, transform.position)).CompareTo(Vector3.Distance(t2.position,transform.position));});
 			if (type != 2 )target = targets[0];
-			else target = targets[1];
+			else {
+				target = transform;
+				GetComponentInChildren<Renderer>().material.color = Color.blue;
+			}
 			transform.LookAt(target);
-		} 
+		}
 		else if (targets.Count > 1) 
 		{
 			index = (index+1) % targets.Count;
 			target = targets[index];
-			transform.LookAt(target);
+			if (type != 0)  transform.LookAt(target);
 		}
 		foreach (Transform n in targets) if (n == target)
-		{
-			if (type != 0 && n.GetComponent<Cover>() == null) n.GetComponentInChildren<Renderer>().material.color = Color.blue;
-			else n.GetComponentInParent<Renderer>().material.color = Color.blue;
-		}
+			//if (n.GetComponent<Cover>() == null) n.GetComponentInChildren<Renderer>().material.color = Color.blue;
+			//else n.GetComponentInParent<Renderer>().material.color = Color.blue;
+			print ("yeh");
 		else {
-			if (type != 0 && n.GetComponent<Cover>() != null) n.GetComponentInParent<Renderer>().material.color = n.GetComponent<Cover>().target_off;
+			if (n.GetComponent<Cover>() != null) n.GetComponentInParent<Renderer>().material.color = n.GetComponent<Cover>().target_off;
 			if (n.GetComponent<PC_Main>() != null) n.GetComponentInChildren<Renderer>().material.color = n.GetComponent<PC_Main>().target_off;
 			if (n.GetComponent<NPC_Main>() != null) n.GetComponentInChildren<Renderer>().material.color = n.GetComponent<NPC_Main>().target_off;
 		}

@@ -5,17 +5,14 @@ using System.Collections.Generic;
 public class Menu : MonoBehaviour {
 	
 	public Rect box, collum, character, item_button, anima_button, equip_button, goddess_gift, options, money, time, essence, info, stat;
-	public List <PC_Main> chara = new List<PC_Main>();
-	
+	public List <PC_Main> chara = new List<PC_Main>();	
 	public bool open;
 	public string desc;
 
 	void Start()
 	{
 		PC_Main[] search = GameObject.FindObjectsOfType(typeof(PC_Main)) as PC_Main[];
-
 		for (int i = 0;i < search.Length;i++) chara.Add(search[i]);
-
 		foreach(PC_Main c in chara)
 		{
 			c.gameObject.GetComponentInChildren<SkinnedMeshRenderer>().enabled = true;
@@ -28,11 +25,9 @@ public class Menu : MonoBehaviour {
 	{
 		if (Input.GetKeyDown(GameInformer.Deselect))
 		{
-			if(open) 
-			{
-				open = false;
-				UnityEngine.Cursor.visible = false;
-			} else open = true;
+			UnityEngine.Cursor.visible = false;
+			if(open) open = false;
+			else open = true;
 		}
 	}
 
@@ -58,16 +53,11 @@ public class Menu : MonoBehaviour {
 			GUI.Box (stat,"");
 			GUI.Label(money, GameInformer.money+" ¢");
 			GUI.Label(time, Time.time.ToString());
-			GUI.Label(essence, "C: "+GameInformer.Cruelty + " E: "+GameInformer.Empathy + " T: "+GameInformer.Tranquality+ " L: "+GameInformer.Luck); 
-			
+			GUI.Label(essence, "C: "+GameInformer.Cruelty + " E: "+GameInformer.Empathy + " T: "+GameInformer.Tranquality+ " L: "+GameInformer.Luck); 	
 			if (GUI.Button(item_button, "Items")) print ("item");
-			
 			if (GUI.Button(anima_button, "Anima")) LoadLevel("Anima System");
-			
 			if (GUI.Button(equip_button, "Equip")) LoadLevel("Equip");
-			
-			if (GUI.Button(goddess_gift, "Goddess Gifts")) print ("Goddess Gift");
-			
+			if (GUI.Button(goddess_gift, "Goddess Gifts")) print ("Goddess Gift");	
 			if (GUI.Button(options, "Options")) print ("Options");
 		}
 	}

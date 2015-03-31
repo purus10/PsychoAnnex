@@ -6,12 +6,11 @@ public class Shoot : MonoBehaviour {
 	public GameObject nozzle, bullet, Character;
 	public Texture Crosshair;
 	PC_Main my;
-	Bullet bul;
+	public Bullet bul;
 
 
 	void Start()
 	{
-		my = Character.GetComponent<PC_Main>();
 		bul = bullet.GetComponent<Bullet>();
 	}
 
@@ -21,6 +20,7 @@ public class Shoot : MonoBehaviour {
 		{
 		if(Input.GetMouseButtonDown(0)) 
 			{
+				my = Character.GetComponent<PC_Main>();
 				Instantiate(bullet,nozzle.transform.position,nozzle.transform.rotation);
 				bul.damage = my.hit + DoorManager.WindDoor;
 				GameInformer.target = null;

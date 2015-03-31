@@ -20,12 +20,7 @@ public class Cop_Behaviour : MonoBehaviour {
 		}
 	}
 
-	void OnTriggerEnter()
-	{
-		if (my.myturn == false && GameInformer.stop == false) my.myturn = true;
-	}
-
-/*	void Update()
+	void Update()
 	{
 		if (my.target != null) 
 			if (chase == true) my.agent.SetDestination(my.target.position);
@@ -33,7 +28,7 @@ public class Cop_Behaviour : MonoBehaviour {
 
 	void FixedUpdate()
 	{
-		if (my.cur_hp <= 0) Destroy(gameObject);
+
 		if (my.move_points > 0 && my.myturn == true)
 		{
 			if (my.cur_hp <= my.HP/2) UseItem(my.items[0]);
@@ -80,7 +75,7 @@ public class Cop_Behaviour : MonoBehaviour {
 			i.amount--;
 			my.cur_hp += 2;
 		}
-	}*/
+	}
 
 
 }

@@ -10,7 +10,7 @@ namespace Database
 		public string name, description;
 		public bool equipped, far_range;
 		public float max_range, min_range;
-		public int type;
+		public int type,ID;
 		int dmg;
 
 		float deTier(PC_Main my)
@@ -65,7 +65,7 @@ namespace Database
 				else my.cur_beats--;
 			}else if (my.cur_beats > 0 && my.far_beats == false) 
 			{
-				if (t.Rose_Innate == true && my.ID == 5 && my.cur_beats >=my.Beat) 
+				if (t.Rose_Innate == true && my.ID == 5 && my.cur_beats >= my.Beat) 
 				{
 					Execute(my,null,t);
 					t.Rose_Innate = false;
@@ -96,12 +96,31 @@ namespace Database
 			if (name == "Libro") Libro(my,t);
 			if (name == "Luck") Luck(my,t);
 			if (name == "Oblivio") Oblivio(my,t);
-			if (name == "Omni") Omni(my,a);
+			if (name == "Omni") Omni(my,a,true);
 			if (name == "Panacea") Panacea(a);
 			if (name == "Provoke") Provoke(my,t);
 			if (name == "Pulse") Pulse(my,t);
 			if (name == "Rapture") Rapture(my,t);
-			if (name == "Verto") Verto(my,t);
+			if (name == "Day") Day(a);
+			if (name == "Divine") Divine(my,t);
+			if (name == "Earth") Earth(my,t);
+			if (name == "Fire") Fire(my,t);
+			if (name == "Nature") Nature(my,t);
+			if (name == "Night") Night(my,a);
+			if (name == "Thunder") Thunder(my,t);
+			if (name == "Water") Water(my,t);
+			if (name == "Wicked") Wicked(my,t);
+			if (name == "Wind") Wind(my,t);
+			if (name == "Aqua") Aqua(my,t);
+			if (name == "Attonitus") Attonitus(my,t);
+			if (name == "Divinus") Divinus(my,t);
+			if (name == "Ignis") Ignis(my,t);
+			if (name == "Lex") Lex(my,t);
+			if (name == "Maleficus") Maleficus(my,t);
+			if (name == "Natura") Natura(my,t);
+			if (name == "Nocturne") Nocturne(my,t);
+			if (name == "Terra") Terra(my,t);
+			if (name == "Ventus") Ventus(my,t);
 		}
 
 		public void Attack(PC_Main my, NPC_Main t, int karma)
@@ -320,17 +339,41 @@ namespace Database
 
 		public void Oblivio(PC_Main my, NPC_Main t)
 		{
-			
+
 		}
 
-		public void Omni(PC_Main my, PC_Main t)
+		public void Omni(PC_Main my, PC_Main t, bool apply)
 		{
-			if (t.tier < 3) t.tier++;
+			my.omni = true;
+			if (apply)
+			{
+				DoorManager.PhysicalDoor *= 2;
+				DoorManager.MagicalDoor *= 2;
+				DoorManager.DivineDoor *= 2;
+				DoorManager.EarthDoor *= 2;
+				DoorManager.FireDoor *= 2;
+				DoorManager.NatureDoor *= 2;
+				DoorManager.ThunderDoor *= 2;
+				DoorManager.WindDoor *= 2;
+				DoorManager.WaterDoor *= 2;
+				DoorManager.WickedDoor *= 2;
+			} else {
+				DoorManager.PhysicalDoor /= 2;
+				DoorManager.MagicalDoor /= 2;
+				DoorManager.DivineDoor /= 2;
+				DoorManager.EarthDoor /= 2;
+				DoorManager.FireDoor /= 2;
+				DoorManager.NatureDoor /= 2;
+				DoorManager.ThunderDoor /= 2;
+				DoorManager.WindDoor /= 2;
+				DoorManager.WaterDoor /= 2;
+				DoorManager.WickedDoor /= 2;
+			}
 		}
 
 		public void Panacea(PC_Main t)
 		{
-			if (t.cur_beats <= t.Beat) t.cur_beats++;
+			if (t.cur_beats <= t.Beat || t.cur_beats <= t.Beat+1 ) t.cur_beats++;
 			HUD.info = t.name+" Beats equals "+t.cur_beats+" now!";
 		}
 
@@ -359,7 +402,7 @@ namespace Database
 					if (my_hit > t_dodge)
 					{
 						int dmg = my.damage + DoorManager.PhysicalDoor;
-						if (dmg >= 1) tar.cur_hp -= dmg;
+						if (dmg > 0) tar.cur_hp -= dmg;
 						Debug.Log(tar.name+" HP Remaining "+tar.cur_hp);
 					}
 				}
@@ -391,6 +434,191 @@ namespace Database
 					if (dmg > 0) t.cur_hp -= dmg;
 				}
 			}
+		}
+
+		public void Day(PC_Main t)
+		{
+			if (t.cur_beats <= t.Beat || t.cur_beats <= t.Beat+1 ) t.cur_beats++;
+		}
+
+		public void Divine(PC_Main my, NPC_Main t)
+		{
+			int amount = 0;
+			foreach (Transform touched in my.targets)
+			{
+				float distance = Vector3.Distance(touched.position, my.transform.position);
+				if (max_range >= distance) amount++;
+			}
+			foreach (Transform player in my.targets)
+			{
+				float distance = Vector3.Distance(my.transform.position, player.position);
+				if (max_range >= distance)
+				{
+					PC_Main tar = player.GetComponent<PC_Main>();
+					int heal = (my.stats[0,3] + DoorManager.DivineDoor)/amount;
+					if (heal + tar.cur_hp <= tar.HP) tar.cur_hp += heal;
+					else tar.cur_hp = tar.HP;
+				}
+			}
+		}
+
+		public void Earth(PC_Main my, NPC_Main t)
+		{
+			int staggerchance = Random.Range(0,101 + my.stats[0,1]);
+			if (staggerchance > 50) t.cur_beats = 0;
+			dmg = my.stats[0,2] + DoorManager.EarthDoor;
+			if (dmg > 0) t.cur_hp -= dmg;
+		}
+
+		public void Fire(PC_Main my, NPC_Main t)
+		{
+			dmg = (my.stats[0,2] + my.stats[0,2]/2) + DoorManager.FireDoor;
+			if (dmg > 0) t.cur_hp -= dmg;
+		}
+
+		public void Nature(PC_Main my, NPC_Main t)
+		{
+			foreach (Transform target in my.targets)
+			{
+				float distance = Vector3.Distance(my.transform.position, target.position);
+				if (max_range >= distance)
+				{
+					NPC_Main tar = target.GetComponent<NPC_Main>();
+					int trapchance = Random.Range(0,101 + DoorManager.NatureDoor);
+					if (trapchance > 50) t.move_points = 0;
+					dmg = my.stats[0,2] + DoorManager.NatureDoor;
+					if (dmg > 0) tar.cur_hp -= dmg;
+				}
+			}
+		}
+
+		public void Night(PC_Main my, PC_Main t)
+		{
+			if (t.tier == 1)
+			{
+				t.tier = 2;
+				t.tier_count = 5;
+			}
+		}
+
+		public void Thunder(PC_Main my, NPC_Main t)
+		{
+			int amount = my.stats[0,3];
+			dmg = my.stats[0,2]/2 + DoorManager.ThunderDoor;
+			while (amount > 0)
+			{
+				foreach (Transform strike in my.targets)
+				{
+					float distance = Vector3.Distance(strike.position, my.transform.position);
+					NPC_Main tar = strike.GetComponent<NPC_Main>();
+					if (max_range >= distance)
+					{
+						t = tar;
+						if (dmg > 0) t.cur_hp -= dmg;
+						int chance = Random.Range (1,(101 + DoorManager.ThunderDoor));
+						if (chance > 65) if (dmg > 0) t.cur_hp -= dmg;
+						else amount --;
+					}
+				}
+			}
+		}
+
+		public void Water(PC_Main my, NPC_Main t)
+		{
+			dmg = my.stats[0,2] + DoorManager.WaterDoor;
+			if (dmg > 0)
+			{
+				float push = dmg - t.stats[0]/2;
+				t.cur_hp -= dmg;
+				while (max_range < push)
+				{
+					t.transform.LookAt(my.transform.position);
+					t.transform.Translate(-Vector3.forward * 100f *Time.deltaTime);
+					break;
+				}
+			}
+		}
+
+		public void Wicked(PC_Main my, NPC_Main t)
+		{
+			dmg = my.stats[0,2] + DoorManager.WickedDoor;
+			if (dmg > 0) t.cur_hp -= dmg;
+			if (dmg/4 + my.cur_hp < my.HP) my.cur_hp += dmg/4;
+			else my.cur_hp = my.HP;
+		}
+
+		public void Wind(PC_Main my, NPC_Main t)
+		{
+			my.reflect = true;
+		}
+
+		public void Aqua(PC_Main my, NPC_Main t)
+		{
+			foreach (Transform enemy in my.targets)
+			{
+				NPC_Main tar = enemy.GetComponent<NPC_Main>();
+				float distance = Vector3.Distance(my.transform.position, enemy.position);
+				if (max_range >= distance)
+				{
+					dmg = 5 + DoorManager.WaterDoor;
+					if (dmg > 0)
+					{
+						float push = dmg - t.stats[0]/2;
+						t.cur_hp -= dmg;
+						while (distance < push)
+						{
+							t.transform.LookAt(my.transform.position);
+							t.transform.Translate(-Vector3.forward * 100f *Time.deltaTime);
+							break;
+						}
+					}
+				}
+			}
+		}
+
+		public void Attonitus(PC_Main my, NPC_Main t)
+		{
+			
+		}
+
+		public void Divinus(PC_Main my, NPC_Main t)
+		{
+			
+		}
+
+		public void Ignis(PC_Main my, NPC_Main t)
+		{
+			
+		}
+
+		public void Lex(PC_Main my, NPC_Main t)
+		{
+			
+		}
+
+		public void Maleficus(PC_Main my, NPC_Main t)
+		{
+			
+		}
+
+		public void Natura(PC_Main my, NPC_Main t)
+		{
+			
+		}
+
+		public void Nocturne(PC_Main my, NPC_Main t)
+		{
+			
+		}
+
+		public void Terra(PC_Main my, NPC_Main t)
+		{
+			
+		}
+
+		public void Ventus(PC_Main my, NPC_Main t)
+		{
+			
 		}
 	}
 }

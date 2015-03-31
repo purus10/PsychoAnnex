@@ -39,7 +39,7 @@ public class E_Ability : MonoBehaviour {
 			foreach( Ability Ab in equip.abilities)
 			{
 				if (equip.ability[i] != null) equip.ability[i].equipped = false;
-				if (Ab.equipped == false) list.E_abilities.Add(Ab);
+				if (Ab.equipped == false && Ab.ID != 3) list.E_abilities.Add(Ab);
 			}
 			list.abilities = true;
 			list.gearID = true;

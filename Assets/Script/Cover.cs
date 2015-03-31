@@ -7,11 +7,17 @@ public class Cover : MonoBehaviour {
 	NPC_Main NPC;
 	PC_Main PC;
 	public Color target_off;
-	public bool taken = false;
+	public bool taken = false, selected = false;
 
 	void Start()
 	{
 		target_off = GetComponentInParent<Renderer>().material.color;
+	}
+
+	void Update()
+	{
+		if (Input.GetKeyDown(GameInformer.Fight) && GameInformer.battle == false)
+			selected = false;
 	}
 	
 	void OnTriggerEnter(Collider col)

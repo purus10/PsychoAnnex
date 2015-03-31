@@ -124,7 +124,7 @@ public class E_Gear : MonoBehaviour {
 			list.E_abilities.Add(gen2);
 			
 			foreach( Ability b in equip.abilities)
-				if (b.type == 1)
+				if (b.ID == 2)
 			{
 				if (equip.ability[i] != null) equip.ability[i].equipped = false;
 				if (b.equipped == false) list.E_abilities.Add(b);

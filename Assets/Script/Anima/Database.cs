@@ -186,7 +186,7 @@ namespace Database
 
 		void Ann_Attack(PC_Main my, NPC_Main t, int karma)
 		{
-			int stagger = (my.Brawns + DoorManager.PhysicalDoor * 5);
+			int stagger = (my.stats[1,0] + DoorManager.PhysicalDoor * 5);
 			int t_resist = Random.Range (0,100 + t.stats[2]);
 			if (stagger > t_resist && karma == 0) t.cur_beats = 0;
 			else if (stagger > t_resist && karma != 0) t.cur_beats -= t.cur_beats/karma;
@@ -224,7 +224,7 @@ namespace Database
 		public void Chaos(PC_Main my, NPC_Main t)
 		{
 			float distance;
-			int tenacity = my.Tenacity;
+			int tenacity = my.stats[1,1];
 			while (tenacity > 0)
 			{
 				foreach (Transform strike in my.targets)
@@ -249,7 +249,7 @@ namespace Database
 
 		public void Eximo(PC_Main my, NPC_Main t)
 		{
-			t.cur_hp -= (my.damage + DoorManager.PhysicalDoor)*(2 + my.Courage/2);
+			t.cur_hp -= (my.damage + DoorManager.PhysicalDoor)*(2 + my.stats[1,3]/2);
 			//int destroy_chance = Random.Range(0,100 + (my.wep[0].weight*10));
 			HUD.info = "EXIMO casted! "+t.name+" remaining hp: "+t.cur_hp;
 			//if (destroy_chance <= 50) my.wep[0] = null;
@@ -496,7 +496,6 @@ namespace Database
 		{
 			if (t.tier == 1)
 			{
-				t.tier = 2;
 				t.tier_count = 5;
 			}
 		}

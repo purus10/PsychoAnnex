@@ -7,11 +7,11 @@ public class PC_Main : MonoBehaviour {
 	
 	public string Name;
 	public int ID, HP, Beat, Brawns, Tenacity, Courage, type;
-	public float tier_count = 5;
-	[HideInInspector] public int cur_hp, cur_beats, max_acc = 2, tier = 2, damage, hit, index;
+	public float tier_count;
+	public int cur_hp, cur_beats, max_acc = 2, damage, hit, index;
 	public string[,] quirk = new string[2,4];
 	public int[,] stats = new int[3,3]; //[Collum,0] (0 = cur stat, 1 = anima stat, 2 = equip stat) [0,Row] (0 = brawns, 1 = tenacity, 2 = courage) 
-	public float speed;
+	public float speed, rotation;
 	public Transform target;
 	public bool myturn, far_beats;
 	public Camera AimCamera;
@@ -21,12 +21,15 @@ public class PC_Main : MonoBehaviour {
 	public accessory[] acc = new accessory[2];
 	public Ability[] ability = new Ability[6];
 	public Item[] items = new Item[4];
-	[HideInInspector] public bool tier_4, second_acc, soul_mixture, reflect, cover ,omni, battle;
+	public bool tier_4, second_acc, soul_mixture, reflect, cover, omni, battle;
 	public NavMeshAgent agent;
 	public NPC_Main NPC;
 	public PC_Main PC;
 	Color target_off;
-	
+	public int tier
+	{
+		get { return  1 + (int) tier_count/5; }
+	}
 	void Start ()
 	{
 		DontDestroyOnLoad(gameObject);
@@ -72,7 +75,6 @@ public class PC_Main : MonoBehaviour {
 			}
 		}
 	}
-
 	void TargetSetup()
 	{
 		if (Input.GetKeyDown(KeyCode.Tab) && type != 3) 
@@ -84,7 +86,6 @@ public class PC_Main : MonoBehaviour {
 			}
 		}
 	}
-
 	public void BattleSetup()
 	{
 		agent.Resume();
@@ -96,7 +97,6 @@ public class PC_Main : MonoBehaviour {
 			GameInformer.battle = true;
 		}
 	}
-
 	void SetAttack()
 	{
 		foreach (Ability a in abilities) if (a.name == "Attack") 
@@ -105,7 +105,6 @@ public class PC_Main : MonoBehaviour {
 			ability[0] = a;
 		}
 	}
-
 	void NPCMotions()
 	{
 		if (far_beats == true) transform.LookAt(target);
@@ -117,7 +116,6 @@ public class PC_Main : MonoBehaviour {
 		}
 		if (GameInformer.target == transform && GameInformer.battle == true) myturn = true;
 	}
-
 	void RunForCover()
 	{
 		if (ID != 4 && ID != 6)
@@ -185,7 +183,6 @@ public class PC_Main : MonoBehaviour {
 			}
 		}
 	}
-
 	IEnumerator CloseGap(Ability a)
 	{
 		while (Vector3.Distance(transform.position, target.position) > agent.stoppingDistance - 0.5f)
@@ -198,7 +195,6 @@ public class PC_Main : MonoBehaviour {
 			yield return null;
 		}
 	}
-	
 	void CastItem(int j, Item i)
 	{
 		if (type != 2) 
@@ -219,7 +215,6 @@ public class PC_Main : MonoBehaviour {
 		else if (tier_count >= 10f) Tier(3,10f);
 		else if (tier_count >= 15f && tier_4 == true) Tier(4,15f);
 	}
-
 	public void EndTurn()
 	{
 		myturn = false;
@@ -234,21 +229,16 @@ public class PC_Main : MonoBehaviour {
 			if (n.GetComponent<NPC_Main>() != null) n.GetComponentInChildren<Renderer>().material.color = n.GetComponent<NPC_Main>().target_off;
 		}
 	}
-	
 	void SetStats()
 	{
 		name = Name;
 		cur_hp = HP;
 		cur_beats = Beat;
-		
-		for (int i = 0; i < stats.GetLength(1);i++)
-		{
-			stats[0,i] = Brawns;
-			stats[1,i] = Tenacity;
-			stats[2,i] = Courage;
-		}
+		stats[1,0] = Brawns;
+		stats[1,1] = Tenacity;
+		stats[1,2] = Courage;
+		for (int i = 0; i < stats.GetLength(1);i++) stats[0,i] = stats[1,i];
 	}
-	
 	void FirstWeapon()
 	{
 		if (wep[0] == null) foreach (weapon weapon in WeaponsList.weapons)
@@ -260,10 +250,9 @@ public class PC_Main : MonoBehaviour {
 			}
 		}
 	}
-	
 	public void Equip()
 	{
-		int d = Brawns, h = Tenacity,b = Brawns, t = Tenacity, c = Courage;
+		int d = stats[1,0], h = stats[1,1],b = stats[1,0], t = stats[1,1], c = stats[1,2];
 		for (int i = 0; i < wep.Length;i++)
 		{
 			if (wep[i] != null)
@@ -283,7 +272,6 @@ public class PC_Main : MonoBehaviour {
 				c += acc[i].Courage;
 			}
 		}
-		
 		damage = d;
 		hit = h;
 		for(int i = 0; i < stats.GetLength(0);i++)
@@ -293,24 +281,12 @@ public class PC_Main : MonoBehaviour {
 			stats[i,2] = c;
 		}
 	}
-	
 	void Tier(int t, float limit)
 	{
-		if (tier_count < limit) tier_count = limit;
-		if (tier != t)
-		{
-			tier = t;
-			if (tier == 1) for (int i = 0; i < stats.GetLength(0);i++) stats[0,i] = stats[0,i]/2 - (Courage/10);
-			if (tier == 3 || tier == 4) for (int i = 0; i < stats.GetLength(0);i++) stats[0,i] = stats[0,i]*(Courage/10 + (tier -1));
-			if (tier == 2)
-			{
-				stats[0,0] = Brawns;
-				stats[0,1] = Tenacity;
-				stats[0,2] = Courage;
-			}
-		}
+		for (int i = 0; i < stats.GetLength(1);i++)
+			if (tier > 1) stats[0,i] = stats[0,i]*(tier-1);
+		else stats[0,i] = stats[0,i]/(tier+1);
 	}
-
 	void Target()
 	{
 		if (type == 0)
@@ -345,9 +321,8 @@ public class PC_Main : MonoBehaviour {
 			if (type != 0)  transform.LookAt(target);
 		}
 		foreach (Transform n in targets) if (n == target)
-			//if (n.GetComponent<Cover>() == null) n.GetComponentInChildren<Renderer>().material.color = Color.blue;
-			//else n.GetComponentInParent<Renderer>().material.color = Color.blue;
-			print ("yeh");
+			if (n.GetComponent<Cover>() == null) n.GetComponentInChildren<Renderer>().material.color = Color.blue;
+			else n.GetComponentInParent<Renderer>().material.color = Color.blue;
 		else {
 			if (n.GetComponent<Cover>() != null) n.GetComponentInParent<Renderer>().material.color = n.GetComponent<Cover>().target_off;
 			if (n.GetComponent<PC_Main>() != null) n.GetComponentInChildren<Renderer>().material.color = n.GetComponent<PC_Main>().target_off;

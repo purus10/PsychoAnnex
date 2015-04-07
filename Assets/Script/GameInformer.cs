@@ -6,7 +6,7 @@ public class GameInformer : MonoBehaviour {
 	static public int money;
 	static public int battlestate;
 	static public int turn = 0;
-	static public int player;
+	static public int player = 6;
 	static public int Idler = 0;
 	static public int selected;
 	static public KeyCode Up,Down,Left,Right,GoddessTog,ItemTog,Select,Fight,Special,Deselect;
@@ -88,7 +88,6 @@ public class GameInformer : MonoBehaviour {
 			break;
 		}
 	}
-
 	void Update()
 	{
 		if (target != null) 

@@ -2,7 +2,7 @@
 using UnityEditor;
 using System.Collections;
 
-[CustomEditor (typeof(PC_Main))]
+/*[CustomEditor (typeof(PC_Main))]
 public class PC_Custom : Editor {
 	PC_Main mypcmain;
 	SerializeField BeatProp;
@@ -82,4 +82,4 @@ public class PC_Custom : Editor {
 		serializedObject.ApplyModifiedProperties();
 	}
 	
-}
+}*/

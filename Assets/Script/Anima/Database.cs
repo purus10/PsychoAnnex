@@ -28,7 +28,7 @@ namespace Database
 		{
 			int my_hit = Random.Range (0,100 + my.stats[0,2]);
 			int t_dodge = Random.Range (0,100 + t.stats[1]);
-			if (d < min_range && d > max_range) return my_hit > t_dodge;
+			if (d > max_range) return my_hit > t_dodge;
 			else return false;
 		}
 
@@ -53,13 +53,11 @@ namespace Database
 			my.EndTurn();
 		}
 
-		public void OpposeCast(PC_Main my, NPC_Main t)
+		public void OpposeCast(PC_Main my, NPC_Main t, float d)
 		{
 			if (far_range == true) 
 			{
-				float distance = Vector3.Distance(my.transform.position, t.transform.position);
-				Debug.Log(distance);
-				if (FarRangeHit(distance,my,t) == true) Execute(my,null,t);
+				if (FarRangeHit(d,my,t) == true) Execute(my,null,t);
 				else HUD.info = "MISS!!!";
 				if (my.far_beats == false) my.EndTurn();
 				else my.cur_beats--;
@@ -194,8 +192,9 @@ namespace Database
 		
 		public void Anima(PC_Main my, NPC_Main t)
 		{
-		t.cur_hp -= my.stats[1,0] + (DoorManager.MagicalDoor + DoorManager.PhysicalDoor + 1)*2;
+			t.cur_hp -= my.stats[1,0] + (DoorManager.MagicalDoor + DoorManager.PhysicalDoor + 1)*2;
 			HUD.info = "ANIMA casted! "+t.name+" remaining hp: "+t.cur_hp;
+			Debug.Log("ANIMA casted!");
 		}
 
 		public void Barrage(PC_Main my)

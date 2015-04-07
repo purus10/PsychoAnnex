@@ -118,32 +118,37 @@ public class PC_Main : MonoBehaviour {
 	}
 	void RunForCover()
 	{
-		if (ID != 4 && ID != 6)
+		if (ID != 4 && ID != 6 && ID != GameInformer.target.GetComponent<PC_Main>().ID)
 		{
 			Target();
-			Cover c = target.GetComponent<Cover>();
-			if (c.selected == false) 
+			if (target != null)
 			{
-				c.selected = true;
-				c.taken = true;
+				target.GetComponentInParent<Renderer>().material.color = target.GetComponent<Cover>().target_off;
+				Cover c = target.GetComponent<Cover>();
+				if (c.selected == false) 
+				{
+					c.selected = true;
+					c.taken = true;
+				}
+				if (c.selected == true) {
+					agent.stoppingDistance = 0.2f;
+					agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
+					agent.SetDestination(target.position);
+				}
+				targets.Clear();
+			}else {
+				targets.Clear();
+				type = 1;
+				Target();
+				target.GetComponentInChildren<Renderer>().material.color = target.GetComponent<NPC_Main>().target_off;
 			}
-			if (c.selected == true) {
-				agent.stoppingDistance = 0.2f;
-				agent.SetDestination(target.position);
-			}
-			targets.Clear();
-			target = null;
-		}else {
-			targets.Clear();
-			type = 1;
-			Target();
-			if (target != null) target.GetComponentInChildren<Renderer>().material.color = target.GetComponent<NPC_Main>().target_off;
 		}
 		battle = true;
 	}
 	void CastAbility(Ability a)
 	{
 		agent.stoppingDistance = 1.5f;
+		if (cover == false) agent.obstacleAvoidanceType = ObstacleAvoidanceType.HighQualityObstacleAvoidance;
 		foreach (Transform n in targets)
 		{
 			if (n.GetComponent<Cover>() != null) n.GetComponentInParent<Renderer>().material.color = n.GetComponent<Cover>().target_off;
@@ -160,27 +165,24 @@ public class PC_Main : MonoBehaviour {
 				if (target != null) NPC = target.GetComponent<NPC_Main>();
 				a.Execute(this,null,NPC);
 			}
-		} else {
-			if (type == 1) 
+		} else if (type == 1) 
+		{
+			float distance = Vector3.Distance(transform.position, target.position);
+			NPC = target.GetComponent<NPC_Main>();
+			if (a.far_range == true) a.OpposeCast(this,NPC,distance);
+			else if (distance > 2f) 
 			{
-				float distance = Vector3.Distance(transform.position, target.position);
-				if (a.far_range == false && distance > 2f) 
-				{
-					agent.SetDestination(target.position);
-					NPC = target.GetComponent<NPC_Main>();
-					StartCoroutine(CloseGap(a));
-				} else if (distance <= 2f) a.OpposeCast(this,NPC);
-			}
-			if (type == 2) 
-			{
-				PC = target.GetComponent<PC_Main>();
-				a.AllyCast(this,PC);
-			}
-			if (type == 3) 
-			{
-				if (target != null) NPC = target.GetComponent<NPC_Main>();
-				a.OpposeCast(this,NPC);
-			}
+				agent.SetDestination(target.position);
+				StartCoroutine(CloseGap(a));
+			} else a.OpposeCast(this,NPC,distance);
+		} else if (type == 2) 
+		{
+			PC = target.GetComponent<PC_Main>();
+			a.AllyCast(this,PC);
+		} else if (type == 3) 
+		{
+			if (target != null) NPC = target.GetComponent<NPC_Main>();
+			a.OpposeCast(this,NPC,0f);
 		}
 	}
 	IEnumerator CloseGap(Ability a)
@@ -189,7 +191,7 @@ public class PC_Main : MonoBehaviour {
 		{
 			if (Vector3.Distance(transform.position, target.position) <= agent.stoppingDistance + 0.5f)
 			{
-			a.OpposeCast(this,NPC);
+			a.OpposeCast(this,NPC,0f);
 			break;
 			}
 			yield return null;
@@ -217,16 +219,20 @@ public class PC_Main : MonoBehaviour {
 	}
 	public void EndTurn()
 	{
+		if (myturn == true)
+		{
 		myturn = false;
 		far_beats = false;
 		if (cur_beats < Beat) cur_beats = Beat;
-		GameInformer.Idler = (GameInformer.Idler +1) % 8;
+		GameInformer.Idler = (GameInformer.Idler +1) % 7;
 		if (omni == true) ability[0].Omni(this,null,false);
+		if (cover == false) agent.obstacleAvoidanceType = ObstacleAvoidanceType.LowQualityObstacleAvoidance;
 		foreach (Transform n in targets)
 		{
 			if (n.GetComponent<Cover>() != null) n.GetComponentInParent<Renderer>().material.color = n.GetComponent<Cover>().target_off;
 			if (n.GetComponent<PC_Main>() != null) n.GetComponentInChildren<Renderer>().material.color = n.GetComponent<PC_Main>().target_off;
 			if (n.GetComponent<NPC_Main>() != null) n.GetComponentInChildren<Renderer>().material.color = n.GetComponent<NPC_Main>().target_off;
+		}
 		}
 	}
 	void SetStats()
@@ -287,7 +293,7 @@ public class PC_Main : MonoBehaviour {
 			if (tier > 1) stats[0,i] = stats[0,i]*(tier-1);
 		else stats[0,i] = stats[0,i]/(tier+1);
 	}
-	void Target()
+	public void Target()
 	{
 		if (type == 0)
 		{
@@ -322,9 +328,9 @@ public class PC_Main : MonoBehaviour {
 		}
 		foreach (Transform n in targets) if (n == target)
 			if (n.GetComponent<Cover>() == null) n.GetComponentInChildren<Renderer>().material.color = Color.blue;
-			else n.GetComponentInParent<Renderer>().material.color = Color.blue;
+			else n.GetComponent<Cover>().render.GetComponent<Renderer>().material.color = Color.blue;
 		else {
-			if (n.GetComponent<Cover>() != null) n.GetComponentInParent<Renderer>().material.color = n.GetComponent<Cover>().target_off;
+			if (n.GetComponent<Cover>() != null) n.GetComponent<Cover>().render.GetComponent<Renderer>().material.color = n.GetComponent<Cover>().target_off;
 			if (n.GetComponent<PC_Main>() != null) n.GetComponentInChildren<Renderer>().material.color = n.GetComponent<PC_Main>().target_off;
 			if (n.GetComponent<NPC_Main>() != null) n.GetComponentInChildren<Renderer>().material.color = n.GetComponent<NPC_Main>().target_off;
 		}

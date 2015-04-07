@@ -47,7 +47,7 @@ public class NPC_Main : MonoBehaviour {
 
 	void Update()
 	{
-		if (cur_hp <= 0) Destroy(gameObject);
+		if (cur_hp <= 0) Death();
 		if (kadabra == true)
 		{
 			float time = 0;
@@ -55,7 +55,17 @@ public class NPC_Main : MonoBehaviour {
 			if (time == kadabra_timer) kadabra = false;
 		}
 	}
-	
+	void Death()
+	{
+		PC_Main[] search = GameObject.FindObjectsOfType(typeof(PC_Main)) as PC_Main[];
+		foreach(PC_Main m in search)
+		{
+			m.target = null;
+			m.targets.Clear();
+			if (m.target == this.transform) m.EndTurn();
+		}
+		Destroy(gameObject);
+	}
 	void FixedUpdate () 
 	{
 		if (tier_count <= Tier_Limit[0]) Tier(1,Tier_Limit[0]);

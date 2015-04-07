@@ -6,12 +6,13 @@ public class Cover : MonoBehaviour {
 
 	NPC_Main NPC;
 	PC_Main PC;
+	public GameObject render;
 	public Color target_off;
 	public bool taken = false, selected = false;
 
 	void Start()
 	{
-		target_off = GetComponentInParent<Renderer>().material.color;
+		target_off = render.GetComponent<Renderer>().material.color;
 	}
 
 	void Update()
@@ -30,16 +31,25 @@ public class Cover : MonoBehaviour {
 			{
 				taken = true;
 				NPC.cover = true;
+
 			}
 		}
 		if (PC != null) 		
 		{
 			if (PC.target == transform) 
 			{
+				print (col.name);
 				taken = true;
 				PC.cover = true;
+				PC.target = null;
+				PC.agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
 			}
 		}
+	}
+
+	void OnTriggerStay(Collider col)
+	{
+		PC.agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
 	}
 	
 	void OnTriggerExit(Collider col)

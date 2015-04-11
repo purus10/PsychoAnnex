@@ -109,7 +109,6 @@
      <Compile Include="Assets\Script\PC_Build\Shoot.cs" />
      <Compile Include="Assets\Script\PC_Build\controlscrap.cs" />
      <Compile Include="Assets\Script\StartMenu.cs" />
-     <Compile Include="Assets\Script\intiator.cs" />
      <None Include="Assets\Standard Assets\Projectors\Guidelines.txt" />
      <None Include="Assets\Standard Assets\Effects\GlassRefraction\Shaders\GlassStainedBumpDistort.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\BlendOneOne.shader" />

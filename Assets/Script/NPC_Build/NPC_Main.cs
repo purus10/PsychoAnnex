@@ -62,7 +62,7 @@ public class NPC_Main : MonoBehaviour {
 		{
 			m.target = null;
 			m.targets.Clear();
-			if (m.target == this.transform) m.EndTurn();
+			if (m.transform == GameInformer.target && m.onslaught == false) m.EndTurn();
 		}
 		Destroy(gameObject);
 	}

@@ -130,7 +130,6 @@ namespace Database
 				t.tier_count -= deTier(my);
 			HUD.info = t.Name + " Remaining HP: "+t.cur_hp;
 			}
-
 			if (my.ID == 1 && CloseRangeHit(my,t) == true) Zen_Attack(my,t,karma);
 			if (my.ID == 3 && my.cur_beats > 0) Sky_Attack(my,t,karma);
 			else t.Sky_attacks = 0;

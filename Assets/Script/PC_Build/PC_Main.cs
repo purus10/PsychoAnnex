@@ -21,7 +21,7 @@ public class PC_Main : MonoBehaviour {
 	public accessory[] acc = new accessory[2];
 	public Ability[] ability = new Ability[6];
 	public Item[] items = new Item[4];
-	public bool tier_4, second_acc, soul_mixture, reflect, cover, omni, battle;
+	public bool moving, onslaught, tier_4, second_acc, soul_mixture, reflect, cover, omni, battle;
 	public NavMeshAgent agent;
 	public NPC_Main NPC;
 	public PC_Main PC;
@@ -44,8 +44,9 @@ public class PC_Main : MonoBehaviour {
 		if (Input.GetKeyDown(GameInformer.Fight) && battle == false) BattleSetup();
 		TargetSetup();
 		CharacterMotion();
-		if (Input.GetKeyDown(KeyCode.Space)) EndTurn();
+		if (Input.GetKeyDown(KeyCode.Space) && moving == false) EndTurn();
 	}
+
 	void CharacterMotion()
 	{
 		if (GameInformer.stop == false)
@@ -60,7 +61,7 @@ public class PC_Main : MonoBehaviour {
 				if (Input.GetKey(KeyCode.LeftShift)) speed = 7;
 				else speed = 3;
 			}
-		}else if(myturn == true)
+		}else if(myturn == true && moving == false)
 		{
 			for(int i = 0; i < GameInformer.A.Length;i++)
 			{
@@ -70,8 +71,7 @@ public class PC_Main : MonoBehaviour {
 					if (ability[i] != null) 
 						if (AimCamera.enabled == false || ability[i].name == "Pistol") CastAbility(ability[i]);
 				if (Input.GetKey(KeyCode.Q) && Input.GetKeyDown(GameInformer.A[i]))
-					if (items[i] != null)
-						if (items[i].type == 1) items[i].Aim(this);
+					if (items[i] != null && items[i].type == 1) items[i].Aim(this);
 			}
 		}
 	}
@@ -167,6 +167,7 @@ public class PC_Main : MonoBehaviour {
 			}
 		} else if (type == 1) 
 		{
+			if (target == null) Target();
 			float distance = Vector3.Distance(transform.position, target.position);
 			NPC = target.GetComponent<NPC_Main>();
 			if (a.far_range == true) a.OpposeCast(this,NPC,distance);
@@ -187,10 +188,12 @@ public class PC_Main : MonoBehaviour {
 	}
 	IEnumerator CloseGap(Ability a)
 	{
+		moving = true;
 		while (Vector3.Distance(transform.position, target.position) > agent.stoppingDistance - 0.5f)
 		{
 			if (Vector3.Distance(transform.position, target.position) <= agent.stoppingDistance + 0.5f)
 			{
+				moving = false;
 			a.OpposeCast(this,NPC,0f);
 			break;
 			}
@@ -209,7 +212,6 @@ public class PC_Main : MonoBehaviour {
 			i.CastItem(j,i,this,PC);
 		}	
 	}
-
 	void FixedUpdate () 
 	{
 		if (tier_count <= 0f) Tier(1,0f);

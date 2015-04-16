@@ -120,7 +120,6 @@ namespace Database
 			if (name == "Terra") Terra(my,t);
 			if (name == "Ventus") Ventus(my,t);
 		}
-
 		public void Attack(PC_Main my, NPC_Main t, int karma)
 		{
 			dmg = my.damage + DoorManager.PhysicalDoor;
@@ -143,7 +142,6 @@ namespace Database
 				if (t_hit > my_dodge) my.cur_hp--;
 			}
 		}
-
 		void Zen_Attack(PC_Main my, NPC_Main t, int karma)
 		{
 			if (dmg > 0) t.cur_hp -= ((dmg * (int) Random.Range(1,1.125f)) - karma);
@@ -998,11 +996,12 @@ namespace Database
 	#region Items
 	public class Item
 	{
-		public string name,a_name;
-		public int type;
-		public int heal;
-		public int amount;
-		public bool equipped;
+	public string name,a_name,description;
+	public int type,heal,amount;
+	public bool equipped;
+	public Item[] metal = new Item[3];
+	public int hit,damage,max,weight;
+	public int Brawns,Tenacity,Courage;
 	
 	public void CastItem(int j, Item i, PC_Main my, PC_Main t)
 	{
@@ -1335,7 +1334,7 @@ namespace Database
 		}
 	}
 	#endregion
-	#region Weapon
+	/*#region Weapon
 	public class weapon
 	{
 		public string name;
@@ -1377,7 +1376,7 @@ namespace Database
 		public bool equipped;
 	}
 	#endregion
-	#region States
+	#region States*/
 	class States
 	{
 	/*	static public IEnumerator Suffocate (PC_Main player, NPC_Stat npc, int duration)
@@ -1472,4 +1471,3 @@ namespace Database
 
 	#endregion
 //}
-#endregion

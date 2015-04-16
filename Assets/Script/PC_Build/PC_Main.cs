@@ -17,8 +17,8 @@ public class PC_Main : MonoBehaviour {
 	public Camera AimCamera;
 	public List <Transform> targets = new List<Transform>();
 	public List <Ability> abilities = new List<Ability>();
-	public weapon[] wep = new weapon[2];
-	public accessory[] acc = new accessory[2];
+	public Item[] wep = new Item[2];
+	public Item[] acc = new Item[2];
 	public Ability[] ability = new Ability[6];
 	public Item[] items = new Item[4];
 	public bool moving, onslaught, tier_4, second_acc, soul_mixture, reflect, cover, omni, battle;
@@ -32,6 +32,13 @@ public class PC_Main : MonoBehaviour {
 	}
 	void Start ()
 	{
+		Item i = new Item();
+		i.name = "Tar Water";
+		i.heal = 2;
+		i.type = 3;
+		i.amount = 3;
+		items[0] = i;
+
 		DontDestroyOnLoad(gameObject);
 		SetStats();
 		FirstWeapon();
@@ -235,7 +242,7 @@ public class PC_Main : MonoBehaviour {
 			if (n.GetComponent<PC_Main>() != null) n.GetComponentInChildren<Renderer>().material.color = n.GetComponent<PC_Main>().target_off;
 			if (n.GetComponent<NPC_Main>() != null) n.GetComponentInChildren<Renderer>().material.color = n.GetComponent<NPC_Main>().target_off;
 		}
-		}
+		} else GameInformer.Idler = (GameInformer.Idler +1) % 7;
 	}
 	void SetStats()
 	{
@@ -249,7 +256,7 @@ public class PC_Main : MonoBehaviour {
 	}
 	void FirstWeapon()
 	{
-		if (wep[0] == null) foreach (weapon weapon in WeaponsList.weapons)
+		if (wep[0] == null) foreach (Item weapon in WeaponsList.weapons)
 		{
 			if (ID == weapon.type)
 			{

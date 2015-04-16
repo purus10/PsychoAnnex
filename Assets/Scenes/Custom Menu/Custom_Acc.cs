@@ -16,7 +16,7 @@ public class Custom_Acc : MonoBehaviour {
 	public string metal2;
 	public string metal3;
 	
-	public accessory acc;
+	public Item acc;
 	
 	#region Stat Conversion
 	// Use this for initialization

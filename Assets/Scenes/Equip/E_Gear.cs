@@ -65,13 +65,13 @@ public class E_Gear : MonoBehaviour {
 			list.magicnum = i;
 			if (i != 0)
 			{
-				weapon gen = new weapon();
+				Item gen = new Item();
 				gen.name = "None";
 				list.E_weapons.Add(gen);
 				if (equip.wep[1] == null) equip.wep[1] = gen;
 			}
-			foreach( weapon w in WeaponsList.weapons)
-				if (selected.Id == w.type) 
+			foreach( Item w in WeaponsList.weapons)
+				if (selected.Id+3 == w.type) 
 			{
 				if (equip.wep[i] != null) 
 				{
@@ -91,13 +91,13 @@ public class E_Gear : MonoBehaviour {
 		if (list.accessories == false && list.gearID == false)
 		{
 			list.magicnum = i;
-			accessory gen = new accessory();
+			Item gen = new Item();
 			gen.name = "None";
 			list.E_acc.Add(gen);
 			if (equip.acc[0] == null) equip.acc[0] = gen;
 			if (equip.acc[1] == null) equip.acc[1] = gen;
 
-			foreach(accessory a in AccList.Accessories)
+			foreach(Item a in AccList.Accessories)
 				if (a.type == 0) 
 			{
 				if (equip.acc[i] != null) 

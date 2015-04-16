@@ -12,11 +12,11 @@ public class Selected_Button : MonoBehaviour {
 	public Rect box, button, selectedlist, listbox, Scroller, ScrollView;
 	private float vScroolbarValue;
 	public Vector2 scrollposition = Vector2.zero;
-	public List <weapon> S_wep = new List<weapon>();
-	public List <accessory> S_acc = new List<accessory>();
+	public List <Item> S_wep = new List<Item>();
+	public List <Item> S_acc = new List<Item>();
 	Metal_Button metals;
-	public accessory acc;
-	public weapon wep;
+	public Item acc;
+	public Item wep;
 	
 	void Start () 
 	{
@@ -63,11 +63,11 @@ public class Selected_Button : MonoBehaviour {
 	{
 		if (type == 1) 
 		{
-			foreach (weapon w in WeaponsList.weapons) 
+			foreach (Item w in WeaponsList.weapons) 
 			if (w.equipped == false && w.type != 5) S_wep.Add(w);
 
 		}else{ 
-			foreach (accessory a in AccList.Accessories) 
+			foreach (Item a in AccList.Accessories) 
 			if (a.equipped == false) S_acc.Add(a);
 		}
 	}

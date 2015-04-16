@@ -5,18 +5,18 @@ using Database;
 
 public class AccList : MonoBehaviour {
 
-	static public List <accessory> Accessories = new List<accessory>();
+	static public List <Item> Accessories = new List<Item>();
 	
 	void generateAcc()
 	{
-		accessory gen = new accessory();
+		Item gen = new Item();
 
 		gen.name = "Ring";
 		gen.Brawns = 1;
 
 		Accessories.Add(gen);
 
-		accessory f = new accessory();
+		Item f = new Item();
 		
 		f.name = "fa";
 		f.Brawns = 1000;

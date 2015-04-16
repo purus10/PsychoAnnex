@@ -16,9 +16,9 @@ public class E_Equip : MonoBehaviour {
 	public Vector2 scrollposition = Vector2.zero;
 	
 	public List <Item> E_items = new List<Item>();
-	public List <weapon> E_weapons = new List<weapon>();
+	public List <Item> E_weapons = new List<Item>();
 	public List <Ability> E_abilities = new List<Ability>();
-	public List <accessory> E_acc = new List<accessory>();
+	public List <Item> E_acc = new List<Item>();
 	
 	E_Status selected;
 	E_Info info;

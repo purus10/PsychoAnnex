@@ -5,7 +5,7 @@ using Database;
 
 public class WeaponsList : MonoBehaviour {
 
-	public static List <weapon> weapons = new List<weapon>();
+	public static List <Item> weapons = new List<Item>();
 	public string[] Knuckles;
 	public string[] Chakram;
 	public string[] Katana;
@@ -106,14 +106,14 @@ public class WeaponsList : MonoBehaviour {
 	}
 	#endregion
 
-	void SetBook(weapon gen, int h, int d, int b)
+	void SetBook(Item gen, int h, int d, int b)
 	{
 		gen.hit = h;
 		gen.damage = d;
 		gen.max = b;
 	}
 
-	void SetWeightandMax(weapon gen, int m, int w)
+	void SetWeightandMax(Item gen, int m, int w)
 	{
 		gen.weight = Random.Range(w-1,w+1);
 		if (m <= 5 && m > 1) gen.max = Random.Range(m-1,m);
@@ -143,7 +143,7 @@ public class WeaponsList : MonoBehaviour {
 
 	public void Add(string Name, int ID)
 	{
-		weapon gen = new weapon();
+		Item gen = new Item();
 		
 		if (ID == 0) ID = Random.Range(1,8);
 			

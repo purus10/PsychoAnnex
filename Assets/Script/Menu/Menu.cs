@@ -53,7 +53,7 @@ public class Menu : MonoBehaviour {
 			GUI.Box (stat,"");
 			GUI.Label(money, GameInformer.money+" ¢");
 			GUI.Label(time, Time.time.ToString());
-			GUI.Label(essence, "C: "+GameInformer.Cruelty + " E: "+GameInformer.Empathy + " T: "+GameInformer.Tranquality+ " L: "+GameInformer.Luck); 	
+			GUI.Label(essence, "C: "+GameInformer.Essence[0] + " E: "+GameInformer.Essence[1] + " T: "+GameInformer.Essence[2] + " L: "+GameInformer.Essence[3]); 	
 			if (GUI.Button(item_button, "Items")) print ("item");
 			if (GUI.Button(anima_button, "Anima")) LoadLevel("Anima System");
 			if (GUI.Button(equip_button, "Equip")) LoadLevel("Equip");

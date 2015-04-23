@@ -23,9 +23,9 @@ public class AbilityTest : MonoBehaviour {
 				Add ("Eximo","Deal great amount of damage but chance of destroying your weapon",false,3,0,1,1,p);
 				Add ("Feint","escape Close range and use remaining beats as Far range",false,0,10,1,1,p);
 				Add ("Fidelity","Recharge a Goddess Gift",true,20,0,2,1,p);
-				Add ("Hush","+1 beat",true,20000000000,2000000000000,2,1,p);
+				//Add ("Hush","+1 beat",true,20000000000,2000000000000,2,1,p);
 				Add ("Inquisitio","+1 beat",true,20000000000,2000000000000,2,1,p);
-				Add ("Jinx","+1 beat",true,20000000000,2000000000000,2,1,p);
+				//Add ("Jinx","+1 beat",true,20000000000,2000000000000,2,1,p);
 				Add ("Kadabra","+1 beat",true,20000000000,2000000000000,2,1,p);
 				Add ("Karma","+1 beat",false,20000000000,2000000000000,2,1,p);
 				Add ("Libro","+1 beat",false,20000000000,2000000000000,2,1,p);

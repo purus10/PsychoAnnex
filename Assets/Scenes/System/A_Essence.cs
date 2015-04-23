@@ -13,10 +13,10 @@ public class A_Essence : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 
-		Cruelty.text = GameInformer.Cruelty.ToString();
-		Empathy.text = GameInformer.Empathy.ToString();
-		Tranquility.text = GameInformer.Tranquality.ToString();
-		Luck.text = GameInformer.Luck.ToString();
+		Cruelty.text = GameInformer.Essence[0].ToString();
+		Empathy.text = GameInformer.Essence[1].ToString();
+		Tranquility.text = GameInformer.Essence[2].ToString();
+		Luck.text = GameInformer.Essence[3].ToString();
 	
 	}
 }

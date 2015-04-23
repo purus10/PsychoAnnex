@@ -2,28 +2,25 @@ using UnityEngine;
 using System.Collections;
 using Database;
 
-namespace Database
-{
+namespace Database {
 	#region Abilities
 	public class Ability
 	{ 
 		public string name, description;
-		public bool equipped, far_range;
+		public bool equipped, far_range, WithLove;
 		public float max_range, min_range;
 		public int type,ID;
 		int dmg;
-
 		float deTier(PC_Main my)
 		{
 			float detier = (dmg % 1.5f);
 			if (my.ID != 6) 
 			{
-				if (detier <= 0) return 0.1f;
-				else return detier;
-			}else if (detier <= 0) return 0.2f;
-				else return (detier * 2);
+				if (detier <= 0) return (0.1f + Passive.check.Psycho(Passive.check.SkillCheck("Psycho",my),0.5f)) * Random.Range(1,1.125f);
+				else return (detier + Passive.check.Psycho(Passive.check.SkillCheck("Psycho",my),0.5f)) * Random.Range(1,1.125f);
+			}else if (detier <= 0) return (0.2f + Passive.check.Psycho(Passive.check.SkillCheck("Psycho",my),0.5f)) * Random.Range(1,1.125f);
+			else return ((detier * 2) + Passive.check.Psycho(Passive.check.SkillCheck("Psycho",my),0.5f)) * Random.Range(1,1.125f);
 		}
-
 		bool FarRangeHit(float d, PC_Main my, NPC_Main t)
 		{
 			int my_hit = Random.Range (0,100 + my.stats[0,2]);
@@ -31,14 +28,12 @@ namespace Database
 			if (d > max_range) return my_hit > t_dodge;
 			else return false;
 		}
-
 		bool CloseRangeHit(PC_Main my, NPC_Main t)
 		{
 			int my_hit = Random.Range (0,100);
 			int t_dodge = Random.Range (0,100 + t.stats[1]);
 			return my_hit > t_dodge;
 		}
-
 		bool CritChance(PC_Main my, NPC_Main t)
 		{
 			int my_hit = Random.Range (0,100 + my.stats[3,0]);
@@ -122,7 +117,7 @@ namespace Database
 		}
 		public void Attack(PC_Main my, NPC_Main t, int karma)
 		{
-			dmg = my.damage + DoorManager.PhysicalDoor;
+			dmg = my.damage + Passive.check.Brute(Passive.check.SkillCheck("Brute",my),my.Brawns,DoorManager.PhysicalDoor);
 			if (dmg > 0) 
 			{
 				t.cur_hp -= ((dmg * (int) Random.Range(1,1.125f)) + karma);
@@ -178,27 +173,24 @@ namespace Database
 					}else t.items[i] = null;
 				}
 		}
-
 		void Ann_Attack(PC_Main my, NPC_Main t, int karma)
 		{
-			int stagger = (my.stats[1,0] + DoorManager.PhysicalDoor * 5);
+			int stagger = (my.stats[1,0] + Passive.check.Brute(Passive.check.SkillCheck("Brute",my),my.Brawns,DoorManager.PhysicalDoor) * 5);
 			int t_resist = Random.Range (0,100 + t.stats[2]);
 			if (stagger > t_resist && karma == 0) t.cur_beats = 0;
 			else if (stagger > t_resist && karma != 0) t.cur_beats -= t.cur_beats/karma;
 		}
-		
 		public void Anima(PC_Main my, NPC_Main t)
 		{
-			t.cur_hp -= my.stats[1,0] + (DoorManager.MagicalDoor + DoorManager.PhysicalDoor + 1)*2;
+			t.cur_hp -= my.stats[1,0] + (Passive.check.UnlockedMind(Passive.check.SkillCheck("Unlocked Mind",my),my.Brawns,DoorManager.MagicalDoor) 
+			                             + Passive.check.Brute(Passive.check.SkillCheck("Brute",my),my.Brawns,DoorManager.PhysicalDoor) + 1)*2;
 			HUD.info = "ANIMA casted! "+t.name+" remaining hp: "+t.cur_hp;
 			Debug.Log("ANIMA casted!");
 		}
-
 		public void Barrage(PC_Main my)
 		{
 			if (my.target != null) my.far_beats = true;
 		}
-
 		public void Butterfly()
 		{
 			NPC_Main[] search = GameObject.FindObjectsOfType(typeof(NPC_Main)) as NPC_Main[];
@@ -233,7 +225,7 @@ namespace Database
 						int t_dodge = Random.Range (0,100 + tar.stats[1]);
 						if (my_hit > t_dodge)
 						{
-							int dmg = my.damage + DoorManager.PhysicalDoor;
+							int dmg = my.damage + Passive.check.Brute(Passive.check.SkillCheck("Brute",my),my.Brawns,DoorManager.PhysicalDoor);
 							if (dmg >= 1) tar.cur_hp -= dmg;
 							Debug.Log(tar.name+" HP Remaining "+tar.cur_hp);
 						}
@@ -245,7 +237,7 @@ namespace Database
 
 		public void Eximo(PC_Main my, NPC_Main t)
 		{
-			t.cur_hp -= (my.damage + DoorManager.PhysicalDoor)*(2 + my.stats[1,3]/2);
+			t.cur_hp -= (my.damage + Passive.check.Brute(Passive.check.SkillCheck("Brute",my),my.Brawns,DoorManager.PhysicalDoor))*(2 + my.stats[1,3]/2);
 			//int destroy_chance = Random.Range(0,100 + (my.wep[0].weight*10));
 			HUD.info = "EXIMO casted! "+t.name+" remaining hp: "+t.cur_hp;
 			//if (destroy_chance <= 50) my.wep[0] = null;
@@ -278,7 +270,7 @@ namespace Database
 			if (my.cur_hp > 1) my.cur_hp--;
 			if (max_range >= distance)
 			{
-				dmg = my.stats[0,2] * (2 + DoorManager.MagicalDoor);
+				dmg = my.stats[0,2] * (2 + Passive.check.UnlockedMind(Passive.check.SkillCheck("Unlocked Mind",my),my.Brawns,DoorManager.MagicalDoor));
 				if (dmg > 0) t.cur_hp -= dmg;
 			}
 		}
@@ -325,7 +317,7 @@ namespace Database
 
 		public void Luck(PC_Main my, NPC_Main t)
 		{
-			dmg = (my.damage + DoorManager.PhysicalDoor + (my.stats[0,3]/5))*my.tier-1;
+			dmg = (my.damage + Passive.check.Brute(Passive.check.SkillCheck("Brute",my),my.Brawns,DoorManager.PhysicalDoor) + (my.stats[0,3]/5))*my.tier-1;
 			if (dmg > 0) 
 			{
 				t.cur_hp -= (dmg * (int) Random.Range(1,1.125f));
@@ -382,7 +374,7 @@ namespace Database
 
 		public void Pulse(PC_Main my, NPC_Main t)
 		{
-			t.cur_hp -= my.stats[0,1] + (DoorManager.MagicalDoor);
+			t.cur_hp -= my.stats[0,1] + (Passive.check.UnlockedMind(Passive.check.SkillCheck("Unlocked Mind",my),my.Brawns,DoorManager.MagicalDoor));
 		}
 
 		public void Rapture(PC_Main my, NPC_Main t)
@@ -397,7 +389,7 @@ namespace Database
 					int t_dodge = Random.Range (0,100 + tar.stats[1]);
 					if (my_hit > t_dodge)
 					{
-						int dmg = my.damage + DoorManager.PhysicalDoor;
+						int dmg = my.damage + Passive.check.Brute(Passive.check.SkillCheck("Brute",my),my.Brawns,DoorManager.PhysicalDoor);
 						if (dmg > 0) tar.cur_hp -= dmg;
 						Debug.Log(tar.name+" HP Remaining "+tar.cur_hp);
 					}
@@ -426,7 +418,8 @@ namespace Database
 				float distance = Vector3.Distance(strike.position, my.transform.position);
 				if (max_range >= distance)
 				{
-					dmg = my.stats[0,3] + DoorManager.PhysicalDoor + DoorManager.MagicalDoor;
+					dmg = my.stats[0,3] + Passive.check.Brute(Passive.check.SkillCheck("Brute",my),my.Brawns,DoorManager.PhysicalDoor) 
+						+ Passive.check.UnlockedMind(Passive.check.SkillCheck("Unlocked Mind",my),my.Brawns,DoorManager.MagicalDoor);
 					if (dmg > 0) t.cur_hp -= dmg;
 				}
 			}
@@ -613,10 +606,107 @@ namespace Database
 
 		public void Ventus(PC_Main my, NPC_Main t)
 		{
-			
+	
 		}
 	}
-}
+
+	public class Passive
+	{
+		static public Passive check = new Passive();
+		public string Name;
+		public string Description;
+
+		int Increase(int increase, int skillcheck)
+		{
+			return increase*skillcheck;
+		}
+		bool TogglePassive(bool passive)
+		{
+			if (passive == true) return false;
+			else return true;
+		}
+		int RangeIncrease(int skillcheck, int increase)
+		{
+			return increase*skillcheck;
+		}
+		float Adapt(float decrease, int skillcheck)
+		{
+			return decrease*skillcheck;
+		}
+		public int Brute (int skillcheck, int Brawns, int physical)
+		{
+			return physical + ((Brawns/4)*skillcheck);
+		}
+		bool Deft(int skillcheck, int Tenacity, int Brawns, int Courage)
+		{
+			return (Tenacity + (Brawns/2) + (Courage/2) + Random.Range(0,10))*skillcheck > Random.Range(0,30);
+		}
+		int EmpowerCheck(int skillcheck, int M_Defense)
+		{
+			return M_Defense*skillcheck;
+		}
+		bool Endure(int skillcheck, int Brawns)
+		{
+			return (Brawns/6)*skillcheck > Random.Range(0,10);
+		}
+		int MockeryBonus(int skillcheck, int Courage)
+		{
+			return ((Courage/2)*5)*skillcheck;
+		}
+		public bool Masterful (int skillcheck, int Tenacity, int multiple)
+		{
+			return ((Tenacity/2)*multiple)*skillcheck > Random.Range(0,15);
+		}
+		public int Profane(int skillcheck, int Defense)
+		{
+			return Defense*skillcheck;
+		}
+		public float Psycho(float skillcheck, float decrease)
+		{
+			return decrease*skillcheck;
+		}
+		public bool Sufficient(int skillcheck, int HP, int Tenacity)
+		{
+			if (HP == 1) return ((Tenacity/2)*5)*skillcheck > Random.Range(0,10);
+			else return false;
+		}
+		public int Thievery (int increase, int skillcheck)
+		{
+			return increase*skillcheck;
+		}
+		public int UnlockedMind (int skillcheck, int Tenacity, int magical)
+		{
+			return magical + ((Tenacity/4)*skillcheck);
+		}
+		public int SkillCheck(string passive, PC_Main my)
+		{
+			int amount = 0;
+			foreach (Passive p in my.passives)
+			{
+				if (p.Name == passive) amount++;
+			}
+			return amount;
+		}
+
+		public void SetPassives(string Passive_Name, PC_Main my)
+		{
+			string[][] names = new string[][]{new string[]{"Able Learner","Ingenuity","Sol"}};
+			for (int i = 0; i < my.stats.GetLength(1);i++)
+			{
+				my.stats[1,i] = my.stats[0,i] + Increase(1,SkillCheck(names[0][i],my));
+			}
+			my.ability_bonus = Increase(5,SkillCheck("Lady Luck",my));
+
+			if (Passive_Name == "Acrobat") TogglePassive(my.Acrobat);
+			if (Passive_Name == "Critical Shot") TogglePassive(my.Critical_Shot);
+			if (Passive_Name == "Flurry") TogglePassive(my.Flurry);
+			if (Passive_Name == "Running Shot") TogglePassive(my.RunningShot);
+			if (Passive_Name == "Steady") TogglePassive(my.Steady);
+			if (Passive_Name == "OnSlaught") TogglePassive(my.onslaught);
+			if (Passive_Name == "Energy Mixture") TogglePassive(my.soul_mixture);
+
+		}
+	}
 /*
 	#region Anima
 	class Animas
@@ -1468,6 +1558,7 @@ namespace Database
 			yield return null;
 		}*/
 	}
+}
 
 	#endregion
 //}

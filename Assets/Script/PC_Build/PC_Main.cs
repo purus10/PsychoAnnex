@@ -8,7 +8,7 @@ public class PC_Main : MonoBehaviour {
 	public string Name;
 	public int ID, HP, Beat, Brawns, Tenacity, Courage, type;
 	public float tier_count;
-	public int cur_hp, cur_beats, max_acc = 2, damage, hit, index;
+	public int cur_hp, cur_beats, max_acc = 2, damage, hit, ability_bonus,index;
 	public string[,] quirk = new string[2,4];
 	public int[,] stats = new int[3,3]; //[Collum,0] (0 = cur stat, 1 = anima stat, 2 = equip stat) [0,Row] (0 = brawns, 1 = tenacity, 2 = courage) 
 	public float speed, rotation;
@@ -17,11 +17,12 @@ public class PC_Main : MonoBehaviour {
 	public Camera AimCamera;
 	public List <Transform> targets = new List<Transform>();
 	public List <Ability> abilities = new List<Ability>();
+	public List <Passive> passives = new List<Passive>();
 	public Item[] wep = new Item[2];
 	public Item[] acc = new Item[2];
-	public Ability[] ability = new Ability[6];
+	public Ability[] ability = new Ability[4];
 	public Item[] items = new Item[4];
-	public bool moving, onslaught, tier_4, second_acc, soul_mixture, reflect, cover, omni, battle;
+	public bool moving, Acrobat, Critical_Shot, Flurry, RunningShot, Steady, onslaught, tier_4, second_acc, soul_mixture, reflect, cover, omni, battle;
 	public NavMeshAgent agent;
 	public NPC_Main NPC;
 	public PC_Main PC;
@@ -35,9 +36,19 @@ public class PC_Main : MonoBehaviour {
 		Item i = new Item();
 		i.name = "Tar Water";
 		i.heal = 2;
-		i.type = 3;
+		i.type = 0;
 		i.amount = 3;
-		items[0] = i;
+		items[2] = i;
+
+		Item f = new Item();
+		f.name = "Ring";
+		f.type = 3;
+		items[1] = f;
+
+		Item g = new Item();
+		g.name = "Knuckles";
+		g.type = 4;
+		items[0] = g;
 
 		DontDestroyOnLoad(gameObject);
 		SetStats();

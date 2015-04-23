@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Database;
 
 public class Cop_Behaviour : MonoBehaviour {
 

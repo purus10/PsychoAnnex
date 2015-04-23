@@ -18,7 +18,8 @@ public class GameInformer : MonoBehaviour {
 
 	static public string previous;
 
-	static public int Cruelty, Tranquality, Empathy, Luck;
+	//0 = Cruelty, 1 = Tranquality, 2 = Empathy, 3 = Luck
+	static public int[] Essence = new int[4];
 
 	public int lighter;
 

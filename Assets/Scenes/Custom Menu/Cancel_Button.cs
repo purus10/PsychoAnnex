@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Database;
 
 public class Cancel_Button : MonoBehaviour {
 	

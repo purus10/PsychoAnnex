@@ -99,6 +99,7 @@
      <Compile Include="Assets\Script\Items\Pills.cs" />
      <Compile Include="Assets\Script\Items\WeaponsList.cs" />
      <Compile Include="Assets\Script\Leonard.cs" />
+     <Compile Include="Assets\Script\Menu\Ability_Menu.cs" />
      <Compile Include="Assets\Script\Menu\Item_Menu.cs" />
      <Compile Include="Assets\Script\Menu\Menu.cs" />
      <Compile Include="Assets\Script\NPC_Build\Cop_Behaviour.cs" />

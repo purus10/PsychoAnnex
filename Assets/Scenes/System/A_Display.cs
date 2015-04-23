@@ -3,7 +3,7 @@ using System.Collections;
 using Database;
 
 public class A_Display : MonoBehaviour {
-	
+
 	public Rect infobox,picbox,selbox,essencebox, costbox;
 	public Rect title,cruelty,empathy,tranquilty,luck,info, pic, cost;
 	public Rect yesbutton,nobutton;
@@ -60,14 +60,12 @@ public class A_Display : MonoBehaviour {
 	{
 		if (n.unlocked[Id-1] == false)
 		{
-			if (n.Ccost <= GameInformer.Cruelty && n.Ecost <= GameInformer.Empathy && n.Tcost <= GameInformer.Tranquality && n.Lcost <= GameInformer.Luck)
+			if (n.Essence_cost[Id-1] <= GameInformer.Essence[n.Essence_type[Id-1]])
 			{
 				PC_Main a = player.GetComponent<PC_Main>();
-				GameInformer.Cruelty -= n.Ccost;
-				GameInformer.Empathy -= n.Ecost;
-				GameInformer.Tranquality -= n.Tcost;
-				GameInformer.Luck -= n.Lcost;
-				a.abilities.Add(n.ability);
+				GameInformer.Essence[n.Essence_type[Id-1]] -= n.Essence_cost[Id-1];
+				if (n.type[Id-1] > 0) a.abilities.Add(n.ability);
+				else a.passives.Add(n.passive);
 				n.UnlockPaths(Id);
 				node = null;
 			}
@@ -86,19 +84,28 @@ public class A_Display : MonoBehaviour {
 		GUI.Label(info, description, largefont);
 		GUI.Label(cost, price, midfont);
 		
-		GUI.Label(cruelty, "Cruelty: "+ GameInformer.Cruelty.ToString(),midfont);
-		GUI.Label(empathy, "Emapthy: "+ GameInformer.Empathy.ToString(),midfont);
-		GUI.Label(tranquilty, "Tranquility: "+ GameInformer.Tranquality.ToString(), midfont);
-		GUI.Label(luck, "Luck: "+ GameInformer.Luck.ToString(), midfont);
+		GUI.Label(cruelty, "Cruelty: "+ GameInformer.Essence[0].ToString(),midfont);
+		GUI.Label(empathy, "Emapthy: "+ GameInformer.Essence[1].ToString(),midfont);
+		GUI.Label(tranquilty, "Tranquility: "+ GameInformer.Essence[2].ToString(), midfont);
+		GUI.Label(luck, "Luck: "+ GameInformer.Essence[3].ToString(), midfont);
 		
 		
 		if (node != null)
 		{
 			A_Node n = node.GetComponent<A_Node>();
+			if (n.unlocked[Id-1] == false)
+			{
 			GUI.Box(selbox,"Learn " + selected +"?");
 			
 			if (GUI.Button(yesbutton, "Yes"))Learn(n);
 			if (GUI.Button(nobutton, "No")) node = null;
+			}
+			else{
+			GUI.Box(selbox,"Equip " + selected +"?");
+			
+				if (GUI.Button(yesbutton, "Yes"))print ("Equip");
+			if (GUI.Button(nobutton, "No")) node = null;
+			}
 		}
 		
 	}

@@ -5,10 +5,9 @@ using Database;
 public class Item_Menu : MonoBehaviour {
 
 	public Rect Item_button;
-	public Rect[] Command_box, Give_box, Equip_button, Give_button, Drop_button,Player_button,slot_button;
-	int menu_show = 0,j = 0, pc_number = 0;
+	public Rect[] Command_box, Give_box, Equip_button, Unequip_button, Give_button, Drop_button,Player_button,slot_button;
+	int menu_show = 0,j = 0, pc_number = 0,selection_type;
 	string command_name;
-	bool give;
 	PC_Main[] search;
 	PC_Main my;
 	Rect ItemSet(float x, float y, float w, float h, int i)
@@ -29,6 +28,12 @@ public class Item_Menu : MonoBehaviour {
 	{
 		if (search[i].acc[k] != null) 
 			return search[i].acc[k].name;
+		else return "Empty";
+	}
+	string WepName(int i, int k)
+	{
+		if (search[i].wep[k] != null) 
+			return search[i].wep[k].name;
 		else return "Empty";
 	}
 	void Update()
@@ -64,11 +69,20 @@ public class Item_Menu : MonoBehaviour {
 				Item  acc_hold = new Item();
 				acc_hold = search[i].acc[s];
 				search[i].acc[s] = my.items[j];
-				my.items[j] = search[i].acc[s];
+				my.items[j] = acc_hold;
 			}
-		}else if (my.items[j].type == search[i].ID+4)
+		}else if (my.items[j].type == search[i].ID+3)
 		{
-			//equip weapon here
+			if (search[i].wep[s] == null)
+			{
+				search[i].wep[s] = my.items[j];
+				my.items[j] = null;
+			}else {
+				Item  wep_hold = new Item();
+				wep_hold = search[i].wep[s];
+				search[i].wep[s] = my.items[j];
+				my.items[j] = wep_hold;
+			}
 		}
 	}
 	void OnGUI () 
@@ -91,13 +105,14 @@ public class Item_Menu : MonoBehaviour {
 			if (GUI.Button(Equip_button[j], command_name)) 
 			{
 				menu_show = 3;
-				give = false;
+				selection_type = 1;
 			}
 			if (GUI.Button(Give_button[j], "Give")) 
 			{
 				menu_show = 3;
-				give = true;
+				selection_type = 2;
 			}
+			if (GUI.Button(Unequip_button[j], "Unequip")) menu_show = 3;
 			if (GUI.Button(Drop_button[j], "Drop")) print ("drop");
 		}
 		if (menu_show > 2)
@@ -107,13 +122,12 @@ public class Item_Menu : MonoBehaviour {
 			{
 				if (GUI.Button(CharacterSet(Player_button[j].x,Player_button[j].y,Player_button[j].width,Player_button[j].height,i), search[i].Name))
 				{
-					if (give == true && search[i] != my) Give(i);
-					else if (command_name == "Equip") 
+					if (selection_type == 1 && search[i] != my) Give(i);
+					else if (selection_type == 2 && command_name == "Equip") 
 					{
 						pc_number = i;
 						menu_show = 4;
-					}
-					else my.items[j].CastItem(j,my.items[j],my,search[i]);
+					} else my.items[j].CastItem(j,my.items[j],my,search[i]);
 					if (my.items[j] == null) menu_show = 1;
 				}
 			}
@@ -127,9 +141,13 @@ public class Item_Menu : MonoBehaviour {
 					if (GUI.Button(CharacterSet(slot_button[j].x,slot_button[j].y,slot_button[j].width,slot_button[j].height,k), AccName(pc_number,k)))
 						Equip(pc_number,k);
 				}
-			}else if (my.items[j].type == search[pc_number].ID+4)
+			}else if (my.items[j].type == search[pc_number].ID+3)
 			{
-				//equip weapon here
+				for (int k = 0; k < search[pc_number].wep.Length; k++)
+				{
+					if (GUI.Button(CharacterSet(slot_button[j].x,slot_button[j].y,slot_button[j].width,slot_button[j].height,k), AccName(pc_number,k)))
+						Equip(pc_number,k);
+				}
 			}
 		}
 	}

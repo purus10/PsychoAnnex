@@ -6,7 +6,7 @@ using Database;
 public class NPC_Main : MonoBehaviour {
 	
 	public string Name;
-	public int HP, Defense, Hit, Beat, Brawns, Tenacity, Courage, Sky_attacks, move_points, tier = 2;
+	public int HP, Defense, Mag_Defense, Hit, Beat, Brawns, Tenacity, Courage, Sky_attacks, move_points, tier = 2;
 	public int[] Tier_Limit = new int[3];
 	[HideInInspector] public int cur_hp, cur_beats, index;
 	[HideInInspector] public int[] stats = new int[3]; // marks cur (0 = brawns, 1 = tenacity, 2 = courage)

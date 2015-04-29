@@ -6,13 +6,6 @@ public class Anima_Movement : MonoBehaviour {
 	public Camera MainCamera;
 	public int speed;
 
-	public GameObject Zen_start;
-	public GameObject Serenity_start;
-	public GameObject Hena_start;
-	public GameObject Sky_start;
-	public GameObject Rose_start;
-	public GameObject Xeres_start;
-
 	void Update () {
 
 		if(Input.GetKey(GameInformer.Up) && MainCamera.transform.position.y < 23f)
@@ -35,7 +28,7 @@ public class Anima_Movement : MonoBehaviour {
 			MainCamera.transform.Translate(-transform.up * speed * Time.deltaTime);
 		}
 
-		if(Input.GetKey(GameInformer.Special) && MainCamera.transform.position.y > -25f)
+		if(Input.GetKey(KeyCode.Q) && MainCamera.transform.position.y > -25f)
 		{
 			MainCamera.GetComponent<Camera>().orthographicSize = 7f;
 		}

@@ -22,7 +22,7 @@ public class Shoot : MonoBehaviour {
 			{
 				my = Character.GetComponent<PC_Main>();
 				Instantiate(bullet,nozzle.transform.position,nozzle.transform.rotation);
-				bul.damage = my.hit + DoorManager.WindDoor;
+				bul.damage = my.hit + DoorManager.Door[2];
 				GameInformer.target = null;
 				my.AimCamera.enabled = false;
 				my.AimCamera.GetComponent<Shoot>().enabled = false;

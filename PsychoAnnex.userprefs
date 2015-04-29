@@ -1,17 +1,15 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scenes\System\A_Node.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Script\Cover.cs">
     <Files>
-      <File FileName="Assets\Script\PC_Build\PC_Main.cs" Line="65" Column="69" />
-      <File FileName="Assets\Script\Anima\Database.cs" Line="1" Column="1" />
+      <File FileName="Assets\Script\PC_Build\PC_Main.cs" Line="152" Column="6" />
       <File FileName="Assets\Scenes\Equip\E_Equip.cs" Line="1" Column="1" />
       <File FileName="Assets\Script\GameInformer.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scenes\Custom Menu\HUD.cs" Line="1" Column="1" />
-      <File FileName="Assets\Script\Cover.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scenes\Custom Menu\HUD.cs" Line="71" Column="36" />
+      <File FileName="Assets\Script\Cover.cs" Line="26" Column="38" />
       <File FileName="Assets\Script\NPC_Build\NPC_Main.cs" Line="1" Column="1" />
       <File FileName="Assets\Script\NPC_Build\Cop_Behaviour.cs" Line="1" Column="1" />
       <File FileName="Assets\Editor\PC_Custom.cs" Line="1" Column="1" />
-      <File FileName="Assets\Script\AbilityTest.cs" Line="33" Column="68" />
       <File FileName="Assets\Script\Menu\Menu.cs" Line="1" Column="1" />
       <File FileName="Assets\Script\Menu\Item_Menu.cs" Line="1" Column="1" />
       <File FileName="Assets\Scenes\Custom Menu\Custom_Acc.cs" Line="1" Column="1" />
@@ -21,14 +19,26 @@
       <File FileName="Assets\Scenes\Equip\E_Gear.cs" Line="1" Column="1" />
       <File FileName="Assets\Script\Menu\Ability_Menu.cs" Line="1" Column="1" />
       <File FileName="Assets\Scenes\System\A_Essence.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scenes\Custom Menu\Metal_Button.cs" Line="11" Column="2" />
-      <File FileName="Assets\Scenes\System\A_Node.cs" Line="74" Column="28" />
-      <File FileName="Assets\Scenes\System\A_Display.cs" Line="70" Column="17" />
+      <File FileName="Assets\Scenes\Custom Menu\Metal_Button.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scenes\System\A_Node.cs" Line="140" Column="4" />
+      <File FileName="Assets\Scenes\System\A_Display.cs" Line="75" Column="21" />
+      <File FileName="Assets\Scenes\System\DoorManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\Script\Anima\Database.cs" Line="1" Column="1" />
+      <File FileName="Assets\Script\PC_Build\Shoot.cs" Line="1" Column="1" />
+      <File FileName="Assets\Script\Leonard.cs" Line="1" Column="1" />
+      <File FileName="Assets\Script\AbilityTest.cs" Line="17" Column="91" />
+      <File FileName="Assets\Scenes\System\G_Node.cs" Line="32" Column="30" />
+      <File FileName="Assets\Standard Assets\Effects\ImageEffects\Shaders\EdgeDetectNormals.shader" Line="1" Column="1" />
+      <File FileName="Assets\Scenes\System\C_Node.cs" Line="22" Column="62" />
+      <File FileName="Assets\Scenes\Equip\E_Controls.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scenes\System\A_Control.cs" Line="23" Column="24" />
+      <File FileName="Assets\Scenes\System\Anima_Movement.cs" Line="1" Column="1" />
+      <File FileName="Assets\Script\PC_Build\PC_Animator.cs" Line="26" Column="35" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="C:\Users\Kosta\Documents\PsychoAnnex\Assets\Script\Anima\Database.cs" line="8647" />
+      <Breakpoint file="C:\Users\Kosta\Documents\PsychoAnnex\Assets\Script\Anima\Database.cs" line="8631" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

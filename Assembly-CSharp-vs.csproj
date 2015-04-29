@@ -67,11 +67,15 @@
      <Compile Include="Assets\Scenes\Equip\E_Passives.cs" />
      <Compile Include="Assets\Scenes\Equip\E_Quirk.cs" />
      <Compile Include="Assets\Scenes\Equip\E_Status.cs" />
+     <Compile Include="Assets\Scenes\System\A_Control.cs" />
      <Compile Include="Assets\Scenes\System\A_Display.cs" />
      <Compile Include="Assets\Scenes\System\A_Essence.cs" />
      <Compile Include="Assets\Scenes\System\A_Node.cs" />
      <Compile Include="Assets\Scenes\System\Anima_Movement.cs" />
+     <Compile Include="Assets\Scenes\System\C_Node.cs" />
      <Compile Include="Assets\Scenes\System\DoorManager.cs" />
+     <Compile Include="Assets\Scenes\System\G_Node.cs" />
+     <Compile Include="Assets\Scenes\System\Passive_Menu.cs" />
      <Compile Include="Assets\Script\AbilityTest.cs" />
      <Compile Include="Assets\Script\Anima\Bullet.cs" />
      <Compile Include="Assets\Script\Anima\Database.cs" />

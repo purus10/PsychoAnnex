@@ -22,7 +22,7 @@ public class PC_Main : MonoBehaviour {
 	public Item[] acc = new Item[2];
 	public Ability[] ability = new Ability[4];
 	public Item[] items = new Item[4];
-	public bool moving, Acrobat, Critical_Shot, Flurry, RunningShot, Steady, onslaught, tier_4, second_acc, soul_mixture, reflect, cover, omni, battle;
+	public bool moving, Acrobat, Critical_Shot, Flurry, RunningShot, Steady, onslaught, tier_4, second_acc, fourth_item, soul_mixture, reflect, cover, omni, battle;
 	public NavMeshAgent agent;
 	public NPC_Main NPC;
 	public PC_Main PC;
@@ -33,6 +33,7 @@ public class PC_Main : MonoBehaviour {
 	}
 	void Start ()
 	{
+		SetAttack();
 		Item i = new Item();
 		i.name = "Tar Water";
 		i.heal = 2;
@@ -57,7 +58,6 @@ public class PC_Main : MonoBehaviour {
 	}
 	void Update()
 	{
-		SetAttack();
 		NPCMotions();
 		if (Input.GetKeyDown(GameInformer.Fight) && battle == false) BattleSetup();
 		TargetSetup();
@@ -79,8 +79,7 @@ public class PC_Main : MonoBehaviour {
 				if (Input.GetKey(KeyCode.LeftShift)) speed = 7;
 				else speed = 3;
 			}
-		}else if(myturn == true && moving == false)
-		{
+		}else if(myturn == true && moving == false) {
 			for(int i = 0; i < GameInformer.A.Length;i++)
 			{
 				if (Input.GetKey(GameInformer.ItemTog) && Input.GetKeyDown(GameInformer.A[i])) 

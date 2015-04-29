@@ -6,7 +6,7 @@ public class AbilityTest : MonoBehaviour {
 	
 	// Use this for initialization
 	
-	void Start () 
+	void Awake () 
 	{
 		PC_Main[] search = GameObject.FindObjectsOfType(typeof(PC_Main)) as PC_Main[];
 		
@@ -16,7 +16,7 @@ public class AbilityTest : MonoBehaviour {
 			{
 				// type 1 == enemy 2 == ally 3 == self ID 1 == ability 2 == blessing 3 == goddess gift
 				Add ("Attack","Attack depending on player deals a diffrent secondary effect",false,0,10,1,1,p);
-				Add ("Anima","Attack the soul of your enemy",true,2,10,1,1,p);
+				/*Add ("Anima","Attack the soul of your enemy",true,2,10,1,1,p);
 				Add ("Barrage","use remaining beats as Far range",true,0,10,3,1,p);
 				Add ("Butterfly","Banish the weakest opponent",true,2,10,3,1,p);
 				Add ("Chaos","Attack multiple times depending on tenacity",false,10000000000000000000f,0,1,1,p);
@@ -57,6 +57,16 @@ public class AbilityTest : MonoBehaviour {
 				Add ("Nocturne","Recharge a Goddess Gift",true,20,0,2,3,p);
 				Add ("Terra","Recharge a Goddess Gift",true,20,0,2,3,p);
 				Add ("Ventus","Recharge a Goddess Gift",true,20,0,2,3,p);
+				Passive a = new Passive();
+				a.Name = "Masterful";
+				p.passives.Add(a);
+				Passive b = new Passive();
+				b.Name = "Masterful";
+				p.passives.Add(b);
+				Passive c = new Passive();
+				c.Name = "Masterful";
+				p.passives.Add(c);*/
+
 			}
 		}
 	}

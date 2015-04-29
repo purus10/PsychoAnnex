@@ -14,10 +14,10 @@ public class A_Display : MonoBehaviour {
 
 	public int Id = 1;
 	public GameObject player;
-	
+
 	public GameObject node;
 	
-	PC_Main stat;
+	public PC_Main stat;
 	
 	public string price;
 	public string selected;
@@ -32,6 +32,11 @@ public class A_Display : MonoBehaviour {
 		if (Id == 5)player = GameObject.Find("Rose");
 		if (Id == 6)player = GameObject.Find("Annihilator");
 		if (Id == 7) player = GameObject.Find("Xeres");
+	}
+
+	void Awake()
+	{
+		stat = player.GetComponent<PC_Main>();
 	}
 	
 	void Start () {
@@ -58,10 +63,11 @@ public class A_Display : MonoBehaviour {
 	
 	void Learn(A_Node n)
 	{
-		if (n.unlocked[Id-1] == false)
+		if (n.Node_State[Id-1] == 1)
 		{
 			if (n.Essence_cost[Id-1] <= GameInformer.Essence[n.Essence_type[Id-1]])
 			{
+				n.Node_State[Id-1] = 2;
 				PC_Main a = player.GetComponent<PC_Main>();
 				GameInformer.Essence[n.Essence_type[Id-1]] -= n.Essence_cost[Id-1];
 				if (n.type[Id-1] > 0) a.abilities.Add(n.ability);
@@ -93,18 +99,43 @@ public class A_Display : MonoBehaviour {
 		if (node != null)
 		{
 			A_Node n = node.GetComponent<A_Node>();
-			if (n.unlocked[Id-1] == false)
+			if (n != null)
 			{
-			GUI.Box(selbox,"Learn " + selected +"?");
-			
-			if (GUI.Button(yesbutton, "Yes"))Learn(n);
-			if (GUI.Button(nobutton, "No")) node = null;
-			}
-			else{
-			GUI.Box(selbox,"Equip " + selected +"?");
-			
-				if (GUI.Button(yesbutton, "Yes"))print ("Equip");
-			if (GUI.Button(nobutton, "No")) node = null;
+				if (n.Node_State[Id-1] == 1)
+				{
+					GUI.Box(selbox,"Learn " + selected +"?");
+					if (GUI.Button(yesbutton, "Yes")) Learn(n);
+					if (GUI.Button(nobutton, "No")) node = null;
+				}
+				else{
+					GUI.Box(selbox,"Equip " + selected +"?");
+					if (GUI.Button(yesbutton, "Yes"))print ("Equip");
+					if (GUI.Button(nobutton, "No")) node = null;
+				}
+			} else {
+				G_Node g = node.GetComponent<G_Node>();
+				if (g != null)
+				{
+				if (g.Node_State[Id-1] == 1)
+				{
+					GUI.Box(selbox,"Use Essence ?");
+					if (GUI.Button(yesbutton, "Yes")) g.SetNode(Id-1);
+					if (GUI.Button(nobutton, "No")) node = null;
+
+				}
+				} else {
+					C_Node c = node.GetComponent<C_Node>();
+					if (c != null)
+					{
+						if (c.Node_State[Id-1] == 1)
+						{
+							GUI.Box(selbox,"Learn " + selected +"?");
+							if (GUI.Button(yesbutton, "Yes")) c.SetNode(c.Type);
+							if (GUI.Button(nobutton, "No")) node = null;
+							
+						}
+					}
+				}
 			}
 		}
 		

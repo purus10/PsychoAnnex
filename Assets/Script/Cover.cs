@@ -46,11 +46,6 @@ public class Cover : MonoBehaviour {
 			}
 		}
 	}
-
-	void OnTriggerStay(Collider col)
-	{
-		PC.agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
-	}
 	
 	void OnTriggerExit(Collider col)
 	{

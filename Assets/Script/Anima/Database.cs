@@ -117,7 +117,7 @@ namespace Database {
 		}
 		public void Attack(PC_Main my, NPC_Main t, int karma)
 		{
-			dmg = my.damage + Passive.check.Brute(Passive.check.SkillCheck("Brute",my),my.Brawns,DoorManager.PhysicalDoor);
+			dmg = my.damage + Passive.check.Brute(Passive.check.SkillCheck("Brute",my),my.Brawns,DoorManager.PhysicalDoor());
 			if (dmg > 0) 
 			{
 				t.cur_hp -= ((dmg * (int) Random.Range(1,1.125f)) + karma);
@@ -175,15 +175,15 @@ namespace Database {
 		}
 		void Ann_Attack(PC_Main my, NPC_Main t, int karma)
 		{
-			int stagger = (my.stats[1,0] + Passive.check.Brute(Passive.check.SkillCheck("Brute",my),my.Brawns,DoorManager.PhysicalDoor) * 5);
+			int stagger = (my.stats[1,0] + Passive.check.Brute(Passive.check.SkillCheck("Brute",my),my.Brawns,DoorManager.PhysicalDoor()) * 5);
 			int t_resist = Random.Range (0,100 + t.stats[2]);
 			if (stagger > t_resist && karma == 0) t.cur_beats = 0;
 			else if (stagger > t_resist && karma != 0) t.cur_beats -= t.cur_beats/karma;
 		}
 		public void Anima(PC_Main my, NPC_Main t)
 		{
-			t.cur_hp -= my.stats[1,0] + (Passive.check.UnlockedMind(Passive.check.SkillCheck("Unlocked Mind",my),my.Brawns,DoorManager.MagicalDoor) 
-			                             + Passive.check.Brute(Passive.check.SkillCheck("Brute",my),my.Brawns,DoorManager.PhysicalDoor) + 1)*2;
+			t.cur_hp -= my.stats[1,0] + (Passive.check.UnlockedMind(Passive.check.SkillCheck("Unlocked Mind",my),my.Brawns,DoorManager.MagicalDoor()) 
+			                             + Passive.check.Brute(Passive.check.SkillCheck("Brute",my),my.Brawns,DoorManager.PhysicalDoor()) + 1)*2;
 			HUD.info = "ANIMA casted! "+t.name+" remaining hp: "+t.cur_hp;
 			Debug.Log("ANIMA casted!");
 		}
@@ -225,7 +225,7 @@ namespace Database {
 						int t_dodge = Random.Range (0,100 + tar.stats[1]);
 						if (my_hit > t_dodge)
 						{
-							int dmg = my.damage + Passive.check.Brute(Passive.check.SkillCheck("Brute",my),my.Brawns,DoorManager.PhysicalDoor);
+							int dmg = my.damage + Passive.check.Brute(Passive.check.SkillCheck("Brute",my),my.Brawns,DoorManager.PhysicalDoor());
 							if (dmg >= 1) tar.cur_hp -= dmg;
 							Debug.Log(tar.name+" HP Remaining "+tar.cur_hp);
 						}
@@ -237,7 +237,7 @@ namespace Database {
 
 		public void Eximo(PC_Main my, NPC_Main t)
 		{
-			t.cur_hp -= (my.damage + Passive.check.Brute(Passive.check.SkillCheck("Brute",my),my.Brawns,DoorManager.PhysicalDoor))*(2 + my.stats[1,3]/2);
+			t.cur_hp -= (my.damage + Passive.check.Brute(Passive.check.SkillCheck("Brute",my),my.Brawns,DoorManager.PhysicalDoor()))*(2 + my.stats[1,3]/2);
 			//int destroy_chance = Random.Range(0,100 + (my.wep[0].weight*10));
 			HUD.info = "EXIMO casted! "+t.name+" remaining hp: "+t.cur_hp;
 			//if (destroy_chance <= 50) my.wep[0] = null;
@@ -270,7 +270,7 @@ namespace Database {
 			if (my.cur_hp > 1) my.cur_hp--;
 			if (max_range >= distance)
 			{
-				dmg = my.stats[0,2] * (2 + Passive.check.UnlockedMind(Passive.check.SkillCheck("Unlocked Mind",my),my.Brawns,DoorManager.MagicalDoor));
+				dmg = my.stats[0,2] * (2 + Passive.check.UnlockedMind(Passive.check.SkillCheck("Unlocked Mind",my),my.Brawns,DoorManager.MagicalDoor()));
 				if (dmg > 0) t.cur_hp -= dmg;
 			}
 		}
@@ -317,7 +317,7 @@ namespace Database {
 
 		public void Luck(PC_Main my, NPC_Main t)
 		{
-			dmg = (my.damage + Passive.check.Brute(Passive.check.SkillCheck("Brute",my),my.Brawns,DoorManager.PhysicalDoor) + (my.stats[0,3]/5))*my.tier-1;
+			dmg = (my.damage + Passive.check.Brute(Passive.check.SkillCheck("Brute",my),my.Brawns,DoorManager.PhysicalDoor()) + (my.stats[0,3]/5))*my.tier-1;
 			if (dmg > 0) 
 			{
 				t.cur_hp -= (dmg * (int) Random.Range(1,1.125f));
@@ -335,27 +335,11 @@ namespace Database {
 			my.omni = true;
 			if (apply)
 			{
-				DoorManager.PhysicalDoor *= 2;
-				DoorManager.MagicalDoor *= 2;
-				DoorManager.DivineDoor *= 2;
-				DoorManager.EarthDoor *= 2;
-				DoorManager.FireDoor *= 2;
-				DoorManager.NatureDoor *= 2;
-				DoorManager.ThunderDoor *= 2;
-				DoorManager.WindDoor *= 2;
-				DoorManager.WaterDoor *= 2;
-				DoorManager.WickedDoor *= 2;
+				for (int i = 0; i < DoorManager.Door.Length;i++)
+					DoorManager.Door[i] = DoorManager.Door[i]*2;
 			} else {
-				DoorManager.PhysicalDoor /= 2;
-				DoorManager.MagicalDoor /= 2;
-				DoorManager.DivineDoor /= 2;
-				DoorManager.EarthDoor /= 2;
-				DoorManager.FireDoor /= 2;
-				DoorManager.NatureDoor /= 2;
-				DoorManager.ThunderDoor /= 2;
-				DoorManager.WindDoor /= 2;
-				DoorManager.WaterDoor /= 2;
-				DoorManager.WickedDoor /= 2;
+				for (int i = 0; i < DoorManager.Door.Length;i++)
+					DoorManager.Door[i] = DoorManager.Door[i]/2;
 			}
 		}
 
@@ -374,7 +358,7 @@ namespace Database {
 
 		public void Pulse(PC_Main my, NPC_Main t)
 		{
-			t.cur_hp -= my.stats[0,1] + (Passive.check.UnlockedMind(Passive.check.SkillCheck("Unlocked Mind",my),my.Brawns,DoorManager.MagicalDoor));
+			t.cur_hp -= my.stats[0,1] + (Passive.check.UnlockedMind(Passive.check.SkillCheck("Unlocked Mind",my),my.Brawns,DoorManager.MagicalDoor()));
 		}
 
 		public void Rapture(PC_Main my, NPC_Main t)
@@ -389,7 +373,7 @@ namespace Database {
 					int t_dodge = Random.Range (0,100 + tar.stats[1]);
 					if (my_hit > t_dodge)
 					{
-						int dmg = my.damage + Passive.check.Brute(Passive.check.SkillCheck("Brute",my),my.Brawns,DoorManager.PhysicalDoor);
+						int dmg = my.damage + Passive.check.Brute(Passive.check.SkillCheck("Brute",my),my.Brawns,DoorManager.PhysicalDoor());
 						if (dmg > 0) tar.cur_hp -= dmg;
 						Debug.Log(tar.name+" HP Remaining "+tar.cur_hp);
 					}
@@ -418,8 +402,8 @@ namespace Database {
 				float distance = Vector3.Distance(strike.position, my.transform.position);
 				if (max_range >= distance)
 				{
-					dmg = my.stats[0,3] + Passive.check.Brute(Passive.check.SkillCheck("Brute",my),my.Brawns,DoorManager.PhysicalDoor) 
-						+ Passive.check.UnlockedMind(Passive.check.SkillCheck("Unlocked Mind",my),my.Brawns,DoorManager.MagicalDoor);
+					dmg = my.stats[0,3] + Passive.check.Brute(Passive.check.SkillCheck("Brute",my),my.Brawns,DoorManager.PhysicalDoor()) 
+						+ Passive.check.UnlockedMind(Passive.check.SkillCheck("Unlocked Mind",my),my.Brawns,DoorManager.MagicalDoor());
 					if (dmg > 0) t.cur_hp -= dmg;
 				}
 			}
@@ -444,7 +428,7 @@ namespace Database {
 				if (max_range >= distance)
 				{
 					PC_Main tar = player.GetComponent<PC_Main>();
-					int heal = (my.stats[0,3] + DoorManager.DivineDoor)/amount;
+					int heal = (my.stats[0,3] + DoorManager.Door[5])/amount;
 					if (heal + tar.cur_hp <= tar.HP) tar.cur_hp += heal;
 					else tar.cur_hp = tar.HP;
 				}
@@ -455,13 +439,13 @@ namespace Database {
 		{
 			int staggerchance = Random.Range(0,101 + my.stats[0,1]);
 			if (staggerchance > 50) t.cur_beats = 0;
-			dmg = my.stats[0,2] + DoorManager.EarthDoor;
+			dmg = my.stats[0,2] + DoorManager.Door[0];
 			if (dmg > 0) t.cur_hp -= dmg;
 		}
 
 		public void Fire(PC_Main my, NPC_Main t)
 		{
-			dmg = (my.stats[0,2] + my.stats[0,2]/2) + DoorManager.FireDoor;
+			dmg = (my.stats[0,2] + my.stats[0,2]/2) + DoorManager.Door[1];
 			if (dmg > 0) t.cur_hp -= dmg;
 		}
 
@@ -473,9 +457,9 @@ namespace Database {
 				if (max_range >= distance)
 				{
 					NPC_Main tar = target.GetComponent<NPC_Main>();
-					int trapchance = Random.Range(0,101 + DoorManager.NatureDoor);
+					int trapchance = Random.Range(0,101 + DoorManager.Door[7]);
 					if (trapchance > 50) t.move_points = 0;
-					dmg = my.stats[0,2] + DoorManager.NatureDoor;
+					dmg = my.stats[0,2] + DoorManager.Door[7];
 					if (dmg > 0) tar.cur_hp -= dmg;
 				}
 			}
@@ -492,7 +476,7 @@ namespace Database {
 		public void Thunder(PC_Main my, NPC_Main t)
 		{
 			int amount = my.stats[0,3];
-			dmg = my.stats[0,2]/2 + DoorManager.ThunderDoor;
+			dmg = my.stats[0,2]/2 + DoorManager.Door[3];
 			while (amount > 0)
 			{
 				foreach (Transform strike in my.targets)
@@ -503,7 +487,7 @@ namespace Database {
 					{
 						t = tar;
 						if (dmg > 0) t.cur_hp -= dmg;
-						int chance = Random.Range (1,(101 + DoorManager.ThunderDoor));
+						int chance = Random.Range (1,(101 + DoorManager.Door[3]));
 						if (chance > 65) if (dmg > 0) t.cur_hp -= dmg;
 						else amount --;
 					}
@@ -513,7 +497,7 @@ namespace Database {
 
 		public void Water(PC_Main my, NPC_Main t)
 		{
-			dmg = my.stats[0,2] + DoorManager.WaterDoor;
+			dmg = my.stats[0,2] + DoorManager.Door[6];
 			if (dmg > 0)
 			{
 				float push = dmg - t.stats[0]/2;
@@ -529,7 +513,7 @@ namespace Database {
 
 		public void Wicked(PC_Main my, NPC_Main t)
 		{
-			dmg = my.stats[0,2] + DoorManager.WickedDoor;
+			dmg = my.stats[0,2] + DoorManager.Door[4];
 			if (dmg > 0) t.cur_hp -= dmg;
 			if (dmg/4 + my.cur_hp < my.HP) my.cur_hp += dmg/4;
 			else my.cur_hp = my.HP;
@@ -548,7 +532,7 @@ namespace Database {
 				float distance = Vector3.Distance(my.transform.position, enemy.position);
 				if (max_range >= distance)
 				{
-					dmg = 5 + DoorManager.WaterDoor;
+					dmg = 5 + DoorManager.Door[6];
 					if (dmg > 0)
 					{
 						float push = dmg - t.stats[0]/2;

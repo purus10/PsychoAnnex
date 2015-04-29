@@ -1077,6 +1077,7 @@ namespace Database {
 	public int hit,damage,max,weight;
 	public int Brawns,Tenacity,Courage;
 	
+	//0 = healing, 1 = attack
 	public void CastItem(int j, Item i, PC_Main my, PC_Main t)
 	{
 		if ( i.type == 0)

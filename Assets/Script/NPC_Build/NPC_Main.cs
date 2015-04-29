@@ -14,7 +14,7 @@ public class NPC_Main : MonoBehaviour {
 	public Transform target;
 	public bool myturn, Rose_Innate, kadabra;
 	public Item[] items = new Item[4];
-	[HideInInspector] public List <Transform> targets = new List<Transform>();
+	public List <Transform> targets = new List<Transform>();
 	//[HideInInspector] public float tier_count;
 	[HideInInspector] public bool seen = true, cover = false;
 	public NavMeshAgent agent;
@@ -25,9 +25,8 @@ public class NPC_Main : MonoBehaviour {
 	void OnTriggerEnter(Collider col)
 	{
 		PC_Main p = col.GetComponent<PC_Main>();
-		if (myturn == false && GameInformer.stop == false) 
+		if (GameInformer.stop == false) 
 		{
-			myturn = true;
 			p.NPC = this;
 			p.type = 1;
 			p.target = transform;
@@ -102,7 +101,12 @@ public class NPC_Main : MonoBehaviour {
 	
 	public void TargetType(int type)
 	{
-		if (type == 1) 
+		targets.Clear();
+		if (type == 0)
+		{
+			Cover[] search = GameObject.FindObjectsOfType(typeof(Cover)) as Cover[];
+			foreach (Cover n in search) if (Physics.Raycast(n.transform.position, transform.forward, 180.0f) && n.taken == false) targets.Add(n.transform);	
+		} else if (type == 1) 
 		{
 			PC_Main[] search = GameObject.FindObjectsOfType(typeof(PC_Main)) as PC_Main[];
 			foreach (PC_Main n in search) targets.Add(n.transform);
@@ -111,6 +115,13 @@ public class NPC_Main : MonoBehaviour {
 			NPC_Main[] search = GameObject.FindObjectsOfType(typeof(NPC_Main)) as NPC_Main[];
 			foreach (NPC_Main n in search) targets.Add(n.transform);
 		} else if (type == 3) target = transform;
+
+		if (target == null)
+		{
+			targets.Sort(delegate(Transform t1, Transform t2) { 
+				return (Vector3.Distance(t1.position, transform.position)).CompareTo(Vector3.Distance(t2.position,transform.position));});
+			target = targets[0];
+		}
 	}
 	
 	public void Target()

@@ -13,7 +13,7 @@ public class PC_Main : MonoBehaviour {
 	public int[,] stats = new int[3,3]; //[Collum,0] (0 = cur stat, 1 = anima stat, 2 = equip stat) [0,Row] (0 = brawns, 1 = tenacity, 2 = courage) 
 	public float speed, rotation;
 	public Transform target;
-	public bool myturn, far_beats;
+	public bool myturn, far_beats, Combat_Turn;
 	public Camera AimCamera;
 	public List <Transform> targets = new List<Transform>();
 	public List <Ability> abilities = new List<Ability>();
@@ -187,20 +187,28 @@ public class PC_Main : MonoBehaviour {
 			if (target == null) Target();
 			float distance = Vector3.Distance(transform.position, target.position);
 			NPC = target.GetComponent<NPC_Main>();
-			if (a.far_range == true) a.OpposeCast(this,NPC,distance);
+			if (a.far_range == true) {
+				a.OpposeCast(this,NPC,distance);
+				Combat_Turn = false;
+			}
 			else if (distance > 2f) 
 			{
 				agent.SetDestination(target.position);
 				StartCoroutine(CloseGap(a));
-			} else a.OpposeCast(this,NPC,distance);
+			} else {
+				a.OpposeCast(this,NPC,distance);
+				Combat_Turn = false;
+			}
 		} else if (type == 2) 
 		{
 			PC = target.GetComponent<PC_Main>();
 			a.AllyCast(this,PC);
+			Combat_Turn = false;
 		} else if (type == 3) 
 		{
 			if (target != null) NPC = target.GetComponent<NPC_Main>();
 			a.OpposeCast(this,NPC,0f);
+			Combat_Turn = false;
 		}
 	}
 	IEnumerator CloseGap(Ability a)

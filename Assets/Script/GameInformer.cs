@@ -91,8 +91,8 @@ public class GameInformer : MonoBehaviour {
 	}
 	void Update()
 	{
-		if (target != null) 
-			if (Character[Idler] != target.gameObject) Idlercamera();
+		/*if (target != null) 
+			if (Character[Idler] != target.gameObject) Idlercamera();*/
 	}
 
 	void  LateUpdate (){

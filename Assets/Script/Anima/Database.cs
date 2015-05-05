@@ -387,11 +387,11 @@ namespace Database {
 			{
 				my.AimCamera.enabled = true;
 				my.AimCamera.GetComponent<Shoot>().enabled = true;
-				my.AimCamera.GetComponent<MouseLook>().enabled = true;
+				//my.AimCamera.GetComponent<MouseLook>().enabled = true;
 			}else{
 				my.AimCamera.enabled = false;
 				my.AimCamera.GetComponent<Shoot>().enabled = false;
-				my.AimCamera.GetComponent<MouseLook>().enabled = false;
+				//my.AimCamera.GetComponent<MouseLook>().enabled = false;
 			}
 		}
 		
@@ -528,7 +528,6 @@ namespace Database {
 		{
 			foreach (Transform enemy in my.targets)
 			{
-				NPC_Main tar = enemy.GetComponent<NPC_Main>();
 				float distance = Vector3.Distance(my.transform.position, enemy.position);
 				if (max_range >= distance)
 				{

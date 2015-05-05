@@ -6,7 +6,8 @@ using Database;
 public class NPC_Main : MonoBehaviour {
 	
 	public string Name;
-	public int HP, Defense, Mag_Defense, Hit, Beat, Brawns, Tenacity, Courage, Sky_attacks, move_points, tier = 2;
+	//Element Type: 1 = Fire, 2 = Earth, 3 = Wind, 4 = Thunder, 5 = Water, 6 = Nature, 7 = Night, 8 = Day, 9 = Wicked, 10 = Divine
+	public int Element_Type, HP, Defense, Mag_Defense, Hit, Beat, Brawns, Tenacity, Courage, Sky_attacks, move_points, tier = 2;
 	public int[] Tier_Limit = new int[3];
 	[HideInInspector] public int cur_hp, cur_beats, index;
 	[HideInInspector] public int[] stats = new int[3]; // marks cur (0 = brawns, 1 = tenacity, 2 = courage)
@@ -22,18 +23,21 @@ public class NPC_Main : MonoBehaviour {
 
 	public Color target_off;
 
-	void OnTriggerEnter(Collider col)
+	void OnTriggerStay(Collider col)
 	{
 		PC_Main p = col.GetComponent<PC_Main>();
-		if (GameInformer.stop == false) 
+		float distance = Vector3.Distance(transform.position, col.transform.position);
+		if (distance <= 3f)
 		{
-			p.NPC = this;
-			p.type = 1;
-			p.target = transform;
-			p.transform.LookAt(target);
-
-			PC_Main[] search = GameObject.FindObjectsOfType(typeof(PC_Main)) as PC_Main[];
-			foreach(PC_Main m in search) m.BattleSetup();
+			if (GameInformer.stop == false && Name != "Imp") 
+			{
+				p.NPC = this;
+				p.type = 1;
+				p.target = transform;
+				p.transform.LookAt(target);
+				move_points++;
+				foreach(PC_Main m in GameInformer.Characters) m.BattleSetup();
+			}
 		}
 	}
 
@@ -67,9 +71,9 @@ public class NPC_Main : MonoBehaviour {
 	}
 	void FixedUpdate () 
 	{
-		if (tier_count <= Tier_Limit[0]) Tier(1,Tier_Limit[0]);
-		else if (tier_count >= Tier_Limit[1]) Tier(2,Tier_Limit[1]);
-		else if (tier_count >= Tier_Limit[2]) Tier(3,Tier_Limit[2]);
+		for (int i = 0; i < stats.Length;i++)
+			if (tier > 1) stats[i] = stats[i]*(tier-1);
+		else stats[i] = stats[i]/(tier+1);
 	}
 	
 	void SetStats()
@@ -121,24 +125,6 @@ public class NPC_Main : MonoBehaviour {
 			targets.Sort(delegate(Transform t1, Transform t2) { 
 				return (Vector3.Distance(t1.position, transform.position)).CompareTo(Vector3.Distance(t2.position,transform.position));});
 			target = targets[0];
-		}
-	}
-	
-	public void Target()
-	{
-		if (target == null)
-		{
-			float closestDistanceSqr = Mathf.Infinity;
-			foreach(Transform t in targets)
-			{
-				Vector3 directionToTarget = t.position - transform.position;
-				float dSqrToTarget = directionToTarget.sqrMagnitude;
-				if(dSqrToTarget < closestDistanceSqr)
-				{
-					closestDistanceSqr = dSqrToTarget;
-					target = t;
-				}
-			}
 		}
 	}
 }

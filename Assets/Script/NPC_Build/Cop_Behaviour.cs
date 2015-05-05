@@ -5,8 +5,7 @@ using Database;
 public class Cop_Behaviour : MonoBehaviour {
 
 	NPC_Main my;
-	Vector3 destination;
-	public int Point_Timer, Max_Heal_Items;
+	public int Gun_Timer, Max_Heal_Items;
 	public bool cover;
 	public int state, t, a, gun;
 	//State: 0 == null, 1 == Move, 2 == Cover, 3 == Attacking, 4 == Shooting 5 == Heal;
@@ -49,22 +48,22 @@ public class Cop_Behaviour : MonoBehaviour {
 
 	void OnTriggerStay(Collider col)
 	{
-		PC_Main p = col.GetComponent<PC_Main>();
-		if (p.Combat_Turn == false && state == 3 && my.cur_beats > 0) 
+		if (state == 3 && my.target == col.transform)
 		{
-			print ("Continuing to Attack");
-			Attack();
+			PC_Main p = col.GetComponent<PC_Main>();
+			if (p.Combat_Turn == false && my.cur_beats > 0) 
+			{
+				print ("Continuing to Attack");
+				Attack();
+			}
 		}
 	}
-
 	void Update()
 	{
-		if (state == 0 && GameInformer.stop == true) t++;
-		if (t >= Point_Timer)
+		if (cover == true && GameInformer.stop == true) t++;
+		if (t >= Gun_Timer)
 		{
-			print (name+" BEAT 0 = NO TURN");
-			//if (my.cur_beats == 0) my.cur_beats = my.Beat;
-			if (my.cur_beats > 0) my.move_points++;
+			UseGun();
 			t = 0;
 		}
 		if (my.target != null) 
@@ -72,8 +71,8 @@ public class Cop_Behaviour : MonoBehaviour {
 		{
 			my.agent.SetDestination(my.target.position);
 			float distance = Vector3.Distance(my.target.position, transform.position);
-			if (distance < 1.5f && state == 1) Attack();
-			else if (distance < 1.5f) 
+			if (distance < 3f && state == 1) Attack();
+			else if (distance < 3f) 
 			{
 				cover = true;
 				state = 0;
@@ -82,19 +81,31 @@ public class Cop_Behaviour : MonoBehaviour {
 	}
 	void FixedUpdate()
 	{
-		if (my.move_points > 0 && state == 0)
+		if (my.move_points > 0)
 		{
-			my.target = null;
-			my.TargetType(1);
-			float distance = Vector3.Distance(my.target.position, transform.position);
-			if (distance >= 2f) 
+			if (state == 0)
 			{
 				my.target = null;
-				if (my.cur_hp <= my.HP/2 && CheckForHealItem() == true) Heal();
-				else if (cover == false && my.target == null) Cover();
-				else UseGun();
+				my.TargetType(1);
+				float distance = Vector3.Distance(my.target.position, transform.position);
+				if (distance >= 3.5f) 
+				{
+					my.target = null;
+					if (my.cur_hp <= my.HP/2 && CheckForHealItem() == true) Heal();
+					else if (cover == false && my.target == null) Cover();
+					else UseGun();
+				}
+				else Move();
+			} else if (state == 4)
+			{
+				my.target = null;
+				my.TargetType(1);
+				float distance = Vector3.Distance(my.target.position, transform.position);
+				if (distance < 3.5f) 
+				{
+					state = 0;
+				}
 			}
-			else Move();
 		}
 	}
 	void Move()
@@ -115,9 +126,8 @@ public class Cop_Behaviour : MonoBehaviour {
 			tar.cur_hp--;
 			print ("Shot HIM");
 		}
-		my.move_points--;
 		my.cur_beats = 0;
-		state = 0;
+		my.move_points--;
 	}
 	void Attack()
 	{

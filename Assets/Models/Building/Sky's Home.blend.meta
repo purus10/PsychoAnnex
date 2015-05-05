@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: ea6fbfa6d0ebd874e9d08d7d91c61a31
 ModelImporter:
-  serializedVersion: 16
+  serializedVersion: 18
   fileIDToRecycleName:
     100000: 1st_Floor
     100002: 1st_Floor_001
@@ -145,6 +145,32 @@ ModelImporter:
     4300050: Front_Door
     4300052: Plane
     4300054: 1st_Floor
+    6400000: 1st_Floor
+    6400002: 1st_Floor_001
+    6400004: C_Door
+    6400006: C_Door2
+    6400008: Door_Knob
+    6400010: Door_Knob2
+    6400012: Door_Knob3
+    6400014: Door_Knob4
+    6400016: Door_Knob5
+    6400018: Front_Door
+    6400020: Open_Top_Door
+    6400022: Pantry_Door
+    6400024: Plane
+    6400026: Plane_001
+    6400028: Top_Floor
+    6400030: Top_Floor_F
+    6400032: V_Window_Top
+    6400034: V_Window_Top_002
+    6400036: V_Window_Top_004
+    6400038: V_Window_Top_005
+    6400040: V_Window_Top_008
+    6400042: Window4_001
+    6400044: Window4_005
+    6400046: Window4_006
+    6400048: Window4_007
+    6400050: Window4_008
     7400000: Default Take
     9500000: //RootNode
   materials:
@@ -155,6 +181,7 @@ ModelImporter:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
     optimizeGameObjects: 0
+    motionNodeName: 
     animationCompression: 1
     animationRotationError: .5
     animationPositionError: .5
@@ -166,22 +193,24 @@ ModelImporter:
   meshes:
     lODScreenPercentages: []
     globalScale: 1
-    meshCompression: 0
-    addColliders: 0
+    meshCompression: 3
+    addColliders: 1
     importBlendShapes: 1
-    swapUVChannels: 0
-    generateSecondaryUV: 0
+    swapUVChannels: 1
+    generateSecondaryUV: 1
     useFileUnits: 1
     optimizeMeshForGPU: 1
+    keepQuads: 0
     weldVertices: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
+    useFileScale: 0
   tangentSpace:
     normalSmoothAngle: 60
     splitTangentsAcrossUV: 1
-    normalImportMode: 0
+    normalImportMode: 1
     tangentImportMode: 1
   importAnimation: 1
   copyAvatar: 0
@@ -200,3 +229,5 @@ ModelImporter:
   animationType: 2
   additionalBone: 0
   userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -6,7 +6,7 @@ public class Finish_Button : MonoBehaviour {
 	public Rect Box;
 	public bool final = false;
 	Custom_Wep wep;
-	Custom_Acc acc;
+//	Custom_Acc acc;
 	Selected_Button selected;
 	Metal_Button metals;
 
@@ -14,7 +14,7 @@ public class Finish_Button : MonoBehaviour {
 	{
 		selected = GetComponent<Selected_Button>();
 		wep = GetComponent<Custom_Wep>();
-		acc = GetComponent<Custom_Acc>();
+//		acc = GetComponent<Custom_Acc>();
 		metals = GetComponent<Metal_Button>();
 
 	}

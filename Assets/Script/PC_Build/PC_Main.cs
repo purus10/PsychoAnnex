@@ -22,7 +22,7 @@ public class PC_Main : MonoBehaviour {
 	public Item[] acc = new Item[2];
 	public Ability[] ability = new Ability[4];
 	public Item[] items = new Item[4];
-	public bool moving, Acrobat, Critical_Shot, Flurry, RunningShot, Steady, onslaught, tier_4, second_acc, fourth_item, soul_mixture, reflect, cover, omni, battle;
+	public bool moving, Acrobat, Critical_Shot, Flurry, RunningShot, Steady, onslaught, tier_4, second_acc, fourth_item, soul_mixture, reflect, cover, omni;
 	public NavMeshAgent agent;
 	public NPC_Main NPC;
 	public PC_Main PC;
@@ -30,6 +30,21 @@ public class PC_Main : MonoBehaviour {
 	public int tier
 	{
 		get { return  1 + (int) tier_count/5; }
+	}
+	public bool InOpponent(NPC_Main col)
+	{
+		bool i = true;
+		foreach (NPC_Main n in GameInformer.Opponents)
+		{
+			if (col.gameObject == n.gameObject) i = false;
+		}
+		return i;
+	}
+	void OnTriggerEnter(Collider col)
+	{
+		NPC_Main n = col.GetComponent<NPC_Main>();
+		if (n != null && n.Name != "Imp") 
+			if (InOpponent(n) == true) GameInformer.Opponents.Add(n);
 	}
 	void Start ()
 	{
@@ -59,7 +74,6 @@ public class PC_Main : MonoBehaviour {
 	void Update()
 	{
 		NPCMotions();
-		if (Input.GetKeyDown(GameInformer.Fight) && battle == false) BattleSetup();
 		TargetSetup();
 		CharacterMotion();
 		if (Input.GetKeyDown(KeyCode.Space) && moving == false) EndTurn();
@@ -160,7 +174,6 @@ public class PC_Main : MonoBehaviour {
 				target.GetComponentInChildren<Renderer>().material.color = target.GetComponent<NPC_Main>().target_off;
 			}
 		}
-		battle = true;
 	}
 	void CastAbility(Ability a)
 	{
@@ -250,7 +263,6 @@ public class PC_Main : MonoBehaviour {
 		{
 		myturn = false;
 		far_beats = false;
-		if (cur_beats < Beat) cur_beats = Beat;
 		GameInformer.Idler = (GameInformer.Idler +1) % 7;
 		if (omni == true) ability[0].Omni(this,null,false);
 		if (cover == false) agent.obstacleAvoidanceType = ObstacleAvoidanceType.LowQualityObstacleAvoidance;
@@ -261,6 +273,7 @@ public class PC_Main : MonoBehaviour {
 			if (n.GetComponent<NPC_Main>() != null) n.GetComponentInChildren<Renderer>().material.color = n.GetComponent<NPC_Main>().target_off;
 		}
 		} else GameInformer.Idler = (GameInformer.Idler +1) % 7;
+		GameInformer.GI.Initation();
 	}
 	void SetStats()
 	{

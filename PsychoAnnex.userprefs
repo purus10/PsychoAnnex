@@ -1,17 +1,20 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Script\PC_Build\PC_Main.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Script\PC_Build\PC_Animator.cs">
     <Files>
-      <File FileName="Assets\Script\NPC_Build\NPC_Main.cs" Line="124" Column="4" />
-      <File FileName="Assets\Script\NPC_Build\Cop_Behaviour.cs" Line="108" Column="13" />
-      <File FileName="Assets\Script\GameInformer.cs" Line="95" Column="63" />
+      <File FileName="Assets\Script\NPC_Build\NPC_Main.cs" Line="22" Column="2" />
+      <File FileName="Assets\Script\NPC_Build\Cop_Behaviour.cs" Line="1" Column="1" />
+      <File FileName="Assets\Script\GameInformer.cs" Line="1" Column="1" />
       <File FileName="Assets\Script\Anima\Database.cs" Line="1" Column="1" />
-      <File FileName="Assets\Script\PC_Build\PC_Main.cs" Line="200" Column="25" />
+      <File FileName="Assets\Scenes\Custom Menu\Finish_Button.cs" Line="1" Column="1" />
+      <File FileName="Assets\Script\NPC_Build\Imp_Behaviour.cs" Line="15" Column="3" />
+      <File FileName="Assets\Script\NPC_Walk.cs" Line="1" Column="1" />
+      <File FileName="Assets\Script\PC_Build\PC_Animator.cs" Line="13" Column="39" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="C:\Users\Kosta\Documents\PsychoAnnex\Assets\Script\Anima\Database.cs" line="8632" />
+      <Breakpoint file="C:\Users\Kosta\Documents\PsychoAnnex\Assets\Script\Anima\Database.cs" line="8631" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

@@ -127,7 +127,7 @@ public class Item_Menu : MonoBehaviour {
 					{
 						pc_number = i;
 						menu_show = 4;
-					} else my.items[j].CastItem(j,my.items[j],my,search[i]);
+					} else print("sdf");// my.items[j].CastItem(j,my.items[j],my,search[i]);
 					if (my.items[j] == null) menu_show = 1;
 				}
 			}

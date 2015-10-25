@@ -109,7 +109,7 @@ public class NPC_Main : MonoBehaviour {
 		if (type == 0)
 		{
 			Cover[] search = GameObject.FindObjectsOfType(typeof(Cover)) as Cover[];
-			foreach (Cover n in search) if (Physics.Raycast(n.transform.position, transform.forward, 180.0f) && n.taken == false) targets.Add(n.transform);	
+	//		foreach (Cover n in search) if (Physics.Raycast(n.transform.position, transform.forward, 180.0f) && n.taken == false) targets.Add(n.transform);	
 		} else if (type == 1) 
 		{
 			PC_Main[] search = GameObject.FindObjectsOfType(typeof(PC_Main)) as PC_Main[];

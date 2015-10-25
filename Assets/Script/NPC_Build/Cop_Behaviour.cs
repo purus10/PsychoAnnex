@@ -152,7 +152,7 @@ public class Cop_Behaviour : MonoBehaviour {
 	}
 	void Cover()
 	{
-		my.TargetType(0);
+		/*my.TargetType(0);
 		Cover c = my.target.GetComponent<Cover>();
 		if (c.selected == false) 
 		{
@@ -161,7 +161,7 @@ public class Cop_Behaviour : MonoBehaviour {
 		}
 		state = 2;
 		my.move_points--;
-		print ("GOING FOR COVER");
+		print ("GOING FOR COVER");*/
 
 	}
 	void Heal()

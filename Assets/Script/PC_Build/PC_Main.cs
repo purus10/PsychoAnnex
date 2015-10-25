@@ -86,10 +86,10 @@ public class PC_Main : MonoBehaviour {
 			if (GameInformer.target == transform)
 			{
 				agent.Stop();
-				if (Input.GetKey(GameInformer.Up)) transform.Translate(Vector3.forward * speed * Time.deltaTime);
+			/*	if (Input.GetKey(GameInformer.Up)) transform.Translate(Vector3.forward * speed * Time.deltaTime);
 				if (Input.GetKey(GameInformer.Left)) transform.Rotate(Vector3.down * speed * 34 * Time.deltaTime);
 				if (Input.GetKey(GameInformer.Right)) transform.Rotate(Vector3.up * speed * 34 * Time.deltaTime);
-				if (Input.GetKey(GameInformer.Down)) transform.Translate(-Vector3.forward * speed * Time.deltaTime);
+				if (Input.GetKey(GameInformer.Down)) transform.Translate(-Vector3.forward * speed * Time.deltaTime);*/
 				if (Input.GetKey(KeyCode.LeftShift)) speed = 7;
 				else speed = 3;
 			}
@@ -110,6 +110,7 @@ public class PC_Main : MonoBehaviour {
 	{
 		if (Input.GetKeyDown(KeyCode.Tab) && type != 3) 
 		{
+			print("yes");
 			if (myturn == true && AimCamera.enabled == false)
 			{
 				targets.Clear();
@@ -149,7 +150,7 @@ public class PC_Main : MonoBehaviour {
 	}
 	void RunForCover()
 	{
-		if (ID != 4 && ID != 6 && ID != GameInformer.target.GetComponent<PC_Main>().ID)
+	/*	if (ID != 4 && ID != 6 && ID != GameInformer.target.GetComponent<PC_Main>().ID)
 		{
 			Target();
 			if (target != null)
@@ -173,11 +174,11 @@ public class PC_Main : MonoBehaviour {
 				Target();
 				target.GetComponentInChildren<Renderer>().material.color = target.GetComponent<NPC_Main>().target_off;
 			}
-		}
+		}*/
 	}
 	void CastAbility(Ability a)
 	{
-		agent.stoppingDistance = 1.5f;
+	/*	agent.stoppingDistance = 1.5f;
 		if (cover == false) agent.obstacleAvoidanceType = ObstacleAvoidanceType.HighQualityObstacleAvoidance;
 		foreach (Transform n in targets)
 		{
@@ -222,7 +223,7 @@ public class PC_Main : MonoBehaviour {
 			if (target != null) NPC = target.GetComponent<NPC_Main>();
 			a.OpposeCast(this,NPC,0f);
 			Combat_Turn = false;
-		}
+		}*/
 	}
 	IEnumerator CloseGap(Ability a)
 	{
@@ -232,7 +233,7 @@ public class PC_Main : MonoBehaviour {
 			if (Vector3.Distance(transform.position, target.position) <= agent.stoppingDistance + 0.5f)
 			{
 				moving = false;
-			a.OpposeCast(this,NPC,0f);
+		//	a.OpposeCast(this,NPC,0f);
 			break;
 			}
 			yield return null;
@@ -247,7 +248,7 @@ public class PC_Main : MonoBehaviour {
 			Target();
 		} else {
 			PC = target.GetComponent<PC_Main>();
-			i.CastItem(j,i,this,PC);
+			//i.CastItem(j,i,this,PC);
 		}	
 	}
 	void FixedUpdate () 
@@ -264,7 +265,7 @@ public class PC_Main : MonoBehaviour {
 		myturn = false;
 		far_beats = false;
 		GameInformer.Idler = (GameInformer.Idler +1) % 7;
-		if (omni == true) ability[0].Omni(this,null,false);
+//		if (omni == true) ability[0].Omni(this,null,false);
 		if (cover == false) agent.obstacleAvoidanceType = ObstacleAvoidanceType.LowQualityObstacleAvoidance;
 		foreach (Transform n in targets)
 		{
@@ -338,7 +339,7 @@ public class PC_Main : MonoBehaviour {
 		if (type == 0)
 		{
 			Cover[] search = GameObject.FindObjectsOfType(typeof(Cover)) as Cover[];
-			foreach (Cover n in search) if (Physics.Raycast(n.transform.position, transform.forward, 180.0f) && n.taken == false) targets.Add(n.transform);	
+//			foreach (Cover n in search) if (Physics.Raycast(n.transform.position, transform.forward, 180.0f) && n.taken == false) targets.Add(n.transform);	
 		} else if (type == 1) 
 		{
 			NPC_Main[] search = GameObject.FindObjectsOfType(typeof(NPC_Main)) as NPC_Main[];
@@ -353,14 +354,13 @@ public class PC_Main : MonoBehaviour {
 		{
 			targets.Sort(delegate(Transform t1, Transform t2) { 
 				return (Vector3.Distance(t1.position, transform.position)).CompareTo(Vector3.Distance(t2.position,transform.position));});
-			if (type != 2 )target = targets[0];
+			if (type != 2) target = targets[0];
 			else {
 				target = transform;
 				GetComponentInChildren<Renderer>().material.color = Color.blue;
 			}
 			transform.LookAt(target);
-		}
-		else if (targets.Count > 1) 
+		} else if (targets.Count > 1) 
 		{
 			index = (index+1) % targets.Count;
 			target = targets[index];

@@ -22,6 +22,7 @@ public class NPC_Walk : MonoBehaviour {
 			if (bark > Barks.Length-1) bark = 0;
 			GetComponent<AudioSource>().PlayOneShot(Barks[bark]);
 			played = bark;
+			BarkIsDone = true;
 		}
 
 	}

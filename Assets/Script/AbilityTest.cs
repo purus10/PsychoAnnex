@@ -76,7 +76,6 @@ public class AbilityTest : MonoBehaviour {
 		Ability a = new Ability();
 		a.name = n;
 		a.description = d;
-		a.far_range = f;
 		a.max_range = x;
 		a.min_range = m;
 		a.type = t;

@@ -1,15 +1,20 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Script\PC_Build\PC_Animator.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Script(R)\PC\PC_Base.cs">
     <Files>
-      <File FileName="Assets\Script\NPC_Build\NPC_Main.cs" Line="22" Column="2" />
-      <File FileName="Assets\Script\NPC_Build\Cop_Behaviour.cs" Line="1" Column="1" />
-      <File FileName="Assets\Script\GameInformer.cs" Line="1" Column="1" />
-      <File FileName="Assets\Script\Anima\Database.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scenes\Custom Menu\Finish_Button.cs" Line="1" Column="1" />
-      <File FileName="Assets\Script\NPC_Build\Imp_Behaviour.cs" Line="15" Column="3" />
-      <File FileName="Assets\Script\NPC_Walk.cs" Line="1" Column="1" />
-      <File FileName="Assets\Script\PC_Build\PC_Animator.cs" Line="13" Column="39" />
+      <File FileName="Assets\Script(R)\System\Sun.cs" Line="1" Column="1" />
+      <File FileName="Assets\Script(R)\Misc\LightPost.cs" Line="1" Column="1" />
+      <File FileName="Assets\Script(R)\System\Database.cs" Line="1" Column="1" />
+      <File FileName="Assets\Script(R)\PC\PC_Base.cs" Line="232" Column="1" />
+      <File FileName="Assets\Script(R)\NPC\Cop_AI.cs" Line="1" Column="1" />
+      <File FileName="Assets\Script(R)\NPC\NPC_Base.cs" Line="1" Column="1" />
+      <File FileName="Assets\Script\Cover.cs" Line="1" Column="1" />
+      <File FileName="Assets\Colorful FX\Scripts\Effects\Noise.cs" Line="1" Column="1" />
+      <File FileName="Assets\Script\CharacterControllerLogic.cs" Line="1" Column="1" />
+      <File FileName="Assets\Standard Assets\Character Controllers\Sources\Scripts\CharacterMotor.js" Line="1" Column="1" />
+      <File FileName="Assets\Standard Assets\Effects\ImageEffects\Shaders\GlobalFog.shader" Line="1" Column="1" />
+      <File FileName="Assets\Standard Assets\Effects\ImageEffects\Scripts\GlobalFog.cs" Line="1" Column="1" />
+      <File FileName="Assets\Colorful FX\Scripts\Effects\BrightnessContrastGamma.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

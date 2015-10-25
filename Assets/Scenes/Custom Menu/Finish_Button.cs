@@ -16,7 +16,6 @@ public class Finish_Button : MonoBehaviour {
 		wep = GetComponent<Custom_Wep>();
 //		acc = GetComponent<Custom_Acc>();
 		metals = GetComponent<Metal_Button>();
-
 	}
 
 	void WeaponFinalization()

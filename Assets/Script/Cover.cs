@@ -4,53 +4,39 @@ using System.Collections.Generic;
 
 public class Cover : MonoBehaviour {
 
-	NPC_Main NPC;
+	NPC_Base NPC;
 	PC_Main PC;
+	PC_Base Pc;
 	public GameObject render;
 	public Color target_off;
-	public bool taken = false, selected = false;
+	public enum Spot {Empty,Selected,Taken}
+	public Spot Status;
 
 	void Start()
 	{
 		target_off = render.GetComponent<Renderer>().material.color;
 	}
-
-	void Update()
-	{
-		if (Input.GetKeyDown(GameInformer.Fight) && GameInformer.battle == false)
-			selected = false;
-	}
 	
 	void OnTriggerEnter(Collider col)
 	{
-		NPC = col.GetComponent<NPC_Main>();
-		PC = col.GetComponent<PC_Main>();
-		if (NPC != null) 
-		{
-			if (NPC.target == transform) 
-			{
-				taken = true;
-				NPC.cover = true;
+		print ("yes");
+		Status = Spot.Taken;
+		NPC = col.GetComponent<NPC_Base>();
+		Pc = col.GetComponent<PC_Base>();
+		if (Pc != null && Status != Spot.Taken)
+			Pc.State = Database.Get.State.Cover;
+		else if (NPC != null && Status != Spot.Taken)
+			NPC.State = Database.Get.State.Cover;
 
-			}
-		}
-		if (PC != null) 		
-		{
-			if (PC.target == transform) 
-			{
-				print (col.name);
-				taken = true;
-				PC.cover = true;
-				PC.target = null;
-				PC.agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
-			}
-		}
 	}
+	void OnTriggerStay(Collider col)
+	{
+
+		//if (Pc.State == Database.Get.State.Idle || Pc.State == Database.Get.State.Move) Pc.State = Database.Get.State.Cover;
+	} 
 	
 	void OnTriggerExit(Collider col)
 	{
-		taken = false;
-		if (NPC != null) NPC.cover = false;
-		if (PC != null) PC.cover = false;
+		Status = Spot.Empty;
 	}
 }
